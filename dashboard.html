@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hashbook</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #34bfa3, #2e8f6f);
+            color: #fff;
+            display: flex;
+            justify-content: flex-start;
+            align-items: stretch;
+            min-height: 100vh;
+            height: 100%;
+            overflow-y: auto;
+            transition: background 0.4s ease;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: #2D5C47;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        .sidebar .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #A3D9A5;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .sidebar a {
+            font-size: 22px;
+            color: #A3D9A5;
+            text-decoration: none;
+            padding: 14px 22px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #4C7A59;
+            color: white;
+        }
+
+        .sidebar .logout-btn {
+            background: #DB4437;
+            border-radius: 20px;
+            padding: 14px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .sidebar .logout-btn:hover {
+            background-color: #C1351E;
+        }
+
+        /* Main Content Styles */
+        .container {
+            margin-left: 300px;
+            padding: 40px;
+            width: calc(100% - 300px);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 50px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        /* Post Form Styles */
+        .post-form {
+            background: #2E5B4A;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .post-form h3 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #A3D9A5;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            padding: 20px;
+            font-size: 18px;
+            border-radius: 15px;
+            border: 2px solid #3E7066;
+            background: #1A3D2E;
+            color: white;
+            width: 100%;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        textarea:focus {
+            border-color: #A3D9A5;
+            outline: none;
+        }
+
+        input[type="file"] {
+            padding: 15px;
+            background-color: #1A3D2E;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 18px 30px;
+            background: #3B5C3A;
+            color: white;
+            border-radius: 15px;
+            font-size: 18px;
+        }
+
+        /* Post Feed Styles */
+        .posts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-right: 20px;
+            max-height: none;
+        }
+
+        .post {
+            background: #fff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .post .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .post .user-info img {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .post .user-info span {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .post p {
+            font-size: 20px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .post img {
+            width: 100%;
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .post-actions button {
+            background-color: #DB4437;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .post-actions button:hover {
+            background-color: #C1351E;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">Logo</div>
+        <a href="#">Home</a>
+        <a href="#">Profile</a>
+        <a href="#">Messages</a>
+        <a href="#">Settings</a>
+        <div id="logout-btn" class="logout-btn">Logout</div>
+    </div>
+
+    <div class="container">
+        <div class="post-form">
+            <h3>Share With Us</h3>
+            <textarea id="post-text" rows="4" placeholder="What's on your mind?"></textarea>
+            <input type="file" id="post-image">
+            <button id="post-btn">Post</button>
+        </div>
+
+        <div class="posts-container" id="posts-container"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+        import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+            authDomain: "facebook-1751a.firebaseapp.com",
+            projectId: "facebook-1751a",
+            storageBucket: "facebook-1751a.appspot.com",
+            messagingSenderId: "852573765318",
+            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
+            measurementId: "G-RZBV4M5Z2F"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Redirect if not authenticated on page load
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.replace("index.html"); // Redirect to index.html if not logged in
+            } else {
+                console.log("User authenticated:", user);
+                loadPosts(); // Load posts when user is authenticated
+            }
+        });
+
+        // Handle Logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                console.log('User signed out');
+                window.location.replace("index.html"); // Redirect to index.html after sign-out
+            }).catch((error) => {
+                console.error("Error signing out:", error);
+            });
+        });
+
+        // Load posts
+        async function loadPosts() {
+            const postsRef = collection(db, "posts");
+            const q = query(postsRef, orderBy("createdAt", "desc"));
+            const querySnapshot = await getDocs(q);
+            const postsContainer = document.getElementById("posts-container");
+            postsContainer.innerHTML = ""; // Clear existing posts
+
+            if (querySnapshot.empty) {
+                postsContainer.innerHTML = '<p>No posts found.</p>';
+                return;
+            }
+
+            querySnapshot.forEach((doc) => {
+                const post = doc.data();
+                const postElement = document.createElement("div");
+                postElement.classList.add("post");
+
+                const userInfo = document.createElement("div");
+                userInfo.classList.add("user-info");
+
+                const userImage = document.createElement("img");
+                userImage.src = post.photoURL || "default-avatar.jpg";
+                userInfo.appendChild(userImage);
+
+                const username = document.createElement("span");
+                username.textContent = post.displayName || "Anonymous";
+                userInfo.appendChild(username);
+
+                const postText = document.createElement("p");
+                postText.textContent = post.text;
+
+                postElement.appendChild(userInfo);
+                postElement.appendChild(postText);
+
+                if (post.imageUrl) {
+                    const postImage = document.createElement("img");
+                    postImage.src = post.imageUrl;
+                    postElement.appendChild(postImage);
+                }
+
+                const timeAgo = document.createElement("span");
+                timeAgo.textContent = formatDistanceToNow(post.createdAt.toDate(), { addSuffix: true });
+                postElement.appendChild(timeAgo);
+
+                postsContainer.appendChild(postElement);
+            });
+        }
+
+        // Handle creating a post
+        document.getElementById('post-btn').addEventListener('click', async () => {
+            const postText = document.getElementById("post-text").value;
+            const postImage = document.getElementById("post-image").files[0];
+
+            if (!postText) {
+                Swal.fire('Error', 'Please enter some text for your post.', 'error');
+                return;
+            }
+
+            let imageUrl = null;
+            if (postImage) {
+                const imageRef = ref(storage, `posts/${Date.now()}_${postImage.name}`);
+                await uploadBytes(imageRef, postImage);
+                imageUrl = await getDownloadURL(imageRef);
+            }
+
+            await addDoc(collection(db, "posts"), {
+                text: postText,
+                imageUrl: imageUrl,
+                createdAt: serverTimestamp(),
+                displayName: auth.currentUser.displayName,
+                photoURL: auth.currentUser.photoURL,
+            });
+
+            // Clear post input fields and reload posts
+            document.getElementById("post-text").value = '';
+            document.getElementById("post-image").value = '';
+            loadPosts();
+        });
+    </script>
+
+</body>
+</html>

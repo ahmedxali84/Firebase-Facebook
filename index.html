@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hashbook</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #2C6B4F, #1B3D2A);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+        .wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            max-width: 1200px;
+        }
+        .brand {
+            flex: 1;
+            text-align: left;
+        }
+        .brand h1 {
+            color: #A3D9A5;
+            font-size: 100px;
+            font-weight: 600;
+        }
+        .container {
+            background: #1B3D2A;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 15px 50px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            text-align: center;
+            transform: scale(1);
+            animation: pop-up 0.5s ease-out;
+        }
+        h2 {
+            margin-bottom: 15px;
+            color: #A3D9A5;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #444;
+            font-size: 16px;
+            background-color: #2C6B4F;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #A3D9A5;
+            box-shadow: 0 0 10px rgba(163, 217, 165, 0.5);
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            border: none;
+            background: #2C6B4F;
+            color: white;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(44, 107, 79, 0.2);
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #1B3D2A;
+            transform: translateY(-3px);
+        }
+        button:active {
+            transform: translateY(1px);
+        }
+        .google-btn {
+            background: #DB4437;
+            margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(219, 68, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+        .google-btn:hover {
+            background: #C1351E;
+            transform: translateY(-3px);
+        }
+        .switch {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .switch a {
+            color: #A3D9A5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .switch a:hover { 
+            text-decoration: underline; 
+        }
+        #error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        @keyframes pop-up {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="brand">
+            <h1>Hashbook</h1>
+        </div>
+        <div class="container">
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Email Address" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <button id="login-btn">Login</button>
+            <p id="error-msg"></p>
+            <button class="google-btn" id="google-login">Login with Google</button>
+            <p class="switch">Don't have an account? <a href="signup.html">Sign Up</a></p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+            authDomain: "facebook-1751a.firebaseapp.com",
+            projectId: "facebook-1751a",
+            storageBucket: "facebook-1751a.appspot.com",
+            messagingSenderId: "852573765318",
+            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        const loginBtn = document.getElementById("login-btn");
+        const googleLoginBtn = document.getElementById("google-login");
+        const errorMsg = document.getElementById("error-msg");
+
+        loginBtn.addEventListener("click", async () => {
+            const email = document.getElementById("login-email").value.trim();
+            const password = document.getElementById("login-password").value.trim();
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = "dashboard.html";
+            } catch (error) {
+                errorMsg.innerText = "Error: " + error.message;
+            }
+        });
+
+        googleLoginBtn.addEventListener("click", async () => {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                window.location.href = "dashboard.html";
+            } catch (error) {
+                errorMsg.innerText = "Google Login Error: " + error.message;
+            }
+        });
+    </script>
+
+</body>
+</html>
