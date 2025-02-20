@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Hashbook</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #34bfa3, #2e8f6f);
+            color: #fff;
+            display: flex;
+            justify-content: flex-start;
+            align-items: stretch;
+            min-height: 100vh;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: #2D5C47;
+            padding: 40px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .sidebar .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #A3D9A5;
+            text-align: center;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #A3D9A5;
+            padding: 14px 22px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #4C7A59;
+        }
+
+        .sidebar .logout-btn {
+            background: #DB4437;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+        .container {
+            margin-left: 300px;
+            padding: 40px;
+            width: calc(100% - 300px);
+            display: flex;
+            gap: 20px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .friends-list {
+            width: 300px;
+            background: #2E5B4A;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .friends-list h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #A3D9A5;
+            margin-bottom: 20px;
+        }
+
+        .friends-list ul {
+            list-style: none;
+        }
+
+        .friends-list li {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #1A3D2E;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .friends-list li:hover {
+            background: #4C7A59;
+        }
+
+        .chat-window {
+            flex: 1;
+            background: #2E5B4A;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            font-size: 24px;
+            font-weight: 600;
+            color: #A3D9A5;
+            margin-bottom: 20px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #1A3D2E;
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #2C6B4F;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .message.sent {
+            background: #3B5C3A;
+            align-self: flex-end;
+        }
+
+        .message.received {
+            background: #2C6B4F;
+            align-self: flex-start;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input textarea {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #3E7066;
+            background: #1A3D2E;
+            color: white;
+            resize: none;
+        }
+
+        .chat-input button {
+            padding: 10px 20px;
+            background: #3B5C3A;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">HASHBOOK</div>
+        <a href="../dashboard.html">Home</a>
+        <a href="profile.html">Profile</a>
+        <a href="index.html">Messages</a>
+        <a href="settings.html">Settings</a>
+        <div id="logout-btn" class="logout-btn">Logout</div>
+    </div>
+
+    <div class="container">
+        <div class="friends-list">
+            <h3>Friends</h3>
+            <ul id="friends-list">
+                <!-- Friends will be dynamically added here -->
+            </ul>
+        </div>
+
+        <div class="chat-window">
+            <div class="chat-header">Chat with <span id="chat-friend-name">Friend</span></div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be dynamically added here -->
+            </div>
+            <div class="chat-input">
+                <textarea id="chat-input" placeholder="Type a message..."></textarea>
+                <button id="send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+            authDomain: "facebook-1751a.firebaseapp.com",
+            projectId: "facebook-1751a",
+            storageBucket: "facebook-1751a.appspot.com",
+            messagingSenderId: "852573765318",
+            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Redirect if not authenticated
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.replace("index.html");
+            }
+        });
+
+        // Logout
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            signOut(auth).then(() => {
+                window.location.replace("../index.html");
+            });
+        });
+
+        // Fetch Friends
+        const friendsList = document.getElementById("friends-list");
+        const fetchFriends = async () => {
+            const q = query(collection(db, "users"));
+            const querySnapshot = await getDocs(q);
+            friendsList.innerHTML = "";
+            querySnapshot.forEach((doc) => {
+                const friend = doc.data();
+                const li = document.createElement("li");
+                li.textContent = friend.name;
+                li.addEventListener("click", () => {
+                    startChat(friend);
+                });
+                friendsList.appendChild(li);
+            });
+        };
+
+        // Start Chat with a Friend
+        const startChat = (friend) => {
+            document.getElementById("chat-friend-name").textContent = friend.name;
+            const chatMessages = document.getElementById("chat-messages");
+            chatMessages.innerHTML = "";
+
+            const chatId = [auth.currentUser.uid, friend.uid].sort().join("_");
+            const chatRef = collection(db, "chats", chatId, "messages");
+
+            onSnapshot(chatRef, (snapshot) => {
+                chatMessages.innerHTML = "";
+                snapshot.forEach((doc) => {
+                    const message = doc.data();
+                    const messageDiv = document.createElement("div");
+                    messageDiv.classList.add("message");
+                    messageDiv.classList.add(message.sender === auth.currentUser.uid ? "sent" : "received");
+                    messageDiv.textContent = message.text;
+                    chatMessages.appendChild(messageDiv);
+                });
+            });
+        };
+
+        // Send Message
+        document.getElementById("send-btn").addEventListener("click", async () => {
+            const messageInput = document.getElementById("chat-input");
+            const messageText = messageInput.value.trim();
+            if (!messageText) return;
+
+            const friendName = document.getElementById("chat-friend-name").textContent;
+            const friend = await getFriendByName(friendName);
+
+            const chatId = [auth.currentUser.uid, friend.uid].sort().join("_");
+            const chatRef = collection(db, "chats", chatId, "messages");
+
+            await setDoc(doc(chatRef), {
+                text: messageText,
+                sender: auth.currentUser.uid,
+                timestamp: new Date()
+            });
+
+            messageInput.value = "";
+        });
+
+        // Helper function to get friend by name
+        const getFriendByName = async (name) => {
+            const q = query(collection(db, "users"), where("name", "==", name));
+            const querySnapshot = await getDocs(q);
+            return querySnapshot.docs[0].data();
+        };
+
+        fetchFriends();
+    </script>
+</body>
+</html>
