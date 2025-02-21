@@ -12,12 +12,12 @@
             font-family: 'Poppins', sans-serif;
         }
         body {
-            background: linear-gradient(135deg, #2C6B4F, #1B3D2A);
+            background-color: #1B1B1B;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: white;
+            color: #EAEAEA;
         }
         .wrapper {
             display: flex;
@@ -25,30 +25,29 @@
             align-items: center;
             width: 80%;
             max-width: 1200px;
+            flex-wrap: wrap; /* Allow wrapping when smaller screen size */
         }
         .brand {
             flex: 1;
             text-align: left;
-            padding: 50px;
         }
         .brand h1 {
-            color: #A3D9A5;
+            color: #00C9A7;
             font-size: 100px;
             font-weight: 600;
         }
         .container {
-            background: #1B3D2A;
+            background: linear-gradient(to bottom, #242424, #1B1B1B);
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 15px 50px rgba(0, 0, 0, 0.3);
             width: 400px;
             text-align: center;
-            transform: scale(1);
             animation: pop-up 0.5s ease-out;
         }
         h2 {
             margin-bottom: 15px;
-            color: #A3D9A5;
+            color: #00C9A7;
             font-size: 24px;
             font-weight: 600;
         }
@@ -57,41 +56,45 @@
             padding: 15px;
             margin: 10px 0;
             border-radius: 10px;
-            border: 1px solid #444;
+            border: 1px solid #555;
             font-size: 16px;
-            background-color: #2C6B4F;
+            background-color: #333;
             color: white;
             transition: all 0.3s ease;
         }
         input:focus {
             outline: none;
-            border-color: #A3D9A5;
-            box-shadow: 0 0 10px rgba(163, 217, 165, 0.5);
+            border-color: #00C9A7;
+            box-shadow: 0 0 10px rgba(244, 196, 48, 0.5);
         }
-        button {
+        #signup-btn {
             width: 100%;
             padding: 15px;
             margin-top: 10px;
             border: none;
-            background: #2C6B4F;
+            background-color: #007D76;
             color: white;
             font-size: 16px;
             border-radius: 10px;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(44, 107, 79, 0.2);
             transition: all 0.3s ease;
         }
         button:hover {
-            background: #1B3D2A;
+            background: #388E3C;
             transform: translateY(-3px);
         }
-        button:active {
-            transform: translateY(1px);
-        }
         .google-btn {
-            background: #DB4437;
+            border: 2px solid violet;
+            color: violet;
+            background: linear-gradient(to bottom, #242424, #1B1B1B);
             margin-top: 10px;
-            box-shadow: 0 10px 20px rgba(219, 68, 55, 0.2);
+            transition: all 0.3s ease;
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
         .google-btn:hover {
@@ -103,7 +106,7 @@
             font-size: 14px;
         }
         .switch a {
-            color: #A3D9A5;
+            color: #00C9A7;
             text-decoration: none;
             font-weight: bold;
         }
@@ -118,6 +121,45 @@
         @keyframes pop-up {
             0% { opacity: 0; transform: scale(0.8); }
             100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Media query for screen size less than 1080px */
+        @media (max-width: 1080px) {
+            .wrapper {
+                flex-direction: column; /* Stack items vertically */
+                align-items: center;
+                width: 90%; /* Adjust width for smaller screens */
+            }
+
+            .brand h1 {
+                font-size: 80px; /* Reduce the font size for smaller screens */
+            }
+
+            .container {
+                width: 90%; /* Make the container wider to use available space */
+                padding: 30px; /* Reduce padding for smaller screen sizes */
+            }
+
+            .google-btn, #signup-btn {
+                width: 100%; /* Ensure buttons are full width */
+                margin-top: 15px;
+            }
+
+            h2 {
+                font-size: 20px; /* Adjust the heading size */
+            }
+
+            input {
+                font-size: 14px; /* Adjust input font size */
+            }
+
+            .switch {
+                font-size: 12px; /* Smaller text size for the switch */
+            }
+
+            #error-msg {
+                font-size: 12px; /* Adjust error message font size */
+            }
         }
     </style>
 </head>
@@ -145,7 +187,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -195,15 +237,24 @@
             }
 
             try {
+                // Create user with email and password
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
+                // Update user profile with displayName
+                await updateProfile(user, {
+                    displayName: name,
+                    photoURL: "" // Add a default or user-provided photo URL here if needed
+                });
+
+                // Save additional user data to Firestore
                 await setDoc(doc(db, "users", user.uid), {
                     name: name,
                     email: email,
                     phone: phone
                 });
 
+                // Redirect to the login page
                 window.location.href = "index.html";
             } catch (error) {
                 errorMsg.innerText = "Error: " + error.message;
