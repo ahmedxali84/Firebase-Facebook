@@ -6,174 +6,416 @@
     <title>Messages - Hashbook</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 
-        body {
-            background: linear-gradient(145deg, #34bfa3, #2e8f6f);
-            color: #fff;
-            display: flex;
-            justify-content: flex-start;
-            align-items: stretch;
-            min-height: 100vh;
-            height: 100%;
-            overflow-y: auto;
-        }
+body {
+    background: linear-gradient(145deg, #2C2F33, #23272A);
+    color: #fff;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    min-height: 100vh;
+    height: 100%;
+    overflow-y: auto;
+}
 
-        .sidebar {
-            width: 280px;
-            background-color: #2D5C47;
-            padding: 40px 30px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            overflow-y: auto;
-        }
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background-color: #1E2124;
+    padding: 40px 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: auto;
+}
 
-        .sidebar .logo {
-            font-size: 30px;
-            font-weight: 700;
-            color: #A3D9A5;
-            text-align: center;
-        }
+.sidebar .logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: #7EC8C5;
+    text-align: center;
+}
 
-        .sidebar a {
-            display: block;
-            color: #A3D9A5;
-            padding: 14px 22px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
+.sidebar a {
+    display: block;
+    color: #7EC8C5;
+    padding: 14px 22px;
+    text-decoration: none;
+    transition: 0.3s;
+}
 
-        .sidebar a:hover {
-            background-color: #4C7A59;
-        }
+.sidebar a:hover {
+    background-color: #3D5A5B;
+}
 
-        .sidebar .logout-btn {
-            background: #DB4437;
-            color: white;
-            padding: 14px;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 20px;
-        }
-        .container {
-            margin-left: 300px;
-            padding: 40px;
-            width: calc(100% - 300px);
-            display: flex;
-            gap: 20px;
-            height: 100%;
-            overflow-y: auto;
-        }
+.sidebar .logout-btn {
+    background: #DB4437;
+    color: white;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 20px;
+}
 
-        .friends-list {
-            width: 300px;
-            background: #2E5B4A;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.3);
-        }
+/* Main Container */
+.container {
+    margin-left: 300px;
+    padding: 40px;
+    width: calc(100% - 300px);
+    display: flex;
+    gap: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
 
-        .friends-list h3 {
-            font-size: 24px;
-            font-weight: 600;
-            color: #A3D9A5;
-            margin-bottom: 20px;
-        }
+/* Friends List */
+.friends-list {
+    width: 300px;
+    background: #1E2124;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.3);
+}
 
-        .friends-list ul {
-            list-style: none;
-        }
+.friends-list h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #7EC8C5;
+    margin-bottom: 20px;
+}
 
-        .friends-list li {
-            padding: 10px;
-            margin-bottom: 10px;
-            background: #1A3D2E;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+.friends-list ul {
+    list-style: none;
+}
 
-        .friends-list li:hover {
-            background: #4C7A59;
-        }
+.friends-list li {
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #2C2F33;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-        .chat-window {
-            flex: 1;
-            background: #2E5B4A;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-        }
+.friends-list li:hover {
+    background: #3D5A5B;
+}
 
-        .chat-header {
-            font-size: 24px;
-            font-weight: 600;
-            color: #A3D9A5;
-            margin-bottom: 20px;
-        }
+/* Chat Window */
+.chat-window {
+    flex: 1;
+    background: #1E2124;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
 
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            padding: 10px;
-            background: #1A3D2E;
-            border-radius: 10px;
-        }
+.chat-header {
+    font-size: 24px;
+    font-weight: 600;
+    color: #7EC8C5;
+    margin-bottom: 20px;
+}
 
-        .message {
-            margin-bottom: 10px;
-            padding: 10px;
-            background: #2C6B4F;
-            border-radius: 10px;
-            color: white;
-        }
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #2C2F33;
+    border-radius: 10px;
+}
 
-        .message.sent {
-            background: #3B5C3A;
-            align-self: flex-end;
-        }
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #7EC8C5;
+    border-radius: 10px;
+    color: white;
+}
 
-        .message.received {
-            background: #2C6B4F;
-            align-self: flex-start;
-        }
+.message.sent {
+    background: #557D7A;
+    align-self: flex-end;
+}
 
-        .chat-input {
-            display: flex;
-            gap: 10px;
-        }
+.message.received {
+    background: #7EC8C5;
+    align-self: flex-start;
+}
 
-        .chat-input textarea {
-            flex: 1;
-            padding: 10px;
-            border-radius: 10px;
-            border: 2px solid #3E7066;
-            background: #1A3D2E;
-            color: white;
-            resize: none;
-        }
+.chat-input {
+    display: flex;
+    gap: 10px;
+}
 
-        .chat-input button {
-            padding: 10px 20px;
-            background: #3B5C3A;
-            color: white;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-        }
+.chat-input textarea {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #557D7A;
+    background: #2C2F33;
+    color: white;
+    resize: none;
+}
+
+.chat-input button {
+    padding: 10px 20px;
+    background: #557D7A;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Navbar for Small Screens */
+.navbar {
+    display: none; /* Hidden by default */
+    width: 100%;
+    background-color: #1E2124;
+    padding: 10px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent items from wrapping */
+}
+
+.navbar .logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #7EC8C5;
+    white-space: nowrap; /* Prevent logo from wrapping */
+    display: inline-block; /* Ensure logo stays in line with menu items */
+}
+
+.navbar .menu {
+    display: inline-block; /* Ensure menu stays in line with logo */
+    margin-left: 20px; /* Add spacing between logo and menu */
+}
+
+.navbar a {
+    color: #7EC8C5;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: 0.3s;
+    font-size: 14px;
+    white-space: nowrap; /* Prevent text from wrapping */
+    display: inline-block; /* Ensure items stay in line */
+}
+
+.navbar a:hover {
+    background-color: #3D5A5B;
+    color: #fff;
+}
+
+.navbar .logout-btn {
+    background: #DB4437;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+    white-space: nowrap; /* Prevent text from wrapping */
+    display: inline-block; /* Ensure button stays in line */
+}
+
+.navbar .logout-btn:hover {
+    background: #C23328;
+}
+
+/* Responsive Design for Screens 780px or Less */
+@media (max-width: 780px) {
+    /* Hide the sidebar */
+    .sidebar {
+        display: none;
+    }
+
+    /* Show the navbar */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Adjust the main container */
+    .container {
+        margin-left: 0;
+        width: 100%;
+        padding: 70px 20px 20px; /* Add top padding for navbar */
+        flex-direction: column;
+    }
+
+    /* Adjust friends list */
+    .friends-list {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    /* Adjust chat window */
+    .chat-window {
+        width: 100%;
+    }
+}
+
+/* Responsive Design for Screens 650px or Less */
+@media (max-width: 650px) {
+    /* Reduce padding and font sizes */
+    .navbar {
+        padding: 8px 15px;
+    }
+
+    .navbar .logo {
+        font-size: 20px;
+    }
+
+    .navbar a {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .navbar .logout-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    /* Adjust main container padding */
+    .container {
+        padding: 60px 15px 15px;
+    }
+
+    /* Adjust friends list and chat window */
+    .friends-list h3, .chat-header {
+        font-size: 20px;
+    }
+
+    .friends-list li, .message {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .chat-input textarea {
+        padding: 8px;
+    }
+
+    .chat-input button {
+        padding: 8px 15px;
+    }
+}
+
+/* Responsive Design for Screens 480px or Less */
+@media (max-width: 480px) {
+    /* Further reduce padding and font sizes */
+    .navbar {
+        padding: 6px 10px;
+    }
+
+    .navbar .logo {
+        font-size: 18px;
+    }
+
+    .navbar a {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    .navbar .logout-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    /* Adjust main container padding */
+    .container {
+        padding: 50px 10px 10px;
+    }
+
+    /* Adjust friends list and chat window */
+    .friends-list h3, .chat-header {
+        font-size: 18px;
+    }
+
+    .friends-list li, .message {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .chat-input textarea {
+        padding: 6px;
+    }
+
+    .chat-input button {
+        padding: 6px 12px;
+    }
+}
+
+/* Responsive Design for Screens 250px or Less */
+@media (max-width: 250px) {
+    /* Make navbar items even smaller */
+    .navbar {
+        padding: 5px 8px;
+    }
+
+    .navbar .logo {
+        font-size: 16px;
+    }
+
+    .navbar a {
+        padding: 4px 6px;
+        font-size: 10px;
+    }
+
+    .navbar .logout-btn {
+        padding: 4px 6px;
+        font-size: 10px;
+    }
+
+    /* Adjust main container padding */
+    .container {
+        padding: 40px 8px 8px;
+    }
+
+    /* Adjust friends list and chat window */
+    .friends-list h3, .chat-header {
+        font-size: 16px;
+    }
+
+    .friends-list li, .message {
+        padding: 4px;
+        font-size: 10px;
+    }
+
+    .chat-input textarea {
+        padding: 4px;
+    }
+
+    .chat-input button {
+        padding: 4px 8px;
+    }
+}
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <div class="logo">HASHBOOK</div>
+        <a href="../dashboard.html">Home</a>
+        <a href="profile.html">Profile</a>
+        <a href="index.html">Messages</a>
+        <a href="settings.html">Settings</a>
+        <div id="logout-btn" class="logout-btn">Logout</div>
+    </div>
     <div class="sidebar">
         <div class="logo">HASHBOOK</div>
         <a href="../dashboard.html">Home</a>
@@ -186,16 +428,12 @@
     <div class="container">
         <div class="friends-list">
             <h3>Friends</h3>
-            <ul id="friends-list">
-                <!-- Friends will be dynamically added here -->
-            </ul>
+            <ul id="friends-list"></ul>
         </div>
 
         <div class="chat-window">
             <div class="chat-header">Chat with <span id="chat-friend-name">Friend</span></div>
-            <div class="chat-messages" id="chat-messages">
-                <!-- Messages will be dynamically added here -->
-            </div>
+            <div class="chat-messages" id="chat-messages"></div>
             <div class="chat-input">
                 <textarea id="chat-input" placeholder="Type a message..."></textarea>
                 <button id="send-btn">Send</button>
@@ -206,87 +444,44 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-        import { getFirestore, collection, query, where, getDocs, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs, addDoc, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
-            authDomain: "facebook-1751a.firebaseapp.com",
-            projectId: "facebook-1751a",
-            storageBucket: "facebook-1751a.appspot.com",
-            messagingSenderId: "852573765318",
-            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7"
-        };
+    apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+    authDomain: "facebook-1751a.firebaseapp.com",
+    databaseURL: "https://facebook-1751a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "facebook-1751a",
+    storageBucket: "facebook-1751a.firebasestorage.app",
+    messagingSenderId: "852573765318",
+    appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
+    measurementId: "G-RZBV4M5Z2F"
+  };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Redirect if not authenticated
         onAuthStateChanged(auth, (user) => {
             if (!user) {
-                window.location.replace("index.html");
+                window.location.replace("../index.html");
             }
         });
 
-        // Logout
         document.getElementById("logout-btn").addEventListener("click", () => {
             signOut(auth).then(() => {
                 window.location.replace("../index.html");
             });
         });
 
-        // Fetch Friends
-        const friendsList = document.getElementById("friends-list");
-        const fetchFriends = async () => {
-            const q = query(collection(db, "users"));
-            const querySnapshot = await getDocs(q);
-            friendsList.innerHTML = "";
-            querySnapshot.forEach((doc) => {
-                const friend = doc.data();
-                const li = document.createElement("li");
-                li.textContent = friend.name;
-                li.addEventListener("click", () => {
-                    startChat(friend);
-                });
-                friendsList.appendChild(li);
-            });
-        };
+        const chatMessages = document.getElementById("chat-messages");
 
-        // Start Chat with a Friend
-        const startChat = (friend) => {
-            document.getElementById("chat-friend-name").textContent = friend.name;
-            const chatMessages = document.getElementById("chat-messages");
-            chatMessages.innerHTML = "";
-
-            const chatId = [auth.currentUser.uid, friend.uid].sort().join("_");
-            const chatRef = collection(db, "chats", chatId, "messages");
-
-            onSnapshot(chatRef, (snapshot) => {
-                chatMessages.innerHTML = "";
-                snapshot.forEach((doc) => {
-                    const message = doc.data();
-                    const messageDiv = document.createElement("div");
-                    messageDiv.classList.add("message");
-                    messageDiv.classList.add(message.sender === auth.currentUser.uid ? "sent" : "received");
-                    messageDiv.textContent = message.text;
-                    chatMessages.appendChild(messageDiv);
-                });
-            });
-        };
-
-        // Send Message
         document.getElementById("send-btn").addEventListener("click", async () => {
             const messageInput = document.getElementById("chat-input");
             const messageText = messageInput.value.trim();
             if (!messageText) return;
 
-            const friendName = document.getElementById("chat-friend-name").textContent;
-            const friend = await getFriendByName(friendName);
-
-            const chatId = [auth.currentUser.uid, friend.uid].sort().join("_");
-            const chatRef = collection(db, "chats", chatId, "messages");
-
-            await setDoc(doc(chatRef), {
+            const messageRef = collection(db, "messages");
+            await addDoc(messageRef, {
                 text: messageText,
                 sender: auth.currentUser.uid,
                 timestamp: new Date()
@@ -295,14 +490,13 @@
             messageInput.value = "";
         });
 
-        // Helper function to get friend by name
-        const getFriendByName = async (name) => {
-            const q = query(collection(db, "users"), where("name", "==", name));
-            const querySnapshot = await getDocs(q);
-            return querySnapshot.docs[0].data();
-        };
-
-        fetchFriends();
+        onSnapshot(query(collection(db, "messages"), orderBy("timestamp", "asc")), (snapshot) => {
+            chatMessages.innerHTML = "";
+            snapshot.forEach((doc) => {
+                const message = doc.data();
+                chatMessages.innerHTML += `<div class="message ${message.sender === auth.currentUser.uid ? 'sent' : 'received'}">${message.text}</div>`;
+            });
+        });
     </script>
 </body>
 </html>
