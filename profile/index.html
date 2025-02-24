@@ -495,15 +495,37 @@ body {
         padding: 50px 10px 10px;
     }
 
-    /* Adjust profile header */
-    .profile-header img {
-        width: 60px;
-        height: 60px;
-    }
+/* Profile Header */
+.profile-header {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+}
 
-    .profile-header h1 {
-        font-size: 20px;
-    }
+.profile-header label {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+}
+
+#profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.profile-header label:hover #profile-picture {
+    opacity: 0.8;
+}
+
+/* File input hidden */
+#profile-picture-input {
+    display: none;
+}
+
 
     /* Adjust post form and posts */
     .post-form {
@@ -572,7 +594,6 @@ body {
 }
     </style>
 </head>
-<body>
 <!-- Navbar -->
 <div class="navbar">
     <div class="logo">Hashbook</div>
@@ -594,46 +615,47 @@ body {
     <a href="#">Settings</a>
     <div id="logout-btn" class="logout-btn">Logout</div>
 </div>
-    <div class="container">
-        <!-- Search Bar -->
-        <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search for users by UID...">
-            <button id="search-btn">Search</button>
-        </div>
 
-        <!-- Friend Requests and Friends List Section -->
-        <div class="friend-section">
-            <div class="friend-requests">
-                <h3>Friend Requests</h3>
-                <ul id="friend-requests-list"></ul>
-            </div>
-            <div class="friends-list">
-                <h3>Friends</h3>
-                <ul id="friends-list"></ul>
-            </div>
-        </div>
-
-        <!-- Profile Header -->
-        <div class="profile-header">
-            <img id="profile-picture" src="pfp.jpg" alt="Profile Picture">
-            <h1 id="profile-name">Loading...</h1>
-        </div>
-
-        <!-- Post Form -->
-        <div class="post-form">
-            <h3>Create a New Post</h3>
-            <textarea id="post-text" rows="4" placeholder="What's on your mind?"></textarea>
-            <input type="file" id="post-image" accept="image/*">
-            <button id="post-btn">Post</button>
-        </div>
-
-        <!-- User's Posts -->
-        <div class="posts-container" id="posts-container"></div>
+<div class="container">
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search for users by UID...">
+        <button id="search-btn">Search</button>
     </div>
 
-    <script type="module">
-       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+    <!-- Friend Requests and Friends List Section -->
+    <div class="friend-section">
+        <div class="friend-requests">
+            <h3>Friend Requests</h3>
+            <ul id="friend-requests-list"></ul>
+        </div>
+        <div class="friends-list">
+            <h3>Friends</h3>
+            <ul id="friends-list"></ul>
+        </div>
+    </div>
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <img id="profile-picture" src="pfp.jpg" alt="Profile Picture">
+        <h1 id="profile-name">Loading...</h1>
+    </div>
+
+    <!-- Post Form -->
+    <div class="post-form">
+        <h3>Create a New Post</h3>
+        <textarea id="post-text" rows="4" placeholder="What's on your mind?"></textarea>
+        <input type="file" id="post-image" accept="image/*">
+        <button id="post-btn">Post</button>
+    </div>
+
+    <!-- User's Posts -->
+    <div class="posts-container" id="posts-container"></div>
+</div>
+
+<script type="module">
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAuth, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getFirestore, collection, getDocs, query, where, doc, deleteDoc, updateDoc, addDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
 import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
@@ -673,6 +695,37 @@ document.getElementById('logout-btn').addEventListener('click', () => {
     }).catch((error) => console.error("Error signing out:", error));
 });
 
+// Update Profile Picture
+document.getElementById('profile-picture').addEventListener('click', () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            try {
+                const user = auth.currentUser;
+                const storageRef = ref(storage, `profile-pictures/${user.uid}/${file.name}`);
+                await uploadBytes(storageRef, file);
+                const downloadURL = await getDownloadURL(storageRef);
+
+                // Update Firebase Auth profile
+                await updateProfile(user, { photoURL: downloadURL });
+
+                // Update Firestore user document
+                const userRef = doc(db, "users", user.uid);
+                await updateDoc(userRef, { photoURL: downloadURL });
+
+                // Update UI
+                document.getElementById('profile-picture').src = downloadURL;
+            } catch (error) {
+                console.error("Error updating profile picture:", error);
+            }
+        }
+    };
+    fileInput.click();
+});
+
 // Load user's posts
 async function loadUserPosts(userId) {
     const postsRef = collection(db, "posts");
@@ -698,80 +751,17 @@ function createPostElement(post, postId) {
     const postElement = document.createElement("div");
     postElement.classList.add("post");
 
-    const userInfo = document.createElement("div");
-    userInfo.classList.add("user-info");
-
-    const userImage = document.createElement("img");
-    userImage.src = post.photoURL || "pfp.jpg";
-    userInfo.appendChild(userImage);
-
-    const username = document.createElement("span");
-    username.textContent = post.displayName || "Anonymous";
-    userInfo.appendChild(username);
-
-    // Dropdown menu for edit/delete
-    const dropdown = document.createElement("div");
-    dropdown.classList.add("dropdown");
-
-    const dropdownButton = document.createElement("button");
-    dropdownButton.classList.add("dropdown-btn");
-    dropdownButton.innerHTML = "&#8942;"; // Three dots icon
-    dropdown.appendChild(dropdownButton);
-
-    const dropdownContent = document.createElement("div");
-    dropdownContent.classList.add("dropdown-content");
-
-    const editButton = document.createElement("button");
-    editButton.textContent = "Edit";
-    editButton.addEventListener("click", () => editPost(postId, post.text));
-    dropdownContent.appendChild(editButton);
-
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", () => deletePost(postId));
-    dropdownContent.appendChild(deleteButton);
-
-    dropdown.appendChild(dropdownContent);
-    postElement.appendChild(dropdown);
-
     const postText = document.createElement("p");
     postText.textContent = post.text;
-
-    postElement.appendChild(userInfo);
     postElement.appendChild(postText);
 
     if (post.imageUrl) {
         const postImage = document.createElement("img");
         postImage.src = post.imageUrl;
-        postImage.style.width = "100%";
-        postImage.style.borderRadius = "10px";
         postElement.appendChild(postImage);
     }
 
-    const timeAgo = document.createElement("span");
-    timeAgo.textContent = formatDistanceToNow(post.createdAt.toDate(), { addSuffix: true });
-    postElement.appendChild(timeAgo);
-
     return postElement;
-}
-
-// Delete post
-async function deletePost(postId) {
-    if (confirm("Are you sure you want to delete this post?")) {
-        await deleteDoc(doc(db, "posts", postId));
-        loadUserPosts(auth.currentUser.uid);
-    }
-}
-
-// Edit post
-async function editPost(postId, currentText) {
-    const newText = prompt("Edit your post:", currentText);
-    if (newText && newText !== currentText) {
-        await updateDoc(doc(db, "posts", postId), {
-            text: newText,
-        });
-        loadUserPosts(auth.currentUser.uid);
-    }
 }
 
 // Handle creating a post
@@ -779,16 +769,10 @@ document.getElementById('post-btn').addEventListener('click', async () => {
     const postText = document.getElementById("post-text").value;
     const postImage = document.getElementById("post-image").files[0];
 
-    if (!postText) {
-        Swal.fire('Error', 'Please enter some text for your post.', 'error');
-        return;
-    }
+    if (!postText) return;
 
     const user = auth.currentUser;
-    if (!user) {
-        Swal.fire('Error', 'You must be logged in to create a post.', 'error');
-        return;
-    }
+    if (!user) return;
 
     let imageUrl = null;
     if (postImage) {
@@ -797,106 +781,19 @@ document.getElementById('post-btn').addEventListener('click', async () => {
         imageUrl = await getDownloadURL(imageRef);
     }
 
-    try {
-        await addDoc(collection(db, "posts"), {
-            text: postText,
-            imageUrl: imageUrl,
-            createdAt: serverTimestamp(),
-            userId: user.uid,
-            displayName: user.displayName || "Anonymous",
-            photoURL: user.photoURL || "pfp.jpg",
-        });
+    await addDoc(collection(db, "posts"), {
+        text: postText,
+        imageUrl: imageUrl,
+        createdAt: serverTimestamp(),
+        userId: user.uid,
+        displayName: user.displayName || "Anonymous",
+        photoURL: user.photoURL || "pfp.jpg",
+    });
 
-        document.getElementById("post-text").value = '';
-        document.getElementById("post-image").value = '';
-        loadUserPosts(user.uid);
-    } catch (error) {
-        console.error("Error creating post:", error);
-        Swal.fire('Error', 'Failed to create post. Please try again.', 'error');
-    }
+    document.getElementById("post-text").value = '';
+    document.getElementById("post-image").value = '';
+    loadUserPosts(user.uid);
 });
-
-// Search for users by UID
-document.getElementById('search-btn').addEventListener('click', async () => {
-    const searchInput = document.getElementById("search-input").value.trim();
-    if (!searchInput) {
-        Swal.fire('Error', 'Please enter a UID to search.', 'error');
-        return;
-    }
-
-    try {
-        const userRef = doc(db, "users", searchInput);
-        const userDoc = await getDoc(userRef);
-
-        if (!userDoc.exists()) {
-            Swal.fire('Error', 'No user found with that UID.', 'error');
-            return;
-        }
-
-        const user = userDoc.data();
-        console.log("User found:", user); // Debugging statement
-
-        // Check if required fields exist
-        if (!user.uid) {
-            user.uid = userDoc.id; // Use the document ID as the UID if the uid field is missing
-        }
-        if (!user.displayName) {
-            user.displayName = "Anonymous"; // Default to "Anonymous" if displayName is missing
-        }
-
-        Swal.fire({
-            title: `Send friend request to ${user.displayName}?`,
-            showCancelButton: true,
-            confirmButtonText: 'Send',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                sendFriendRequest(user.uid, user.displayName);
-            }
-        });
-    } catch (error) {
-        console.error("Error searching for user:", error);
-        Swal.fire('Error', `Failed to search for user: ${error.message}`, 'error');
-    }
-});
-
-// Send friend request
-async function sendFriendRequest(toUserId, toUserName) {
-    const user = auth.currentUser;
-    if (!user) {
-        Swal.fire('Error', 'You must be logged in to send a friend request.', 'error');
-        return;
-    }
-
-    try {
-        const friendRequestsRef = collection(db, "friendRequests");
-        const q = query(
-            friendRequestsRef,
-            where("fromUserId", "==", user.uid),
-            where("toUserId", "==", toUserId),
-            where("status", "==", "pending")
-        );
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-            Swal.fire('Error', 'Friend request already sent.', 'error');
-            return;
-        }
-
-        await addDoc(collection(db, "friendRequests"), {
-            fromUserId: user.uid,
-            fromUserName: user.displayName || "Anonymous",
-            toUserId: toUserId,
-            toUserName: toUserName,
-            status: "pending",
-            createdAt: serverTimestamp(),
-        });
-
-        Swal.fire('Success', 'Friend request sent!', 'success');
-    } catch (error) {
-        console.error("Error sending friend request:", error);
-        Swal.fire('Error', `Failed to send friend request: ${error.message}`, 'error');
-    }
-}
 
 // Load friend requests
 async function loadFriendRequests(userId) {
@@ -982,13 +879,12 @@ async function loadFriendsList(userId) {
         if (userDoc.exists()) {
             const userData = userDoc.data();
             const friendElement = document.createElement("li");
-            friendElement.innerHTML = `
-                <span>${userData.displayName}</span>
-            `;
+            friendElement.innerHTML = `<span>${userData.displayName}</span>`;
             friendsList.appendChild(friendElement);
         }
     });
 }
-    </script>
+
+</script>
 </body>
 </html>
