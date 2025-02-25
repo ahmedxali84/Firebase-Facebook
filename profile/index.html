@@ -654,9 +654,11 @@ body {
 </div>
 
 <script type="module">
- import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, where, doc, deleteDoc, updateDoc, addDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { 
+    getFirestore, collection, addDoc, getDocs, query, where, doc, deleteDoc, updateDoc, serverTimestamp, getDoc 
+} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
 import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
 
@@ -675,127 +677,80 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Redirect if not authenticated on page load
+// 🔹 Redirect to login if user is not authenticated
 onAuthStateChanged(auth, (user) => {
     if (!user) {
-        window.location.replace("index.html");
+        window.location.replace("../index.html");
     } else {
-        document.getElementById("profile-name").textContent = user.displayName || "Anonymous";
-        document.getElementById("profile-picture").src = user.photoURL || "../pfp.jpg";
-        loadUserPosts(user.uid);
+        loadPosts();
         loadFriendRequests(user.uid);
         loadFriendsList(user.uid);
     }
 });
 
-// Logout function
+// 🔹 Logout Function
 document.getElementById('logout-btn').addEventListener('click', () => {
     signOut(auth).then(() => {
-        window.location.replace("../index.html");
+        window.location.replace("index.html");
     }).catch((error) => console.error("Error signing out:", error));
 });
 
-// Update Profile Picture
-document.getElementById('profile-picture').addEventListener('click', () => {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.onchange = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            try {
-                const user = auth.currentUser;
-                const storageRef = ref(storage, `profile-pictures/${user.uid}/${file.name}`);
-                await uploadBytes(storageRef, file);
-                const downloadURL = await getDownloadURL(storageRef);
-
-                // Update Firebase Auth profile
-                await updateProfile(user, { photoURL: downloadURL });
-
-                // Update Firestore user document
-                const userRef = doc(db, "users", user.uid);
-                await updateDoc(userRef, { photoURL: downloadURL });
-
-                // Update UI
-                document.getElementById('profile-picture').src = downloadURL;
-            } catch (error) {
-                console.error("Error updating profile picture:", error);
-            }
-        }
-    };
-    fileInput.click();
-});
-
-// Load user's posts
-async function loadUserPosts(userId) {
-    const postsRef = collection(db, "posts");
-    const q = query(postsRef, where("userId", "==", userId));
-    const querySnapshot = await getDocs(q);
-    const postsContainer = document.getElementById("posts-container");
-    postsContainer.innerHTML = "";
-
-    if (querySnapshot.empty) {
-        postsContainer.innerHTML = '<p>No posts found.</p>';
+// 🔹 Search for Users by UID
+document.getElementById('search-btn').addEventListener('click', async () => {
+    const searchInput = document.getElementById("search-input").value.trim();
+    
+    if (!searchInput) {
+        Swal.fire('Error', 'Please enter a UID to search.', 'error');
         return;
     }
 
-    querySnapshot.forEach((doc) => {
-        const post = doc.data();
-        const postElement = createPostElement(post, doc.id);
-        postsContainer.appendChild(postElement);
-    });
-}
+    try {
+        const userRef = doc(db, "users", searchInput);
+        const userDoc = await getDoc(userRef);
 
-// Create a post element
-function createPostElement(post, postId) {
-    const postElement = document.createElement("div");
-    postElement.classList.add("post");
+        if (!userDoc.exists()) {
+            Swal.fire('Error', 'No user found with that UID.', 'error');
+            return;
+        }
 
-    const postText = document.createElement("p");
-    postText.textContent = post.text;
-    postElement.appendChild(postText);
-
-    if (post.imageUrl) {
-        const postImage = document.createElement("img");
-        postImage.src = post.imageUrl;
-        postElement.appendChild(postImage);
+        const user = userDoc.data();
+        Swal.fire({
+            title: `Send friend request to ${user.displayName || "Anonymous"}?`,
+            showCancelButton: true,
+            confirmButtonText: 'Send',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                sendFriendRequest(userDoc.id, user.displayName || "Anonymous");
+            }
+        });
+    } catch (error) {
+        console.error("Error searching for user:", error);
+        Swal.fire('Error', 'Failed to search for user. Please try again.', 'error');
     }
+});
 
-    return postElement;
-}
-
-// Handle creating a post
-document.getElementById('post-btn').addEventListener('click', async () => {
-    const postText = document.getElementById("post-text").value;
-    const postImage = document.getElementById("post-image").files[0];
-
-    if (!postText) return;
-
+// 🔹 Send Friend Request Function
+async function sendFriendRequest(toUserId, toUserName) {
     const user = auth.currentUser;
     if (!user) return;
 
-    let imageUrl = null;
-    if (postImage) {
-        const imageRef = ref(storage, `posts/${Date.now()}_${postImage.name}`);
-        await uploadBytes(imageRef, postImage);
-        imageUrl = await getDownloadURL(imageRef);
+    try {
+        await addDoc(collection(db, "friendRequests"), {
+            fromUserId: user.uid,
+            fromUserName: user.displayName || "Anonymous",
+            toUserId: toUserId,
+            toUserName: toUserName,
+            status: "pending",
+            createdAt: serverTimestamp(),
+        });
+        Swal.fire('Success', 'Friend request sent!', 'success');
+    } catch (error) {
+        console.error("Error sending friend request:", error);
+        Swal.fire('Error', 'Failed to send friend request. Please try again.', 'error');
     }
+}
 
-    await addDoc(collection(db, "posts"), {
-        text: postText,
-        imageUrl: imageUrl,
-        createdAt: serverTimestamp(),
-        userId: user.uid,
-        displayName: user.displayName || "Anonymous",
-        photoURL: user.photoURL || "pfp.jpg",
-    });
-
-    document.getElementById("post-text").value = '';
-    document.getElementById("post-image").value = '';
-    loadUserPosts(user.uid);
-});
-
-// Load friend requests
+// 🔹 Load Friend Requests
 async function loadFriendRequests(userId) {
     const friendRequestsRef = collection(db, "friendRequests");
     const q = query(friendRequestsRef, where("toUserId", "==", userId), where("status", "==", "pending"));
@@ -822,44 +777,56 @@ async function loadFriendRequests(userId) {
     });
 }
 
-// Accept friend request
+// 🔹 Accept Friend Request
 window.acceptFriendRequest = async (requestId, fromUserId) => {
     const user = auth.currentUser;
     if (!user) return;
 
-    await updateDoc(doc(db, "friendRequests", requestId), {
-        status: "accepted",
-    });
+    try {
+        await updateDoc(doc(db, "friendRequests", requestId), {
+            status: "accepted",
+        });
 
-    await addDoc(collection(db, "friends"), {
-        userId: user.uid,
-        friendId: fromUserId,
-        createdAt: serverTimestamp(),
-    });
+        await addDoc(collection(db, "friends"), {
+            userId: user.uid,
+            friendId: fromUserId,
+            createdAt: serverTimestamp(),
+        });
 
-    await addDoc(collection(db, "friends"), {
-        userId: fromUserId,
-        friendId: user.uid,
-        createdAt: serverTimestamp(),
-    });
+        await addDoc(collection(db, "friends"), {
+            userId: fromUserId,
+            friendId: user.uid,
+            createdAt: serverTimestamp(),
+        });
 
-    loadFriendRequests(user.uid);
-    loadFriendsList(user.uid);
+        loadFriendRequests(user.uid);
+        loadFriendsList(user.uid);
+        Swal.fire('Success', 'Friend request accepted!', 'success');
+    } catch (error) {
+        console.error("Error accepting friend request:", error);
+        Swal.fire('Error', 'Failed to accept friend request.', 'error');
+    }
 };
 
-// Reject friend request
+// 🔹 Reject Friend Request
 window.rejectFriendRequest = async (requestId) => {
     const user = auth.currentUser;
     if (!user) return;
 
-    await updateDoc(doc(db, "friendRequests", requestId), {
-        status: "rejected",
-    });
+    try {
+        await updateDoc(doc(db, "friendRequests", requestId), {
+            status: "rejected",
+        });
 
-    loadFriendRequests(user.uid);
+        loadFriendRequests(user.uid);
+        Swal.fire('Success', 'Friend request rejected.', 'info');
+    } catch (error) {
+        console.error("Error rejecting friend request:", error);
+        Swal.fire('Error', 'Failed to reject friend request.', 'error');
+    }
 };
 
-// Load friends list
+// 🔹 Load Friends List
 async function loadFriendsList(userId) {
     const friendsRef = collection(db, "friends");
     const q = query(friendsRef, where("userId", "==", userId));
@@ -879,11 +846,14 @@ async function loadFriendsList(userId) {
         if (userDoc.exists()) {
             const userData = userDoc.data();
             const friendElement = document.createElement("li");
-            friendElement.innerHTML = `<span>${userData.displayName}</span>`;
+            friendElement.innerHTML = `
+                <span>${userData.displayName || "Anonymous"}</span>
+            `;
             friendsList.appendChild(friendElement);
         }
     });
 }
+
 
 </script>
 </body>
