@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Hashbook</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <style>
+        /* Basic Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1E1E1E;
+            color: #EAEAEA;
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .settings-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #2A2A2A;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #00B8A9;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .theme-selector {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            background: #333;
+            color: #EAEAEA;
+            border: 1px solid #555;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #00B8A9;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background: #007D76;
+            transform: translateY(-3px);
+        }
+
+        /* Theme-specific Styles */
+        body.light-theme {
+            background-color: #F5F5F5;
+            color: #333;
+        }
+
+        body.light-theme .settings-container {
+            background: #FFFFFF;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-theme h1 {
+            color: #007D76;
+        }
+
+        body.light-theme select {
+            background: #EAEAEA;
+            color: #333;
+            border-color: #CCC;
+        }
+
+        body.light-theme button {
+            background: #007D76;
+        }
+
+        body.light-theme button:hover {
+            background: #005A52;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <h1>Settings</h1>
+        <div class="theme-selector">
+            <label for="theme">Select Theme:</label>
+            <select id="theme">
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+            </select>
+        </div>
+        <button id="save-theme-btn">Save Theme</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+            authDomain: "facebook-1751a.firebaseapp.com",
+            projectId: "facebook-1751a",
+            storageBucket: "facebook-1751a.appspot.com",
+            messagingSenderId: "852573765318",
+            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
+            measurementId: "G-RZBV4M5Z2F"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // 🔹 Apply Theme Function
+        function applyTheme(theme) {
+            document.body.className = `${theme}-theme`;
+        }
+
+        // 🔹 Load User's Theme from Firestore
+        async function loadUserTheme(userId) {
+            try {
+                const userRef = doc(db, "users", userId);
+                const userDoc = await getDoc(userRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const theme = userData.theme || "dark"; // Default to dark theme
+                    applyTheme(theme);
+                    document.getElementById("theme").value = theme;
+                }
+            } catch (error) {
+                console.error("Error loading user theme:", error);
+            }
+        }
+
+        // 🔹 Save User's Theme to Firestore
+        async function saveUserTheme(userId, theme) {
+            try {
+                const userRef = doc(db, "users", userId);
+                await updateDoc(userRef, { theme });
+                applyTheme(theme);
+                alert("Theme saved successfully!");
+            } catch (error) {
+                console.error("Error saving theme:", error);
+                alert("Failed to save theme. Please try again.");
+            }
+        }
+
+        // 🔹 On Auth State Changed
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loadUserTheme(user.uid);
+
+                // Save Theme Button
+                document.getElementById("save-theme-btn").addEventListener("click", () => {
+                    const selectedTheme = document.getElementById("theme").value;
+                    saveUserTheme(user.uid, selectedTheme);
+                });
+            } else {
+                window.location.href = "../index.html"; // Redirect to login if not authenticated
+            }
+        });
+    </script>
+</body>
+</html>
