@@ -6,7 +6,8 @@
     <title>Profile - Hashbook</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
+    <script type="module" src="firebasetheme.js"></script>
+   <style>
        * {
     margin: 0;
     padding: 0;
@@ -92,12 +93,16 @@ body {
     height: 100px;
     border-radius: 50%;
     margin-right: 20px;
-    border: 3px solid #00B8A9;
 }
 
 .profile-header h1 {
     font-size: 28px;
     color: #00B8A9;
+}
+#update-name-btn{
+    background-color: white;
+    height: 30px;
+    width: 30px;
 }
 
 /* Post Form */
@@ -612,7 +617,7 @@ body {
     <a href="../dashboard.html">Home</a>
     <a href="./index.html">Profile</a>
     <a href="../Messaging/index.html">Messages</a>
-    <a href="#">Settings</a>
+    <a href="../settings/index.html">Settings</a>
     <div id="logout-btn" class="logout-btn">Logout</div>
 </div>
 
@@ -635,11 +640,15 @@ body {
         </div>
     </div>
 
-    <!-- Profile Header -->
-    <div class="profile-header">
-        <img id="profile-picture" src="pfp.jpg" alt="Profile Picture">
-        <h1 id="profile-name">Loading...</h1>
-    </div>
+<!-- Profile Header -->
+<div class="profile-header">
+    <label for="profile-picture-input">
+        <img id="profile-picture" src="../pfp.jpg" alt="Profile Picture">
+    </label>
+    <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
+    <h1 id="profile-name">Loading...</h1>
+    <img src="./edit.png" id="update-name-btn">
+</div>
 
     <!-- Post Form -->
     <div class="post-form">
@@ -682,9 +691,88 @@ onAuthStateChanged(auth, (user) => {
     if (!user) {
         window.location.replace("../index.html");
     } else {
+        loadProfile(user.uid); // Load profile data
         loadPosts();
         loadFriendRequests(user.uid);
         loadFriendsList(user.uid);
+    }
+});
+
+// 🔹 Load Profile Data
+async function loadProfile(userId) {
+    const profileName = document.getElementById("profile-name");
+    const profilePicture = document.getElementById("profile-picture");
+
+    try {
+        const userRef = doc(db, "users", userId);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            profileName.textContent = userData.displayName || "Anonymous";
+            if (userData.photoURL) {
+                profilePicture.src = userData.photoURL;
+            } else {
+                profilePicture.src = "../pfp.jpg"; // Default profile picture
+            }
+        } else {
+            console.error("User document does not exist.");
+        }
+    } catch (error) {
+        console.error("Error loading profile:", error);
+    }
+}
+
+// 🔹 Update Profile Picture
+document.getElementById("profile-picture").addEventListener("click", () => {
+    document.getElementById("profile-picture-input").click();
+});
+
+document.getElementById("profile-picture-input").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const user = auth.currentUser;
+    if (!user) return;
+
+    try {
+        const storageRef = ref(storage, `profile-pictures/${user.uid}`);
+        await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(storageRef);
+
+        // Update Firestore with the new photoURL
+        await updateDoc(doc(db, "users", user.uid), {
+            photoURL: downloadURL,
+        });
+
+        // Update the profile picture in the UI
+        document.getElementById("profile-picture").src = downloadURL;
+        Swal.fire('Success', 'Profile picture updated!', 'success');
+    } catch (error) {
+        console.error("Error updating profile picture:", error);
+        Swal.fire('Error', 'Failed to update profile picture.', 'error');
+    }
+});
+
+// 🔹 Update Profile Name
+document.getElementById("update-name-btn").addEventListener("click", async () => {
+    const newName = prompt("Enter your new name:");
+    if (!newName) return;
+
+    const user = auth.currentUser;
+    if (!user) return;
+
+    try {
+        await updateDoc(doc(db, "users", user.uid), {
+            displayName: newName,
+        });
+
+        // Update the profile name in the UI
+        document.getElementById("profile-name").textContent = newName;
+        Swal.fire('Success', 'Profile name updated!', 'success');
+    } catch (error) {
+        console.error("Error updating profile name:", error);
+        Swal.fire('Error', 'Failed to update profile name.', 'error');
     }
 });
 
@@ -853,7 +941,6 @@ async function loadFriendsList(userId) {
         }
     });
 }
-
 
 </script>
 </body>
