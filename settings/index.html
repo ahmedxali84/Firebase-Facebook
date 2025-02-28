@@ -4,183 +4,289 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Hashbook</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
     <style>
-        /* Basic Styles */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #1E1E1E;
-            color: #EAEAEA;
-            margin: 0;
-            padding: 20px;
-            transition: background-color 0.3s, color 0.3s;
-        }
+/* CSS Variables for Themes */
+:root {
+    --primary-color: #00B8A9;
+    --background-color: #1E1E1E;
+    --text-color: #EAEAEA;
+    --sidebar-bg: #292929;
+    --sidebar-text: #B0E4E1;
+    --hover-bg: #007D76;
+    --hover-text: #ffffff;
+    --logout-bg: #007D76;
+    --logout-hover-bg: #005A52;
+    --shadow: rgba(0, 0, 0, 0.5);
+}
 
-        .settings-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #2A2A2A;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
+[data-theme="light"] {
+    --primary-color: #007D76;
+    --background-color: #F5F5F5;
+    --text-color: #333;
+    --sidebar-bg: #ffffff;
+    --sidebar-text: #333;
+    --hover-bg: #e0e0e0;
+    --hover-text: #000;
+    --logout-bg: #007D76;
+    --logout-hover-bg: #005A52;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
 
-        h1 {
-            color: #00B8A9;
-            text-align: center;
-            margin-bottom: 20px;
-        }
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-        .theme-selector {
-            margin-bottom: 20px;
-        }
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    background-color: var(--sidebar-bg);
+    padding: 40px 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: auto;
+    box-shadow: 4px 0 10px var(--shadow);
+    transition: 0.3s;
+}
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
+.sidebar .logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 30px;
+}
 
-        select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            background: #333;
-            color: #EAEAEA;
-            border: 1px solid #555;
-            font-size: 16px;
-            cursor: pointer;
-        }
+.sidebar a {
+    display: block;
+    color: var(--sidebar-text);
+    padding: 14px 22px;
+    text-decoration: none;
+    transition: 0.3s;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #00B8A9;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
-        }
+.sidebar a:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
 
-        button:hover {
-            background: #007D76;
-            transform: translateY(-3px);
-        }
+.sidebar .logout-btn {
+    background: var(--logout-bg);
+    color: white;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: 0.3s;
+    margin-top: 20px;
+}
 
-        /* Theme-specific Styles */
-        body.light-theme {
-            background-color: #F5F5F5;
-            color: #333;
-        }
+.sidebar .logout-btn:hover {
+    background: var(--logout-hover-bg);
+}
 
-        body.light-theme .settings-container {
-            background: #FFFFFF;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
+/* Settings Page Styles */
+.settings-container {
+    max-width: 500px;
+    margin: 80px 20px 20px 400px; /* Adjusted margin-left to 300px for a smaller gap */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+}
 
-        body.light-theme h1 {
-            color: #007D76;
-        }
+.settings-container h1 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        body.light-theme select {
-            background: #EAEAEA;
-            color: #333;
-            border-color: #CCC;
-        }
+.settings-container a {
+    display: block;
+    padding: 12px;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    text-decoration: none;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-        body.light-theme button {
-            background: #007D76;
-        }
+.settings-container a:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
 
-        body.light-theme button:hover {
-            background: #005A52;
-        }
+/* Theme-specific Styles */
+body[data-theme="light"] .settings-container {
+    background: #FFFFFF;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+body[data-theme="light"] .settings-container a {
+    background-color: #EAEAEA;
+    color: #333;
+}
+
+body[data-theme="light"] .settings-container a:hover {
+    background-color: #e0e0e0;
+    color: #000;
+}
+
+/* Responsive Styles */
+/* Responsive Styles */
+@media (max-width: 1115px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 10px 20px;
+        box-shadow: none;
+        display: flex;
+        flex-direction: row; /* Make the contents inline */
+        align-items: center;
+        justify-content: space-between; /* Space out the items */
+        flex-wrap: wrap; /* Allow wrapping if needed */
+    }
+
+    .sidebar .logo {
+        font-size: 24px;
+        margin-bottom: 0; /* Remove margin for inline layout */
+    }
+
+    .sidebar a {
+        padding: 10px 15px;
+        margin-bottom: 0; /* Remove margin for inline layout */
+        display: inline-block; /* Make links inline */
+    }
+
+    .sidebar .logout-btn {
+        padding: 10px;
+        margin-top: 0; /* Remove margin for inline layout */
+        display: inline-block; /* Make logout button inline */
+    }
+
+    .settings-container {
+        margin: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        flex-direction: row; /* Keep contents inline */
+        align-items: center;
+        justify-content: space-around; /* Distribute space evenly */
+    }
+
+    .sidebar a {
+        width: auto; /* Allow links to take up only the space they need */
+        text-align: center;
+    }
+
+    .settings-container {
+        margin: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        padding: 10px;
+    }
+
+    .sidebar .logo {
+        font-size: 20px;
+    }
+
+    .sidebar a {
+        padding: 8px 10px;
+    }
+
+    .settings-container {
+        margin: 10px;
+        padding: 15px;
+    }
+}
     </style>
 </head>
 <body>
-    <div class="settings-container">
-        <h1>Settings</h1>
-        <div class="theme-selector">
-            <label for="theme">Select Theme:</label>
-            <select id="theme">
-                <option value="dark">Dark</option>
-                <option value="light">Light</option>
-            </select>
-        </div>
-        <button id="save-theme-btn">Save Theme</button>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">Hashbook</div>
+        <a href="../dashboard.html">Home</a>
+        <a href="../profile/index.html">Profile</a>
+        <a href="../Messaging/index.html">Messages</a>
+        <a href="index.html">Settings</a>
+        <div id="logout-btn" class="logout-btn">Logout</div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    <!-- Settings Content -->
+    <div class="settings-container">
+        <h1>Settings</h1>
+        <a href="./theme.html">Theme</a>
+        <a href="./Profile Management/index.html">Profile Management</a>
+        <a href="#">Groups</a>
+        <a href="#">Pages</a>
+        <a href="#">Your Market</a>
+        <a href="#">Privacy and security</a>
+        <a href="#">Reels</a> 
+    </div>
+      <script type="module">
+    // Import Firebase Authentication
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
-            authDomain: "facebook-1751a.firebaseapp.com",
-            projectId: "facebook-1751a",
-            storageBucket: "facebook-1751a.appspot.com",
-            messagingSenderId: "852573765318",
-            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
-            measurementId: "G-RZBV4M5Z2F"
-        };
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+        authDomain: "facebook-1751a.firebaseapp.com",
+        projectId: "facebook-1751a",
+        storageBucket: "facebook-1751a.appspot.com",
+        messagingSenderId: "852573765318",
+        appId: "1:852573765318:web:00d8edf77b925d7a5e21c7"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-        // 🔹 Apply Theme Function
-        function applyTheme(theme) {
-            document.body.className = `${theme}-theme`;
+    // Check Authentication State
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.href = "../index.html";
         }
+    });
 
-        // 🔹 Load User's Theme from Firestore
-        async function loadUserTheme(userId) {
-            try {
-                const userRef = doc(db, "users", userId);
-                const userDoc = await getDoc(userRef);
+    // Apply Theme Based on localStorage
+    const body = document.body;
+    const savedTheme = localStorage.getItem('theme');
 
-                if (userDoc.exists()) {
-                    const userData = userDoc.data();
-                    const theme = userData.theme || "dark"; // Default to dark theme
-                    applyTheme(theme);
-                    document.getElementById("theme").value = theme;
-                }
-            } catch (error) {
-                console.error("Error loading user theme:", error);
-            }
-        }
+    if (savedTheme) {
+        body.setAttribute('data-theme', savedTheme);
+    } else {
+        // Default to light theme if no theme is stored
+        body.setAttribute('data-theme', 'light');
+    }
 
-        // 🔹 Save User's Theme to Firestore
-        async function saveUserTheme(userId, theme) {
-            try {
-                const userRef = doc(db, "users", userId);
-                await updateDoc(userRef, { theme });
-                applyTheme(theme);
-                alert("Theme saved successfully!");
-            } catch (error) {
-                console.error("Error saving theme:", error);
-                alert("Failed to save theme. Please try again.");
-            }
-        }
-
-        // 🔹 On Auth State Changed
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                loadUserTheme(user.uid);
-
-                // Save Theme Button
-                document.getElementById("save-theme-btn").addEventListener("click", () => {
-                    const selectedTheme = document.getElementById("theme").value;
-                    saveUserTheme(user.uid, selectedTheme);
-                });
-            } else {
-                window.location.href = "../index.html"; // Redirect to login if not authenticated
-            }
+    // Logout Button Functionality
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn.addEventListener('click', () => {
+        signOut(auth).then(() => {
+            // Redirect to login page after successful logout
+            window.location.href = "../index.html";
+        }).catch((error) => {
+            console.error("Error signing out:", error);
+            alert("Failed to log out. Please try again.");
         });
+    });
     </script>
 </body>
 </html>
