@@ -6,388 +6,407 @@
     <title>Hashbook</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="firebasetheme.js"></script>
     <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
+        /* CSS Variables for Themes */
+        :root {
+            --primary-color: #00B8A9;
+            --background-color: #1E1E1E;
+            --text-color: #EAEAEA;
+            --sidebar-bg: #292929;
+            --sidebar-text: #B0E4E1;
+            --hover-bg: #007D76;
+            --hover-text: #ffffff;
+            --logout-bg: #007D76;
+            --logout-hover-bg: #005A52;
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
 
-body {
-    background: #1E1E1E;
-    color: #EAEAEA;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: row;
-    overflow-y: auto;
-}
+        [data-theme="light"] {
+            --primary-color: #007D76;
+            --background-color: #F5F5F5;
+            --text-color: #333;
+            --sidebar-bg: #ffffff;
+            --sidebar-text: #333;
+            --hover-bg: #e0e0e0;
+            --hover-text: #000;
+            --logout-bg: #007D76;
+            --logout-hover-bg: #005A52;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
 
-/* Sidebar */
-.sidebar {
-    width: 280px;
-    background-color: #292929;
-    padding: 40px 30px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    overflow-y: auto;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
-    transition: 0.3s;
-}
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-.sidebar .logo {
-    font-size: 30px;
-    font-weight: 700;
-    color: #00B8A9;
-    text-align: center;
-}
+        body {
+            background: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+            flex-direction: row;
+            overflow-y: auto;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-.sidebar a {
-    display: block;
-    color: #B0E4E1;
-    padding: 14px 22px;
-    text-decoration: none;
-    transition: 0.3s;
-    border-radius: 10px;
-}
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 40px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 4px 0 10px var(--shadow);
+            transition: 0.3s;
+        }
 
-.sidebar a:hover {
-    background-color: #007D76;
-    color: #fff;
-}
+        .sidebar .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+        }
 
-.sidebar .logout-btn {
-    background: #007D76;
-    color: white;
-    padding: 14px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 20px;
-    transition: 0.3s;
-}
+        .sidebar a {
+            display: block;
+            color: var(--sidebar-text);
+            padding: 14px 22px;
+            text-decoration: none;
+            transition: 0.3s;
+            border-radius: 10px;
+        }
 
-.sidebar .logout-btn:hover {
-    background: #005A52;
-}
+        .sidebar a:hover {
+            background-color: var(--hover-bg);
+            color: var(--hover-text);
+        }
 
-/* Main Container */
-.container {
-    margin-left: 300px;
-    padding: 40px;
-    width: calc(100% - 300px);
-    transition: 0.3s;
-}
+        .sidebar .logout-btn {
+            background: var(--logout-bg);
+            color: white;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
 
-/* Post Form */
-.post-form {
-    background: #2A2A2A;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
+        .sidebar .logout-btn:hover {
+            background: var(--logout-hover-bg);
+        }
 
-.post-form h3 {
-    font-size: 24px;
-    color: #00B8A9;
-}
+        /* Main Container */
+        .container {
+            margin-left: 300px;
+            padding: 40px;
+            width: calc(100% - 300px);
+            transition: 0.3s;
+        }
 
-/* Inputs */
-textarea, input[type="file"] {
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 10px;
-    background: #333;
-    color: #EAEAEA;
-    border: 1px solid #555;
-}
+        /* Post Form */
+        .post-form {
+            background: var(--sidebar-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
 
-textarea:focus, input[type="file"]:focus {
-    outline: none;
-    border-color: #00B8A9;
-    box-shadow: 0 0 10px rgba(0, 184, 169, 0.5);
-}
+        .post-form h3 {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
 
-/* Buttons */
-button {
-    padding: 12px 20px;
-    background: #00B8A9;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        /* Inputs */
+        textarea, input[type="file"] {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            background: var(--background-color);
+            color: var(--text-color);
+            border: 1px solid var(--hover-bg);
+        }
 
-button:hover {
-    background: #007D76;
-    transform: translateY(-3px);
-}
+        textarea:focus, input[type="file"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 184, 169, 0.5);
+        }
 
-/* Posts Section */
-.posts-container {
-    margin-top: 20px;
-}
+        /* Buttons */
+        button {
+            padding: 12px 20px;
+            background: var(--primary-color);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-/* Individual Post */
-.post {
-    background: #292929;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    color: #EAEAEA;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    position: relative;
-}
+        button:hover {
+            background: var(--hover-bg);
+            transform: translateY(-3px);
+        }
 
-.post .user-info {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
+        /* Posts Section */
+        .posts-container {
+            margin-top: 20px;
+        }
 
-.post .user-info img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-    border: 2px solid #00B8A9;
-}
+        /* Individual Post */
+        .post {
+            background: var(--sidebar-bg);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            box-shadow: 0 5px 15px var(--shadow);
+            position: relative;
+        }
 
-/* Dropdown Menu */
-.dropdown {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: inline-block;
-}
+        .post .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #333;
-    min-width: 120px;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    border-radius: 10px;
-    overflow: hidden;
-}
+        .post .user-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid var(--primary-color);
+        }
 
-.dropdown-content button {
-    width: 100%;
-    padding: 10px;
-    text-align: left;
-    background: none;
-    border: none;
-    color: #EAEAEA;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        /* Dropdown Menu */
+        .dropdown {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: inline-block;
+        }
 
-.dropdown-content button:hover {
-    background: #007D76;
-}
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--background-color);
+            min-width: 120px;
+            box-shadow: 0px 8px 16px var(--shadow);
+            z-index: 1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-.dropdown:hover .dropdown-content {
-    display: block;
-}
+        .dropdown-content button {
+            width: 100%;
+            padding: 10px;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.dropdown-btn {
-    background: none;
-    border: none;
-    color: #EAEAEA;
-    font-size: 20px;
-    cursor: pointer;
-}
+        .dropdown-content button:hover {
+            background: var(--hover-bg);
+        }
 
-/* Navbar for Small Screens */
-.navbar {
-    display: none; /* Hidden by default */
-    width: 100%;
-    background-color: #292929;
-    padding: 10px 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-}
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
 
-.navbar .logo {
-    font-size: 24px;
-    font-weight: 700;
-    color: #00B8A9;
-    white-space: nowrap; /* Prevent logo from wrapping */
-}
+        .dropdown-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 20px;
+            cursor: pointer;
+        }
 
-.navbar .menu {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    overflow-x: auto; /* Allow horizontal scrolling if needed */
-    white-space: nowrap; /* Prevent menu items from wrapping */
-}
+        /* Navbar for Small Screens */
+        .navbar {
+            display: none; /* Hidden by default */
+            width: 100%;
+            background-color: var(--sidebar-bg);
+            padding: 10px 20px;
+            box-shadow: 0 4px 10px var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
 
-.navbar a {
-    color: #B0E4E1;
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 10px;
-    transition: 0.3s;
-    font-size: 14px;
-    white-space: nowrap; /* Prevent text from wrapping */
-}
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            white-space: nowrap; /* Prevent logo from wrapping */
+        }
 
-.navbar a:hover {
-    background-color: #007D76;
-    color: #fff;
-}
+        .navbar .menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+            white-space: nowrap; /* Prevent menu items from wrapping */
+        }
 
-.navbar .logout-btn {
-    background: #007D76;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 14px;
-    white-space: nowrap; /* Prevent text from wrapping */
-}
+        .navbar a {
+            color: var(--sidebar-text);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+            font-size: 14px;
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
 
-.navbar .logout-btn:hover {
-    background: #005A52;
-}
+        .navbar a:hover {
+            background-color: var(--hover-bg);
+            color: var(--hover-text);
+        }
 
-/* Responsive Design for Screens 780px or Less */
-@media (max-width: 780px) {
-    /* Hide the sidebar */
-    .sidebar {
-        display: none;
-    }
+        .navbar .logout-btn {
+            background: var(--logout-bg);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
 
-    /* Show the navbar */
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+        .navbar .logout-btn:hover {
+            background: var(--logout-hover-bg);
+        }
 
-    /* Adjust the main container */
-    .container {
-        margin-left: 0;
-        width: 100%;
-        padding: 70px 20px 20px; /* Add top padding for navbar */
-    }
-}
+        /* Responsive Design */
+        @media (max-width: 780px) {
+            .sidebar {
+                display: none;
+            }
 
-/* Responsive Design for Screens 650px or Less */
-@media (max-width: 650px) {
-    /* Reduce padding and font sizes */
-    .navbar {
-        padding: 8px 15px;
-    }
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
-    .navbar .logo {
-        font-size: 20px;
-    }
+            .container {
+                margin-left: 0;
+                width: 100%;
+                padding: 70px 20px 20px;
+            }
+        }
 
-    .navbar a {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
+        @media (max-width: 650px) {
+            .navbar {
+                padding: 8px 15px;
+            }
 
-    .navbar .logout-btn {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
+            .navbar .logo {
+                font-size: 20px;
+            }
 
-    /* Adjust main container padding */
-    .container {
-        padding: 60px 15px 15px;
-    }
-}
+            .navbar a {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
 
-/* Responsive Design for Screens 480px or Less */
-@media (max-width: 480px) {
-    /* Further reduce padding and font sizes */
-    .navbar {
-        padding: 6px 10px;
-    }
+            .navbar .logout-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
 
-    .navbar .logo {
-        font-size: 18px;
-    }
+            .container {
+                padding: 60px 15px 15px;
+            }
+        }
 
-    .navbar a {
-        padding: 5px 8px;
-        font-size: 11px;
-    }
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 6px 10px;
+            }
 
-    .navbar .logout-btn {
-        padding: 5px 8px;
-        font-size: 11px;
-    }
+            .navbar .logo {
+                font-size: 18px;
+            }
 
-    /* Adjust main container padding */
-    .container {
-        padding: 50px 10px 10px;
-    }
-}
+            .navbar a {
+                padding: 5px 8px;
+                font-size: 11px;
+            }
 
-/* Responsive Design for Screens 250px or Less */
-@media (max-width: 250px) {
-    /* Make navbar items even smaller */
-    .navbar {
-        padding: 5px 8px;
-    }
+            .navbar .logout-btn {
+                padding: 5px 8px;
+                font-size: 11px;
+            }
 
-    .navbar .logo {
-        font-size: 16px;
-    }
+            .container {
+                padding: 50px 10px 10px;
+            }
+        }
 
-    .navbar a {
-        padding: 4px 6px;
-        font-size: 10px;
-    }
+        @media (max-width: 250px) {
+            .navbar {
+                padding: 5px 8px;
+            }
 
-    .navbar .logout-btn {
-        padding: 4px 6px;
-        font-size: 10px;
-    }
+            .navbar .logo {
+                font-size: 16px;
+            }
 
-    /* Adjust main container padding */
-    .container {
-        padding: 40px 8px 8px;
-    }
-}
+            .navbar a {
+                padding: 4px 6px;
+                font-size: 10px;
+            }
+
+            .navbar .logout-btn {
+                padding: 4px 6px;
+                font-size: 10px;
+            }
+
+            .container {
+                padding: 40px 8px 8px;
+            }
+        }
     </style>
 </head>
 <body>
-<!-- Navbar -->
-<div class="navbar">
-    <div class="logo">Hashbook</div>
-    <div class="menu">
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">Hashbook</div>
+        <div class="menu">
+            <a href="../dashboard.html">Home</a>
+            <a href="./profile/index.html">Profile</a>
+            <a href="./Messaging/index.html">Messages</a>
+            <a href="./settings/index.html">Settings</a>
+            <div class="logout-btn">Logout</div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">Hashbook</div>
         <a href="../dashboard.html">Home</a>
         <a href="./profile/index.html">Profile</a>
         <a href="./Messaging/index.html">Messages</a>
         <a href="./settings/index.html">Settings</a>
-        <div id="logout-btn" class="logout-btn">Logout</div>
+        <div class="logout-btn">Logout</div>
     </div>
-</div>
 
-<!-- Sidebar -->
-<div class="sidebar">
-    <div class="logo">Hashbook</div>
-    <a href="../dashboard.html">Home</a>
-    <a href="./profile/index.html">Profile</a>
-    <a href="./Messaging/index.html">Messages</a>
-    <a href="#">Settings</a>
-    <div id="logout-btn" class="logout-btn">Logout</div>
-</div>
     <div class="container">
         <!-- Post Form -->
         <div class="post-form">
@@ -426,17 +445,20 @@ button:hover {
         // Redirect if not authenticated on page load
         onAuthStateChanged(auth, (user) => {
             if (!user) {
-                window.location.replace("index.html");
+                window.location.replace("./index.html"); // Redirect to login page
             } else {
                 loadPosts();
             }
         });
 
         // Logout function
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            signOut(auth).then(() => {
-                window.location.replace("index.html");
-            }).catch((error) => console.error("Error signing out:", error));
+        const logoutButtons = document.querySelectorAll('.logout-btn');
+        logoutButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                signOut(auth).then(() => {
+                    window.location.replace("./index.html"); // Redirect to login page after logout
+                }).catch((error) => console.error("Error signing out:", error));
+            });
         });
 
         // Load posts
@@ -525,15 +547,36 @@ button:hover {
 
         // Delete post
         async function deletePost(postId) {
-            if (confirm("Are you sure you want to delete this post?")) {
+            const { isConfirmed } = await Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this post!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+            });
+
+            if (isConfirmed) {
                 await deleteDoc(doc(db, "posts", postId));
                 loadPosts();
+                Swal.fire('Deleted!', 'Your post has been deleted.', 'success');
             }
         }
 
         // Edit post
         async function editPost(postId, currentText) {
-            const newText = prompt("Edit your post:", currentText);
+            const { value: newText } = await Swal.fire({
+                title: 'Edit your post',
+                input: 'textarea',
+                inputValue: currentText,
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'You need to write something!';
+                    }
+                },
+            });
+
             if (newText && newText !== currentText) {
                 await updateDoc(doc(db, "posts", postId), {
                     text: newText,
@@ -584,6 +627,40 @@ button:hover {
                 Swal.fire('Error', 'Failed to create post. Please try again.', 'error');
             }
         });
+
+        // Theme Functionality
+        function applyTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark'; // Default to dark
+            applyTheme(savedTheme);
+        }
+
+        // Apply saved theme on page load
+        document.addEventListener('DOMContentLoaded', loadTheme);
+
+        // Redirect to a specific page after saving theme
+        function saveTheme() {
+            const selectedTheme = document.getElementById("theme").value;
+            localStorage.setItem("theme", selectedTheme);
+            applyTheme(selectedTheme);
+
+            Swal.fire({
+                title: 'Theme Saved!',
+                text: `Your theme has been set to ${selectedTheme} mode.`,
+                icon: 'success',
+                confirmButtonText: 'OK',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "../dashboard.html"; // Redirect to dashboard after saving theme
+                }
+            });
+        }
+
+        // Save Theme on Button Click
+        document.getElementById("save-theme-btn").addEventListener("click", saveTheme);
     </script>
 </body>
 </html>
