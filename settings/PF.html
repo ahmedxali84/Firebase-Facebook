@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Management - Hashbook</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #1E1E1E;
+            color: #EAEAEA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .profile-container {
+            background: #292929;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #00B8A9;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #B0E4E1;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #555;
+            background: #333;
+            color: #EAEAEA;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
+
+        .form-group button {
+            padding: 10px 20px;
+            background: #00B8A9;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .form-group button:hover {
+            background: #007D76;
+        }
+
+        .profile-picture {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #00B8A9;
+            cursor: pointer;
+        }
+
+        .privacy-settings {
+            margin-top: 20px;
+        }
+
+        .privacy-settings label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #B0E4E1;
+        }
+
+        .privacy-settings input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Profile Management</h1>
+
+        <!-- Profile Picture -->
+        <div class="profile-picture">
+            <label for="profile-picture-input">
+                <img id="profile-picture-preview" src="pfp.jpg" alt="Profile Picture">
+            </label>
+            <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
+        </div>
+
+        <!-- Edit Profile Form -->
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter your name">
+        </div>
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter your username">
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Bio</label>
+            <textarea id="bio" placeholder="Tell us about yourself"></textarea>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email">
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter your phone number">
+        </div>
+
+        <!-- Privacy Settings -->
+        <div class="privacy-settings">
+            <label>
+                <input type="checkbox" id="privacy-toggle">
+                Make my account private
+            </label>
+        </div>
+
+        <!-- Save Button -->
+        <div class="form-group">
+            <button id="save-profile-btn">Save Changes</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+            authDomain: "facebook-1751a.firebaseapp.com",
+            projectId: "facebook-1751a",
+            storageBucket: "facebook-1751a.appspot.com",
+            messagingSenderId: "852573765318",
+            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
+            measurementId: "G-RZBV4M5Z2F"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Load profile data
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+
+                    // Populate form fields
+                    document.getElementById("name").value = userData.name || "";
+                    document.getElementById("username").value = userData.username || "";
+                    document.getElementById("bio").value = userData.bio || "";
+                    document.getElementById("email").value = userData.email || "";
+                    document.getElementById("phone").value = userData.phone || "";
+                    document.getElementById("privacy-toggle").checked = userData.isPrivate || false;
+
+                    // Set profile picture
+                    if (userData.photoURL) {
+                        document.getElementById("profile-picture-preview").src = userData.photoURL;
+                    }
+                }
+            } else {
+                window.location.href = "../index.html"; // Redirect to login if not authenticated
+            }
+        });
+
+        // Update profile picture
+        document.getElementById("profile-picture-input").addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                const storageRef = ref(storage, `profile-pictures/${user.uid}`);
+                await uploadBytes(storageRef, file);
+                const downloadURL = await getDownloadURL(storageRef);
+
+                // Update Firestore
+                const userRef = doc(db, "users", user.uid);
+                await updateDoc(userRef, {
+                    photoURL: downloadURL,
+                });
+
+                // Update preview
+                document.getElementById("profile-picture-preview").src = downloadURL;
+                Swal.fire('Success', 'Profile picture updated!', 'success');
+            } catch (error) {
+                console.error("Error updating profile picture:", error);
+                Swal.fire('Error', 'Failed to update profile picture.', 'error');
+            }
+        });
+
+        // Save profile changes
+        document.getElementById("save-profile-btn").addEventListener("click", async () => {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const name = document.getElementById("name").value;
+            const username = document.getElementById("username").value;
+            const bio = document.getElementById("bio").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const isPrivate = document.getElementById("privacy-toggle").checked;
+
+            try {
+                const userRef = doc(db, "users", user.uid);
+                await updateDoc(userRef, {
+                    name,
+                    username,
+                    bio,
+                    email,
+                    phone,
+                    isPrivate,
+                });
+
+                Swal.fire('Success', 'Profile updated successfully!', 'success');
+            } catch (error) {
+                console.error("Error updating profile:", error);
+                Swal.fire('Error', 'Failed to update profile.', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
