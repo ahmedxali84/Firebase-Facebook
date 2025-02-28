@@ -7,27 +7,102 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #23272A; color: #fff; display: flex; height: 100vh; overflow: hidden; }
-        .sidebar { width: 280px; background-color: #1E2124; padding: 40px 30px; position: fixed; top: 0; left: 0; height: 100%; overflow-y: auto; }
-        .sidebar .logo { font-size: 30px; font-weight: 700; color: #7EC8C5; text-align: center; margin-bottom: 20px; }
-        .sidebar a { display: block; color: #7EC8C5; padding: 14px 22px; text-decoration: none; transition: 0.3s; }
-        .sidebar a:hover { background-color: #3D5A5B; }
+        body { display: flex; height: 100vh; overflow: hidden; }
+
+        /* Dark Theme */
+        body.dark-theme { background: #23272A; color: #fff; }
+        body.dark-theme .sidebar { background-color: #292929; }
+        body.dark-theme .sidebar a { color: #B0E4E1; }
+        body.dark-theme .sidebar a:hover { background-color: #007D76; color: #fff; }
+        body.dark-theme .sidebar .logout-btn { background: #007D76; }
+        body.dark-theme .sidebar .logout-btn:hover { background: #005A52; }
+        body.dark-theme .friends-list { background: #1E2124; }
+        body.dark-theme .friends-list h3 { color: #7EC8C5; }
+        body.dark-theme .friends-list li { background: #2C2F33; }
+        body.dark-theme .friends-list li:hover { background: #3D5A5B; }
+        body.dark-theme .chat-window { background: #1E2124; }
+        body.dark-theme .chat-header { color: #7EC8C5; }
+        body.dark-theme .chat-messages { background: #2C2F33; }
+        body.dark-theme .message.sent { background: #557D7A; }
+        body.dark-theme .message.received { background: #7EC8C5; }
+        body.dark-theme .chat-input textarea { background: #2C2F33; color: white; }
+        body.dark-theme .chat-input button { background: #557D7A; }
+
+        /* Light Theme */
+        body.light-theme { background: #f0f0f0; color: #000; }
+        body.light-theme .sidebar { background-color: #ffffff; }
+        body.light-theme .sidebar a { color: #333; }
+        body.light-theme .sidebar a:hover { background-color: #e0e0e0; color: #000; }
+        body.light-theme .sidebar .logout-btn { background: #007D76; color: white; }
+        body.light-theme .sidebar .logout-btn:hover { background: #005A52; }
+        body.light-theme .friends-list { background: #ffffff; }
+        body.light-theme .friends-list h3 { color: #007D76; }
+        body.light-theme .friends-list li { background: #e0e0e0; }
+        body.light-theme .friends-list li:hover { background: #d0d0d0; }
+        body.light-theme .chat-window { background: #ffffff; }
+        body.light-theme .chat-header { color: #007D76; }
+        body.light-theme .chat-messages { background: #e0e0e0; }
+        body.light-theme .message.sent { background: #007D76; color: white; }
+        body.light-theme .message.received { background: #7EC8C5; color: black; }
+        body.light-theme .chat-input textarea { background: #e0e0e0; color: black; }
+        body.light-theme .chat-input button { background: #007D76; }
+
+        /* Common Styles */
+        .sidebar {
+            width: 280px;
+            padding: 40px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+        .sidebar .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #00B8A9;
+            text-align: center;
+        }
+        .sidebar a {
+            display: block;
+            padding: 14px 22px;
+            text-decoration: none;
+            transition: 0.3s;
+            border-radius: 10px;
+        }
+        .sidebar .logout-btn {
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
         .container { margin-left: 300px; padding: 20px; width: calc(100% - 300px); display: flex; gap: 20px; height: 100%; }
-        .friends-list { width: 280px; background: #1E2124; padding: 20px; border-radius: 10px; overflow-y: auto; }
-        .friends-list h3 { font-size: 22px; color: #7EC8C5; margin-bottom: 10px; }
+        .friends-list { width: 280px; padding: 20px; border-radius: 10px; overflow-y: auto; }
+        .friends-list h3 { font-size: 22px; margin-bottom: 10px; }
         .friends-list ul { list-style: none; }
-        .friends-list li { padding: 10px; cursor: pointer; background: #2C2F33; border-radius: 5px; margin-bottom: 5px; transition: 0.3s; }
-        .friends-list li:hover { background: #3D5A5B; }
-        .chat-window { flex: 1; background: #1E2124; padding: 20px; border-radius: 10px; display: flex; flex-direction: column; }
-        .chat-header { font-size: 22px; font-weight: 600; color: #7EC8C5; margin-bottom: 10px; }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 10px; background: #2C2F33; border-radius: 5px; }
-        .message { margin-bottom: 10px; padding: 10px; border-radius: 5px; max-width: 70%; }
-        .sent { background: #557D7A; align-self: flex-end; }
-        .received { background: #7EC8C5; align-self: flex-start; }
+        .friends-list li { padding: 10px; cursor: pointer; border-radius: 5px; margin-bottom: 5px; transition: 0.3s; }
+        .chat-window { flex: 1; padding: 20px; border-radius: 10px; display: flex; flex-direction: column; }
+        .chat-header { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 10px; border-radius: 5px; }
+        .message { margin-bottom: 10px; padding: 10px; border-radius: 5px; max-width: 70%; position: relative; }
+        .message .dropdown { position: absolute; top: 5px; right: 5px; }
+        .message .dropdown-btn { background: none; border: none; color: inherit; cursor: pointer; }
+        .message .dropdown-content { display: none; position: absolute; right: 0; background: var(--background-color); box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 5px; z-index: 1; }
+        .message .dropdown-content button { display: block; width: 100%; padding: 10px; text-align: left; background: none; border: none; color: inherit; cursor: pointer; }
+        .message .dropdown-content button:hover { background: var(--hover-bg); }
         .chat-input { display: flex; gap: 10px; padding-top: 10px; }
-        .chat-input textarea { flex: 1; padding: 10px; border-radius: 5px; background: #2C2F33; color: white; resize: none; }
-        .chat-input button { padding: 10px 20px; background: #557D7A; color: white; border-radius: 5px; cursor: pointer; }
+        .chat-input textarea { flex: 1; padding: 10px; border-radius: 5px; resize: none; }
+        .chat-input button { padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+
+        /* Dropdown Menu */
+        .message .dropdown:hover .dropdown-content {
+            display: block;
+        }
     </style>
+    <script type="module" src="firebasetheme.js"></script>
 </head>
 <body>
     <div class="sidebar">
@@ -35,7 +110,7 @@
         <a href="../dashboard.html">Home</a>
         <a href="../profile/index.html">Profile</a>
         <a href="index.html">Messages</a>
-        <a href="settings.html">Settings</a>
+        <a href="../settings/index.html">Settings</a>
         <div id="logout-btn" class="logout-btn">Logout</div>
     </div>
 
@@ -56,137 +131,200 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-        import { getFirestore, collection, query, where, getDocs, addDoc, onSnapshot, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs, addDoc, onSnapshot, orderBy, serverTimestamp, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
-            authDomain: "facebook-1751a.firebaseapp.com",
-            databaseURL: "https://facebook-1751a-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "facebook-1751a",
-            storageBucket: "facebook-1751a.firebasestorage.app",
-            messagingSenderId: "852573765318",
-            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
-            measurementId: "G-RZBV4M5Z2F"
-        };
+const firebaseConfig = {
+    apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+    authDomain: "facebook-1751a.firebaseapp.com",
+    databaseURL: "https://facebook-1751a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "facebook-1751a",
+    storageBucket: "facebook-1751a.firebasestorage.app",
+    messagingSenderId: "852573765318",
+    appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
+    measurementId: "G-RZBV4M5Z2F"
+};
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-        let currentUser = null;
-        let selectedFriend = null;
+let currentUser = null;
+let selectedFriend = null;
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                loadFriends();
-            } else {
-                console.log("User is not authenticated.");
-                // Redirect to login page or show login UI
+// Apply saved theme from localStorage
+document.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("theme") || "dark"; // Default to dark
+    document.body.className = `${savedTheme}-theme`;
+});
+
+// Logout Functionality
+document.getElementById("logout-btn").addEventListener("click", () => {
+    signOut(auth).then(() => {
+        window.location.href = "../index.html"; // Redirect to login page
+    }).catch((error) => {
+        console.error("Error signing out:", error);
+    });
+});
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUser = user;
+        loadFriends();
+    } else {
+        console.log("User is not authenticated.");
+        window.location.href = "../index.html"; // Redirect to login page
+    }
+});
+
+async function loadFriends() {
+    const friendsList = document.getElementById("friends-list");
+    friendsList.innerHTML = "<li>Loading friends...</li>";
+
+    try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        friendsList.innerHTML = "";
+        querySnapshot.forEach(doc => {
+            const friend = doc.data();
+            if (friend.email !== currentUser.email) {
+                const li = document.createElement("li");
+                li.textContent = friend.name;
+                li.onclick = () => selectFriend(friend);
+                friendsList.appendChild(li);
             }
         });
+    } catch (error) {
+        console.error("Error loading friends:", error);
+        friendsList.innerHTML = "<li>Failed to load friends.</li>";
+    }
+}
 
-        async function loadFriends() {
-            const friendsList = document.getElementById("friends-list");
-            friendsList.innerHTML = "<li>Loading friends...</li>";
+function selectFriend(friend) {
+    selectedFriend = friend;
+    document.getElementById("chat-friend-name").textContent = friend.name;
+    document.getElementById("chat-input").disabled = false;
+    document.getElementById("send-btn").disabled = false;
+    loadMessages();
+}
 
-            try {
-                const querySnapshot = await getDocs(collection(db, "users"));
-                friendsList.innerHTML = "";
-                querySnapshot.forEach(doc => {
-                    const friend = doc.data();
-                    console.log("Friend Data:", friend); // Debugging
-                    if (friend.email !== currentUser.email) { // Use email as a fallback
-                        const li = document.createElement("li");
-                        li.textContent = friend.name;
-                        li.onclick = () => selectFriend(friend);
-                        friendsList.appendChild(li);
-                    }
-                });
-            } catch (error) {
-                console.error("Error loading friends:", error);
-                friendsList.innerHTML = "<li>Failed to load friends.</li>";
-            }
-        }
+function loadMessages() {
+    if (!selectedFriend) return;
+    const chatMessages = document.getElementById("chat-messages");
 
-        function selectFriend(friend) {
-            console.log("Selected Friend:", friend); // Debugging
+    const chatQuery = query(
+        collection(db, "messages"),
+        where("participants", "array-contains", currentUser.email),
+        orderBy("timestamp", "asc")
+    );
 
-            // Use email as a fallback if uid is missing
-            if (!friend || (!friend.uid && !friend.email)) {
-                console.error("Invalid friend selected: Missing uid or email.");
-                return;
-            }
+    onSnapshot(chatQuery, (snapshot) => {
+        chatMessages.innerHTML = "";
+        snapshot.forEach(doc => {
+            const message = doc.data();
+            if ((message.sender === currentUser.email && message.receiver === selectedFriend.email) ||
+                (message.sender === selectedFriend.email && message.receiver === currentUser.email)) {
+                const msgDiv = document.createElement("div");
+                msgDiv.className = `message ${message.sender === currentUser.email ? 'sent' : 'received'}`;
+                msgDiv.textContent = message.text;
 
-            selectedFriend = friend;
-            document.getElementById("chat-friend-name").textContent = friend.name;
-            document.getElementById("chat-input").disabled = false;
-            document.getElementById("send-btn").disabled = false;
-            loadMessages();
-        }
+                // Add dropdown for message actions (edit, unsend, react, copy)
+                if (message.sender === currentUser.email) {
+                    const dropdown = document.createElement("div");
+                    dropdown.className = "dropdown";
 
-        function loadMessages() {
-            if (!selectedFriend) return;
-            const chatMessages = document.getElementById("chat-messages");
+                    const dropdownButton = document.createElement("button");
+                    dropdownButton.className = "dropdown-btn";
+                    dropdownButton.innerHTML = "&#8942;"; // Three dots icon
+                    dropdown.appendChild(dropdownButton);
 
-            const chatQuery = query(
-                collection(db, "messages"),
-                where("participants", "array-contains", currentUser.email), // Use email as a fallback
-                orderBy("timestamp", "asc")
-            );
+                    const dropdownContent = document.createElement("div");
+                    dropdownContent.className = "dropdown-content";
 
-            onSnapshot(chatQuery, (snapshot) => {
-                chatMessages.innerHTML = "";
-                snapshot.forEach(doc => {
-                    const message = doc.data();
-                    if ((message.sender === currentUser.email && message.receiver === selectedFriend.email) ||
-                        (message.sender === selectedFriend.email && message.receiver === currentUser.email)) {
-                        const msgDiv = document.createElement("div");
-                        msgDiv.className = `message ${message.sender === currentUser.email ? 'sent' : 'received'}`;
-                        msgDiv.textContent = message.text;
-                        chatMessages.appendChild(msgDiv);
-                    }
-                });
-                chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the latest message
-            });
-        }
+                    const editButton = document.createElement("button");
+                    editButton.textContent = "Edit";
+                    editButton.onclick = () => editMessage(doc.id);
+                    dropdownContent.appendChild(editButton);
 
-        document.getElementById("send-btn").addEventListener("click", async () => {
-            if (!selectedFriend || (!selectedFriend.uid && !selectedFriend.email)) {
-                console.error("No friend selected or friend UID/email is missing.");
-                return;
-            }
+                    const unsendButton = document.createElement("button");
+                    unsendButton.textContent = "Unsend";
+                    unsendButton.onclick = () => unsendMessage(doc.id);
+                    dropdownContent.appendChild(unsendButton);
 
-            const messageInput = document.getElementById("chat-input");
-            const messageText = messageInput.value.trim();
+                    const reactButton = document.createElement("button");
+                    reactButton.textContent = "React";
+                    reactButton.onclick = () => reactToMessage(doc.id);
+                    dropdownContent.appendChild(reactButton);
 
-            if (messageText === "") {
-                console.error("Message cannot be empty.");
-                return;
-            }
+                    const copyButton = document.createElement("button");
+                    copyButton.textContent = "Copy";
+                    copyButton.onclick = () => copyMessage(message.text);
+                    dropdownContent.appendChild(copyButton);
 
-            try {
-                await addDoc(collection(db, "messages"), {
-                    text: messageText,
-                    sender: currentUser.email, // Use email as a fallback
-                    receiver: selectedFriend.email, // Use email as a fallback
-                    participants: [currentUser.email, selectedFriend.email], // Use email as a fallback
-                    timestamp: serverTimestamp()
-                });
-                messageInput.value = ""; // Clear the input field
-            } catch (error) {
-                console.error("Error sending message:", error);
+                    dropdown.appendChild(dropdownContent);
+                    msgDiv.appendChild(dropdown);
+                }
+
+                chatMessages.appendChild(msgDiv);
             }
         });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+}
 
-        document.getElementById("chat-input").addEventListener("keypress", async (e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                document.getElementById("send-btn").click();
-            }
+// Message Actions
+window.editMessage = async (messageId) => {
+    const newText = prompt("Edit your message:");
+    if (newText) {
+        await updateDoc(doc(db, "messages", messageId), { text: newText });
+    }
+};
+
+window.unsendMessage = async (messageId) => {
+    if (confirm("Are you sure you want to unsend this message?")) {
+        await deleteDoc(doc(db, "messages", messageId));
+    }
+};
+
+window.reactToMessage = async (messageId) => {
+    const reaction = prompt("Enter your reaction (e.g., 😊):");
+    if (reaction) {
+        await updateDoc(doc(db, "messages", messageId), { reaction });
+    }
+};
+
+window.copyMessage = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Message copied to clipboard!");
+    });
+};
+
+document.getElementById("send-btn").addEventListener("click", async () => {
+    const messageInput = document.getElementById("chat-input");
+    const messageText = messageInput.value.trim();
+
+    if (messageText === "") return;
+
+    try {
+        await addDoc(collection(db, "messages"), {
+            text: messageText,
+            sender: currentUser.email,
+            receiver: selectedFriend.email,
+            participants: [currentUser.email, selectedFriend.email],
+            timestamp: serverTimestamp()
         });
+        messageInput.value = "";
+    } catch (error) {
+        console.error("Error sending message:", error);
+    }
+});
+
+document.getElementById("chat-input").addEventListener("keypress", async (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        document.getElementById("send-btn").click();
+    }
+});
     </script>
 </body>
 </html>
