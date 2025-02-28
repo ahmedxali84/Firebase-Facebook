@@ -5,81 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - Hashbook</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module" src="firebasetheme.js"></script>
-   <style>
-       * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-body {
-    background: #1E1E1E;
-    color: #EAEAEA;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: row;
-    overflow-y: auto;
-}
+        body {
+            background: #1E1E1E;
+            color: #EAEAEA;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: row;
+            overflow-y: auto;
+        }
 
-/* Sidebar */
-.sidebar {
-    width: 280px;
-    background-color: #292929;
-    padding: 40px 30px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    overflow-y: auto;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
-    transition: 0.3s;
-}
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: #292929;
+            padding: 40px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+        }
 
-.sidebar .logo {
-    font-size: 30px;
-    font-weight: 700;
-    color: #00B8A9;
-    text-align: center;
-}
+        .sidebar .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #00B8A9;
+            text-align: center;
+        }
 
-.sidebar a {
-    display: block;
-    color: #B0E4E1;
-    padding: 14px 22px;
-    text-decoration: none;
-    transition: 0.3s;
-    border-radius: 10px;
-}
+        .sidebar a {
+            display: block;
+            color: #B0E4E1;
+            padding: 14px 22px;
+            text-decoration: none;
+            transition: 0.3s;
+            border-radius: 10px;
+        }
 
-.sidebar a:hover {
-    background-color: #007D76;
-    color: #fff;
-}
+        .sidebar a:hover {
+            background-color: #007D76;
+            color: #fff;
+        }
 
-.sidebar .logout-btn {
-    background: #007D76;
-    color: white;
-    padding: 14px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 20px;
-    transition: 0.3s;
-}
+        .sidebar .logout-btn {
+            background: #007D76;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
 
-.sidebar .logout-btn:hover {
-    background: #005A52;
-}
+        .sidebar .logout-btn:hover {
+            background: #005A52;
+        }
 
-/* Main Container */
-.container {
-    margin-left: 300px;
-    padding: 40px;
-    width: calc(100% - 300px);
-    transition: 0.3s;
-}
+        /* Main Container */
+        .container {
+            margin-left: 300px;
+            padding: 40px;
+            width: calc(100% - 300px);
+            transition: 0.3s;
+        }
 
 /* Profile Header */
 .profile-header {
@@ -98,547 +99,621 @@ body {
 .profile-header h1 {
     font-size: 28px;
     color: #00B8A9;
-}
-#update-name-btn{
-    background-color: white;
-    height: 30px;
-    width: 30px;
+    margin-bottom: 10px;
 }
 
-/* Post Form */
-.post-form {
-    background: #2A2A2A;
-    padding: 25px;
-    border-radius: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.post-form h3 {
-    font-size: 24px;
-    color: #00B8A9;
-    margin-bottom: 20px;
-}
-
-.post-form textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    background: #333;
-    color: #EAEAEA;
-    border: 1px solid #555;
-    margin-bottom: 15px;
-    resize: vertical;
-}
-
-.post-form textarea:focus {
-    outline: none;
-    border-color: #00B8A9;
-    box-shadow: 0 0 10px rgba(0, 184, 169, 0.5);
-}
-
-.post-form input[type="file"] {
-    margin-bottom: 15px;
-}
-
-.post-form button {
-    padding: 12px 20px;
-    background: #00B8A9;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.post-form button:hover {
-    background: #007D76;
-    transform: translateY(-3px);
-}
-
-/* Posts Section */
-.posts-container {
-    margin-top: 20px;
-}
-
-/* Individual Post */
-.post {
-    background: #292929;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    color: #EAEAEA;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    position: relative;
-}
-
-.post .user-info {
+.profile-info {
     display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.post .user-info img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-    border: 2px solid #00B8A9;
-}
-
-/* Dropdown Menu */
-.dropdown {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #333;
-    min-width: 120px;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.dropdown-content button {
-    width: 100%;
-    padding: 10px;
-    text-align: left;
-    background: none;
-    border: none;
-    color: #EAEAEA;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.dropdown-content button:hover {
-    background: #007D76;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown-btn {
-    background: none;
-    border: none;
-    color: #EAEAEA;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-/* Friend Request and Friends List Container */
-.friend-section {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 300px;
+.bio-box {
     background: #2A2A2A;
-    padding: 20px;
-    border-radius: 15px;
+    padding: 15px;
+    border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+    max-width: 400px;
 }
 
-.friend-requests, .friends-list {
-    margin-bottom: 20px;
-}
-
-.friend-requests h3, .friends-list h3 {
-    font-size: 18px;
-    color: #00B8A9;
-    margin-bottom: 10px;
-}
-
-.friend-requests ul, .friends-list ul {
-    list-style: none;
-    padding: 0;
+.bio-box p {
+    color: #B0E4E1;
+    font-size: 16px;
     margin: 0;
 }
-
-.friend-requests li, .friends-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background: #333;
-    border-radius: 10px;
-    margin-bottom: 10px;
+/* Adjust the bio container */
+.bio-container {
+    width: 100%; /* Adjust the width as needed */
+    height: auto; /* Adjust the height to fit the content */
+    padding: 10px; /* Add padding for better spacing */
+    overflow: visible; /* Ensure the content is not hidden */
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+    background-color: #f9f9f9; /* Optional: Add a background color */
 }
 
-.friend-requests button {
-    padding: 8px 15px;
-    background: #00B8A9;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
+/* Adjust the text inside the bio container */
+.bio-text {
+    white-space: normal; /* Ensure text wraps normally */
+    word-wrap: break-word; /* Allow long words to break and wrap */
+    font-size: 14px; /* Adjust the font size as needed */
+    line-height: 1.5; /* Adjust the line height for better readability */
 }
 
-.friend-requests button:hover {
-    background: #007D76;
-}
+        /* Post Form */
+        .post-form {
+            background: #2A2A2A;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
 
-/* Search Bar */
-.search-bar {
-    position: fixed;
-    top: 20px;
-    right: 340px; /* Adjust based on the width of the friend section */
-    width: 300px;
-    background: #2A2A2A;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-}
+        .post-form h3 {
+            font-size: 24px;
+            color: #00B8A9;
+            margin-bottom: 20px;
+        }
 
-.search-bar input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    background: #333;
-    color: #EAEAEA;
-    border: 1px solid #555;
-    margin-bottom: 10px;
-}
+        .post-form textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            background: #333;
+            color: #EAEAEA;
+            border: 1px solid #555;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
 
-.search-bar button {
-    width: 100%;
-    padding: 10px;
-    background: #00B8A9;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        .post-form textarea:focus {
+            outline: none;
+            border-color: #00B8A9;
+            box-shadow: 0 0 10px rgba(0, 184, 169, 0.5);
+        }
 
-.search-bar button:hover {
-    background: #007D76;
-}
+        .post-form input[type="file"] {
+            margin-bottom: 15px;
+        }
 
-/* Navbar for Small Screens */
-.navbar {
-    display: none; /* Hidden by default */
-    width: 100%;
-    background-color: #292929;
-    padding: 10px 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-}
+        .post-form button {
+            padding: 12px 20px;
+            background: #00B8A9;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.navbar .logo {
-    font-size: 24px;
-    font-weight: 700;
-    color: #00B8A9;
-    white-space: nowrap; /* Prevent logo from wrapping */
-}
+        .post-form button:hover {
+            background: #007D76;
+            transform: translateY(-3px);
+        }
 
-.navbar .menu {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    overflow-x: auto; /* Allow horizontal scrolling if needed */
-    white-space: nowrap; /* Prevent menu items from wrapping */
-}
+        /* Posts Section */
+        .posts-container {
+            margin-top: 20px;
+        }
 
-.navbar a {
-    color: #B0E4E1;
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 10px;
-    transition: 0.3s;
-    font-size: 14px;
-    white-space: nowrap; /* Prevent text from wrapping */
-}
+        /* Individual Post */
+        .post {
+            background: #292929;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            color: #EAEAEA;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
 
-.navbar a:hover {
-    background-color: #007D76;
-    color: #fff;
-}
+        .post .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-.navbar .logout-btn {
-    background: #007D76;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 14px;
-    white-space: nowrap; /* Prevent text from wrapping */
-}
+        .post .user-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid #00B8A9;
+        }
 
-.navbar .logout-btn:hover {
-    background: #005A52;
-}
+        /* Dropdown Menu */
+        .dropdown {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: inline-block;
+        }
 
-/* Responsive Design for Screens 780px or Less */
-@media (max-width: 780px) {
-    /* Hide the sidebar */
-    .sidebar {
-        display: none;
-    }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-    /* Show the navbar */
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+        .dropdown-content button {
+            width: 100%;
+            padding: 10px;
+            text-align: left;
+            background: none;
+            border: none;
+            color: #EAEAEA;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-    /* Adjust the main container */
-    .container {
-        margin-left: 0;
-        width: 100%;
-        padding: 70px 20px 20px; /* Add top padding for navbar */
-    }
+        .dropdown-content button:hover {
+            background: #007D76;
+        }
 
-    /* Adjust profile header */
-    .profile-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
 
-    .profile-header img {
-        width: 80px;
-        height: 80px;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
+        .dropdown-btn {
+            background: none;
+            border: none;
+            color: #EAEAEA;
+            font-size: 20px;
+            cursor: pointer;
+        }
 
-    .profile-header h1 {
-        font-size: 24px;
-    }
+        /* Friend Request and Friends List Container */
+        .friend-section {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            background: #2A2A2A;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
 
-    /* Adjust friend section and search bar */
-    .friend-section, .search-bar {
-        position: static;
-        width: 100%;
-        margin-top: 20px;
-    }
+        .friend-requests, .friends-list {
+            margin-bottom: 20px;
+        }
 
-    .search-bar {
-        right: 20px;
-    }
-}
+        .friend-requests h3, .friends-list h3 {
+            font-size: 18px;
+            color: #00B8A9;
+            margin-bottom: 10px;
+        }
 
-/* Responsive Design for Screens 650px or Less */
-@media (max-width: 650px) {
-    /* Reduce padding and font sizes */
-    .navbar {
-        padding: 8px 15px;
-    }
+        .friend-requests ul, .friends-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-    .navbar .logo {
-        font-size: 20px;
-    }
+        .friend-requests li, .friends-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #333;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
 
-    .navbar a {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
+        .friend-requests button {
+            padding: 8px 15px;
+            background: #00B8A9;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-    .navbar .logout-btn {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
+        .friend-requests button:hover {
+            background: #007D76;
+        }
 
-    /* Adjust main container padding */
-    .container {
-        padding: 60px 15px 15px;
-    }
+        /* Search Bar */
+        .search-bar {
+            position: fixed;
+            top: 20px;
+            right: 340px; /* Adjust based on the width of the friend section */
+            width: 300px;
+            background: #2A2A2A;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
 
-    /* Adjust post form and posts */
-    .post-form {
-        padding: 20px;
-    }
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            background: #333;
+            color: #EAEAEA;
+            border: 1px solid #555;
+            margin-bottom: 10px;
+        }
 
-    .post {
-        padding: 15px;
-    }
+        .search-bar button {
+            width: 100%;
+            padding: 10px;
+            background: #00B8A9;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-    .post .user-info img {
-        width: 40px;
-        height: 40px;
-    }
-}
+        .search-bar button:hover {
+            background: #007D76;
+        }
 
-/* Responsive Design for Screens 480px or Less */
-@media (max-width: 480px) {
-    /* Further reduce padding and font sizes */
-    .navbar {
-        padding: 6px 10px;
-    }
+        /* Navbar for Small Screens */
+        .navbar {
+            display: none; /* Hidden by default */
+            width: 100%;
+            background-color: #292929;
+            padding: 10px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
 
-    .navbar .logo {
-        font-size: 18px;
-    }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00B8A9;
+            white-space: nowrap; /* Prevent logo from wrapping */
+        }
 
-    .navbar a {
-        padding: 5px 8px;
-        font-size: 11px;
-    }
+        .navbar .menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+            white-space: nowrap; /* Prevent menu items from wrapping */
+        }
 
-    .navbar .logout-btn {
-        padding: 5px 8px;
-        font-size: 11px;
-    }
+        .navbar a {
+            color: #B0E4E1;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+            font-size: 14px;
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
 
-    /* Adjust main container padding */
-    .container {
-        padding: 50px 10px 10px;
-    }
+        .navbar a:hover {
+            background-color: #007D76;
+            color: #fff;
+        }
 
-/* Profile Header */
-.profile-header {
-    text-align: center;
-    margin: 20px 0;
-    position: relative;
-}
+        .navbar .logout-btn {
+            background: #007D76;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
 
-.profile-header label {
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-}
+        .navbar .logout-btn:hover {
+            background: #005A52;
+        }
 
-#profile-picture {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #007bff;
-    transition: opacity 0.3s ease-in-out;
-}
+        /* Dark Theme */
+        body.dark-theme { background: #23272A; color: #fff; }
+        body.dark-theme .sidebar { background-color: #292929; }
+        body.dark-theme .sidebar a { color: #B0E4E1; }
+        body.dark-theme .sidebar a:hover { background-color: #007D76; color: #fff; }
+        body.dark-theme .sidebar .logout-btn { background: #007D76; }
+        body.dark-theme .sidebar .logout-btn:hover { background: #005A52; }
+        body.dark-theme .friends-list { background: #1E2124; }
+        body.dark-theme .friends-list h3 { color: #7EC8C5; }
+        body.dark-theme .friends-list li { background: #2C2F33; }
+        body.dark-theme .friends-list li:hover { background: #3D5A5B; }
+        body.dark-theme .chat-window { background: #1E2124; }
+        body.dark-theme .chat-header { color: #7EC8C5; }
+        body.dark-theme .chat-messages { background: #2C2F33; }
+        body.dark-theme .message.sent { background: #557D7A; }
+        body.dark-theme .message.received { background: #7EC8C5; }
+        body.dark-theme .chat-input textarea { background: #2C2F33; color: white; }
+        body.dark-theme .chat-input button { background: #557D7A; }
 
-.profile-header label:hover #profile-picture {
-    opacity: 0.8;
-}
+        /* Light Theme */
+        body.light-theme { background: #f0f0f0; color: #000; }
+        body.light-theme .sidebar { background-color: #ffffff; }
+        body.light-theme .sidebar a { color: #333; }
+        body.light-theme .sidebar a:hover { background-color: #e0e0e0; color: #000; }
+        body.light-theme .sidebar .logout-btn { background: #007D76; color: white; }
+        body.light-theme .sidebar .logout-btn:hover { background: #005A52; }
+        body.light-theme .friends-list { background: #ffffff; }
+        body.light-theme .friends-list h3 { color: #007D76; }
+        body.light-theme .friends-list li { background: #e0e0e0; }
+        body.light-theme .friends-list li:hover { background: #d0d0d0; }
+        body.light-theme .chat-window { background: #ffffff; }
+        body.light-theme .chat-header { color: #007D76; }
+        body.light-theme .chat-messages { background: #e0e0e0; }
+        body.light-theme .message.sent { background: #007D76; color: white; }
+        body.light-theme .message.received { background: #7EC8C5; color: black; }
+        body.light-theme .chat-input textarea { background: #e0e0e0; color: black; }
+        body.light-theme .chat-input button { background: #007D76; }
+        body.light-theme .bio-box{
+            background-color: #f0f0f0; color: #005A52;}
+        body.light-theme .post-form {
+            background: #ffffff; /* Light background */
+            color: #000; /* Dark text for contrast */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+        }
+        body.light-theme .post-form textarea {
+            background: #ffffff; /* Light background */
+            color: #000; /* Dark text for contrast */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+        }
+        body.light-theme .friend-section {
+            background: #ffffff;
+            color: #000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        body.light-theme .friend-requests li, 
+        body.light-theme .friends-list li {
+            background: #e0e0e0;
+            color: #000;
+        }
+        body.light-theme .friend-requests button {
+            background: #007D76;
+            color: white;
+        }
+        body.light-theme .friend-requests button:hover {
+            background: #005A52;
+        }
+        body.light-theme .search-bar {
+            background: white;
+        }
+        body.light-theme .search-bar #search-input {
+            background: #e0e0e0;
+        }
+        /* Responsive Design for Screens 780px or Less */
+        @media (max-width: 1115px) {
+            /* Hide the sidebar */
+            .sidebar {
+                display: none;
+            }
 
-/* File input hidden */
-#profile-picture-input {
-    display: none;
-}
+            /* Show the navbar */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
+            /* Adjust the main container */
+            .container {
+                margin-left: 0;
+                width: 100%;
+                padding: 70px 20px 20px; /* Add top padding for navbar */
+            }
 
-    /* Adjust post form and posts */
-    .post-form {
-        padding: 15px;
-    }
+            /* Adjust profile header */
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
 
-    .post {
-        padding: 10px;
-    }
+            .profile-header img {
+                width: 80px;
+                height: 80px;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
 
-    .post .user-info img {
-        width: 35px;
-        height: 35px;
-    }
-}
+            .profile-header h1 {
+                font-size: 24px;
+            }
 
-/* Responsive Design for Screens 250px or Less */
-@media (max-width: 250px) {
-    /* Make navbar items even smaller */
-    .navbar {
-        padding: 5px 8px;
-    }
+            /* Adjust friend section and search bar */
+            .friend-section, .search-bar {
+                position: static;
+                width: 100%;
+                margin-top: 20px;
+            }
 
-    .navbar .logo {
-        font-size: 16px;
-    }
+            .search-bar {
+                right: 20px;
+            }
+        }
 
-    .navbar a {
-        padding: 4px 6px;
-        font-size: 10px;
-    }
+        /* Responsive Design for Screens 650px or Less */
+        @media (max-width: 650px) {
+            /* Reduce padding and font sizes */
+            .navbar {
+                padding: 8px 15px;
+            }
 
-    .navbar .logout-btn {
-        padding: 4px 6px;
-        font-size: 10px;
-    }
+            .navbar .logo {
+                font-size: 20px;
+            }
 
-    /* Adjust main container padding */
-    .container {
-        padding: 40px 8px 8px;
-    }
+            .navbar a {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
 
-    /* Adjust profile header */
-    .profile-header img {
-        width: 50px;
-        height: 50px;
-    }
+            .navbar .logout-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
 
-    .profile-header h1 {
-        font-size: 18px;
-    }
+            /* Adjust main container padding */
+            .container {
+                padding: 60px 15px 15px;
+            }
 
-    /* Adjust post form and posts */
-    .post-form {
-        padding: 10px;
-    }
+            /* Adjust post form and posts */
+            .post-form {
+                padding: 20px;
+            }
 
-    .post {
-        padding: 8px;
-    }
+            .post {
+                padding: 15px;
+            }
 
-    .post .user-info img {
-        width: 30px;
-        height: 30px;
-    }
-}
+            .post .user-info img {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Responsive Design for Screens 480px or Less */
+        @media (max-width: 480px) {
+            /* Further reduce padding and font sizes */
+            .navbar {
+                padding: 6px 10px;
+            }
+
+            .navbar .logo {
+                font-size: 18px;
+            }
+
+            .navbar a {
+                padding: 5px 8px;
+                font-size: 11px;
+            }
+
+            .navbar .logout-btn {
+                padding: 5px 8px;
+                font-size: 11px;
+            }
+
+            /* Adjust main container padding */
+            .container {
+                padding: 50px 10px 10px;
+            }
+
+            /* Adjust post form and posts */
+            .post-form {
+                padding: 15px;
+            }
+
+            .post {
+                padding: 10px;
+            }
+
+            .post .user-info img {
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+        /* Responsive Design for Screens 250px or Less */
+        @media (max-width: 250px) {
+            /* Make navbar items even smaller */
+            .navbar {
+                padding: 5px 8px;
+            }
+
+            .navbar .logo {
+                font-size: 16px;
+            }
+
+            .navbar a {
+                padding: 4px 6px;
+                font-size: 10px;
+            }
+
+            .navbar .logout-btn {
+                padding: 4px 6px;
+                font-size: 10px;
+            }
+
+            /* Adjust main container padding */
+            .container {
+                padding: 40px 8px 8px;
+            }
+
+            /* Adjust profile header */
+            .profile-header img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .profile-header h1 {
+                font-size: 18px;
+            }
+
+            /* Adjust post form and posts */
+            .post-form {
+                padding: 10px;
+            }
+
+            .post {
+                padding: 8px;
+            }
+
+            .post .user-info img {
+                width: 30px;
+                height: 30px;
+            }
+        }
     </style>
 </head>
-<!-- Navbar -->
-<div class="navbar">
-    <div class="logo">Hashbook</div>
-    <div class="menu">
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">Hashbook</div>
+        <div class="menu">
+            <a href="../dashboard.html">Home</a>
+            <a href="./index.html">Profile</a>
+            <a href="../Messaging/index.html">Messages</a>
+            <a href="../settings/index.html">Settings</a>
+            <div class="logout-btn">Logout</div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">Hashbook</div>
         <a href="../dashboard.html">Home</a>
         <a href="./index.html">Profile</a>
         <a href="../Messaging/index.html">Messages</a>
-        <a href="#">Settings</a>
-        <div id="logout-btn" class="logout-btn">Logout</div>
-    </div>
-</div>
-
-<!-- Sidebar -->
-<div class="sidebar">
-    <div class="logo">Hashbook</div>
-    <a href="../dashboard.html">Home</a>
-    <a href="./index.html">Profile</a>
-    <a href="../Messaging/index.html">Messages</a>
-    <a href="../settings/index.html">Settings</a>
-    <div id="logout-btn" class="logout-btn">Logout</div>
-</div>
-
-<div class="container">
-    <!-- Search Bar -->
-    <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Search for users by UID...">
-        <button id="search-btn">Search</button>
+        <a href="../settings/index.html">Settings</a>
+        <div class="logout-btn">Logout</div>
     </div>
 
-    <!-- Friend Requests and Friends List Section -->
-    <div class="friend-section">
-        <div class="friend-requests">
-            <h3>Friend Requests</h3>
-            <ul id="friend-requests-list"></ul>
+    <div class="container">
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search for users by UID...">
+            <button id="search-btn">Search</button>
         </div>
-        <div class="friends-list">
-            <h3>Friends</h3>
-            <ul id="friends-list"></ul>
+
+        <!-- Friend Requests and Friends List Section -->
+        <div class="friend-section">
+            <div class="friend-requests">
+                <h3>Friend Requests</h3>
+                <ul id="friend-requests-list"></ul>
+            </div>
+            <div class="friends-list">
+                <h3>Friends</h3>
+                <ul id="friends-list"></ul>
+            </div>
         </div>
-    </div>
 
 <!-- Profile Header -->
 <div class="profile-header">
@@ -646,302 +721,378 @@ body {
         <img id="profile-picture" src="../pfp.jpg" alt="Profile Picture">
     </label>
     <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
-    <h1 id="profile-name">Loading...</h1>
-    <img src="../edit.png" id="update-name-btn">
+    <div class="profile-info">
+        <h1 id="profile-name">Loading...</h1>
+        <div class="bio-box">
+            <p id="profile-bio"></p> <!-- Bio will be shown here -->
+        </div>
+    </div>
 </div>
 
-    <!-- Post Form -->
-    <div class="post-form">
-        <h3>Create a New Post</h3>
-        <textarea id="post-text" rows="4" placeholder="What's on your mind?"></textarea>
-        <input type="file" id="post-image" accept="image/*">
-        <button id="post-btn">Post</button>
+        <!-- Post Form -->
+        <div class="post-form">
+            <h3>Create a New Post</h3>
+            <textarea id="post-text" rows="4" placeholder="What's on your mind?"></textarea>
+            <input type="file" id="post-image" accept="image/*">
+            <button id="post-btn">Post</button>
+        </div>
+
+        <!-- User's Posts -->
+        <div class="posts-container" id="posts-container"></div>
     </div>
 
-    <!-- User's Posts -->
-    <div class="posts-container" id="posts-container"></div>
-</div>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { 
+            getFirestore, collection, addDoc, getDocs, query, where, doc, deleteDoc, updateDoc, serverTimestamp, getDoc 
+        } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+        import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { 
-    getFirestore, collection, addDoc, getDocs, query, where, doc, deleteDoc, updateDoc, serverTimestamp, getDoc 
-} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
-import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+            authDomain: "facebook-1751a.firebaseapp.com",
+            projectId: "facebook-1751a",
+            storageBucket: "facebook-1751a.appspot.com",
+            messagingSenderId: "852573765318",
+            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
+            measurementId: "G-RZBV4M5Z2F"
+        };
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
-    authDomain: "facebook-1751a.firebaseapp.com",
-    projectId: "facebook-1751a",
-    storageBucket: "facebook-1751a.appspot.com",
-    messagingSenderId: "852573765318",
-    appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
-    measurementId: "G-RZBV4M5Z2F"
-};
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
-
-// 🔹 Redirect to login if user is not authenticated
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        window.location.replace("../index.html");
-    } else {
-        loadProfile(user.uid); // Load profile data
-        loadPosts();
-        loadFriendRequests(user.uid);
-        loadFriendsList(user.uid);
-    }
-});
-
-// 🔹 Load Profile Data
-async function loadProfile(userId) {
-    const profileName = document.getElementById("profile-name");
-    const profilePicture = document.getElementById("profile-picture");
-
-    try {
-        const userRef = doc(db, "users", userId);
-        const userDoc = await getDoc(userRef);
-
-        if (userDoc.exists()) {
-            const userData = userDoc.data();
-            profileName.textContent = userData.displayName || "Anonymous";
-            if (userData.photoURL) {
-                profilePicture.src = userData.photoURL;
+        // 🔹 Redirect to login if user is not authenticated
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "../index.html"; // Redirect to login page
             } else {
-                profilePicture.src = "../pfp.jpg"; // Default profile picture
-            }
-        } else {
-            console.error("User document does not exist.");
-        }
-    } catch (error) {
-        console.error("Error loading profile:", error);
-    }
-}
-
-// 🔹 Update Profile Picture
-document.getElementById("profile-picture").addEventListener("click", () => {
-    document.getElementById("profile-picture-input").click();
-});
-
-document.getElementById("profile-picture-input").addEventListener("change", async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const user = auth.currentUser;
-    if (!user) return;
-
-    try {
-        const storageRef = ref(storage, `profile-pictures/${user.uid}`);
-        await uploadBytes(storageRef, file);
-        const downloadURL = await getDownloadURL(storageRef);
-
-        // Update Firestore with the new photoURL
-        await updateDoc(doc(db, "users", user.uid), {
-            photoURL: downloadURL,
-        });
-
-        // Update the profile picture in the UI
-        document.getElementById("profile-picture").src = downloadURL;
-        Swal.fire('Success', 'Profile picture updated!', 'success');
-    } catch (error) {
-        console.error("Error updating profile picture:", error);
-        Swal.fire('Error', 'Failed to update profile picture.', 'error');
-    }
-});
-
-// 🔹 Update Profile Name
-document.getElementById("update-name-btn").addEventListener("click", async () => {
-    const newName = prompt("Enter your new name:");
-    if (!newName) return;
-
-    const user = auth.currentUser;
-    if (!user) return;
-
-    try {
-        await updateDoc(doc(db, "users", user.uid), {
-            displayName: newName,
-        });
-
-        // Update the profile name in the UI
-        document.getElementById("profile-name").textContent = newName;
-        Swal.fire('Success', 'Profile name updated!', 'success');
-    } catch (error) {
-        console.error("Error updating profile name:", error);
-        Swal.fire('Error', 'Failed to update profile name.', 'error');
-    }
-});
-
-// 🔹 Logout Function
-document.getElementById('logout-btn').addEventListener('click', () => {
-    signOut(auth).then(() => {
-        window.location.replace("index.html");
-    }).catch((error) => console.error("Error signing out:", error));
-});
-
-// 🔹 Search for Users by UID
-document.getElementById('search-btn').addEventListener('click', async () => {
-    const searchInput = document.getElementById("search-input").value.trim();
-    
-    if (!searchInput) {
-        Swal.fire('Error', 'Please enter a UID to search.', 'error');
-        return;
-    }
-
-    try {
-        const userRef = doc(db, "users", searchInput);
-        const userDoc = await getDoc(userRef);
-
-        if (!userDoc.exists()) {
-            Swal.fire('Error', 'No user found with that UID.', 'error');
-            return;
-        }
-
-        const user = userDoc.data();
-        Swal.fire({
-            title: `Send friend request to ${user.displayName || "Anonymous"}?`,
-            showCancelButton: true,
-            confirmButtonText: 'Send',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                sendFriendRequest(userDoc.id, user.displayName || "Anonymous");
+                loadProfile(user.uid); // Load profile data
+                loadPosts(user.uid);
+                loadFriendRequests(user.uid);
+                loadFriendsList(user.uid);
             }
         });
-    } catch (error) {
-        console.error("Error searching for user:", error);
-        Swal.fire('Error', 'Failed to search for user. Please try again.', 'error');
-    }
-});
 
-// 🔹 Send Friend Request Function
-async function sendFriendRequest(toUserId, toUserName) {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    try {
-        await addDoc(collection(db, "friendRequests"), {
-            fromUserId: user.uid,
-            fromUserName: user.displayName || "Anonymous",
-            toUserId: toUserId,
-            toUserName: toUserName,
-            status: "pending",
-            createdAt: serverTimestamp(),
-        });
-        Swal.fire('Success', 'Friend request sent!', 'success');
-    } catch (error) {
-        console.error("Error sending friend request:", error);
-        Swal.fire('Error', 'Failed to send friend request. Please try again.', 'error');
-    }
-}
-
-// 🔹 Load Friend Requests
-async function loadFriendRequests(userId) {
-    const friendRequestsRef = collection(db, "friendRequests");
-    const q = query(friendRequestsRef, where("toUserId", "==", userId), where("status", "==", "pending"));
-    const querySnapshot = await getDocs(q);
-    const friendRequestsList = document.getElementById("friend-requests-list");
-    friendRequestsList.innerHTML = "";
-
-    if (querySnapshot.empty) {
-        friendRequestsList.innerHTML = '<p>No friend requests found.</p>';
-        return;
-    }
-
-    querySnapshot.forEach((doc) => {
-        const request = doc.data();
-        const requestElement = document.createElement("li");
-        requestElement.innerHTML = `
-            <span>${request.fromUserName}</span>
-            <div>
-                <button onclick="acceptFriendRequest('${doc.id}', '${request.fromUserId}')">Accept</button>
-                <button onclick="rejectFriendRequest('${doc.id}')">Reject</button>
-            </div>
-        `;
-        friendRequestsList.appendChild(requestElement);
-    });
-}
-
-// 🔹 Accept Friend Request
-window.acceptFriendRequest = async (requestId, fromUserId) => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    try {
-        await updateDoc(doc(db, "friendRequests", requestId), {
-            status: "accepted",
+        // 🔹 Logout Functionality
+        const logoutButtons = document.querySelectorAll(".logout-btn");
+        logoutButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                signOut(auth).then(() => {
+                    window.location.href = "../index.html"; // Redirect to login page after logout
+                }).catch((error) => {
+                    console.error("Error signing out:", error);
+                    Swal.fire('Error', 'Failed to log out. Please try again.', 'error');
+                });
+            });
         });
 
-        await addDoc(collection(db, "friends"), {
-            userId: user.uid,
-            friendId: fromUserId,
-            createdAt: serverTimestamp(),
-        });
+        // 🔹 Load Profile Data
+        async function loadProfile(userId) {
+            const profileName = document.getElementById("profile-name");
+            const profileBio = document.getElementById("profile-bio"); // Add this line
+            const profilePicture = document.getElementById("profile-picture");
 
-        await addDoc(collection(db, "friends"), {
-            userId: fromUserId,
-            friendId: user.uid,
-            createdAt: serverTimestamp(),
-        });
+            try {
+                const userRef = doc(db, "users", userId);
+                const userDoc = await getDoc(userRef);
 
-        loadFriendRequests(user.uid);
-        loadFriendsList(user.uid);
-        Swal.fire('Success', 'Friend request accepted!', 'success');
-    } catch (error) {
-        console.error("Error accepting friend request:", error);
-        Swal.fire('Error', 'Failed to accept friend request.', 'error');
-    }
-};
-
-// 🔹 Reject Friend Request
-window.rejectFriendRequest = async (requestId) => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    try {
-        await updateDoc(doc(db, "friendRequests", requestId), {
-            status: "rejected",
-        });
-
-        loadFriendRequests(user.uid);
-        Swal.fire('Success', 'Friend request rejected.', 'info');
-    } catch (error) {
-        console.error("Error rejecting friend request:", error);
-        Swal.fire('Error', 'Failed to reject friend request.', 'error');
-    }
-};
-
-// 🔹 Load Friends List
-async function loadFriendsList(userId) {
-    const friendsRef = collection(db, "friends");
-    const q = query(friendsRef, where("userId", "==", userId));
-    const querySnapshot = await getDocs(q);
-    const friendsList = document.getElementById("friends-list");
-    friendsList.innerHTML = "";
-
-    if (querySnapshot.empty) {
-        friendsList.innerHTML = '<p>No friends found.</p>';
-        return;
-    }
-
-    querySnapshot.forEach(async (doc) => {
-        const friend = doc.data();
-        const userRef = doc(db, "users", friend.friendId);
-        const userDoc = await getDoc(userRef);
-        if (userDoc.exists()) {
-            const userData = userDoc.data();
-            const friendElement = document.createElement("li");
-            friendElement.innerHTML = `
-                <span>${userData.displayName || "Anonymous"}</span>
-            `;
-            friendsList.appendChild(friendElement);
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    profileName.textContent = userData.displayName || "Anonymous";
+                    profileBio.textContent = userData.bio || ""; // Set bio
+                    if (userData.photoURL) {
+                        profilePicture.src = userData.photoURL;
+                    } else {
+                        profilePicture.src = "../pfp.jpg"; // Default profile picture
+                    }
+                } else {
+                    console.error("User document does not exist.");
+                }
+            } catch (error) {
+                console.error("Error loading profile:", error);
+            }
         }
-    });
-}
 
-</script>
+        // 🔹 Update Profile Picture
+        document.getElementById("profile-picture").addEventListener("click", () => {
+            document.getElementById("profile-picture-input").click();
+        });
+
+        document.getElementById("profile-picture-input").addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                const storageRef = ref(storage, `profile-pictures/${user.uid}`);
+                await uploadBytes(storageRef, file);
+                const downloadURL = await getDownloadURL(storageRef);
+
+                // Update Firestore with the new photoURL
+                await updateDoc(doc(db, "users", user.uid), {
+                    photoURL: downloadURL,
+                });
+
+                // Update the profile picture in the UI
+                document.getElementById("profile-picture").src = downloadURL;
+                Swal.fire('Success', 'Profile picture updated!', 'success');
+            } catch (error) {
+                console.error("Error updating profile picture:", error);
+                Swal.fire('Error', 'Failed to update profile picture.', 'error');
+            }
+        });
+
+        // 🔹 Search for Users by UID
+        document.getElementById('search-btn').addEventListener('click', async () => {
+            const searchInput = document.getElementById("search-input").value.trim();
+            
+            if (!searchInput) {
+                Swal.fire('Error', 'Please enter a UID to search.', 'error');
+                return;
+            }
+
+            try {
+                const userRef = doc(db, "users", searchInput);
+                const userDoc = await getDoc(userRef);
+
+                if (!userDoc.exists()) {
+                    Swal.fire('Error', 'No user found with that UID.', 'error');
+                    return;
+                }
+
+                const user = userDoc.data();
+                Swal.fire({
+                    title: `Send friend request to ${user.displayName || "Anonymous"}?`,
+                    showCancelButton: true,
+                    confirmButtonText: 'Send',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        sendFriendRequest(userDoc.id, user.displayName || "Anonymous");
+                    }
+                });
+            } catch (error) {
+                console.error("Error searching for user:", error);
+                Swal.fire('Error', 'Failed to search for user. Please try again.', 'error');
+            }
+        });
+
+        // 🔹 Send Friend Request Function
+        async function sendFriendRequest(toUserId, toUserName) {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                await addDoc(collection(db, "friendRequests"), {
+                    fromUserId: user.uid,
+                    fromUserName: user.displayName || "Anonymous",
+                    toUserId: toUserId,
+                    toUserName: toUserName,
+                    status: "pending",
+                    createdAt: serverTimestamp(),
+                });
+                Swal.fire('Success', 'Friend request sent!', 'success');
+            } catch (error) {
+                console.error("Error sending friend request:", error);
+                Swal.fire('Error', 'Failed to send friend request. Please try again.', 'error');
+            }
+        }
+
+        // 🔹 Load Friend Requests
+        async function loadFriendRequests(userId) {
+            const friendRequestsRef = collection(db, "friendRequests");
+            const q = query(friendRequestsRef, where("toUserId", "==", userId), where("status", "==", "pending"));
+            const querySnapshot = await getDocs(q);
+            const friendRequestsList = document.getElementById("friend-requests-list");
+            friendRequestsList.innerHTML = "";
+
+            if (querySnapshot.empty) {
+                friendRequestsList.innerHTML = '<p>No friend requests found.</p>';
+                return;
+            }
+
+            querySnapshot.forEach((doc) => {
+                const request = doc.data();
+                const requestElement = document.createElement("li");
+                requestElement.innerHTML = `
+                    <span>${request.fromUserName}</span>
+                    <div>
+                        <button onclick="acceptFriendRequest('${doc.id}', '${request.fromUserId}')">Accept</button>
+                        <button onclick="rejectFriendRequest('${doc.id}')">Reject</button>
+                    </div>
+                `;
+                friendRequestsList.appendChild(requestElement);
+            });
+        }
+
+        // 🔹 Accept Friend Request
+        window.acceptFriendRequest = async (requestId, fromUserId) => {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                await updateDoc(doc(db, "friendRequests", requestId), {
+                    status: "accepted",
+                });
+
+                await addDoc(collection(db, "friends"), {
+                    userId: user.uid,
+                    friendId: fromUserId,
+                    createdAt: serverTimestamp(),
+                });
+
+                await addDoc(collection(db, "friends"), {
+                    userId: fromUserId,
+                    friendId: user.uid,
+                    createdAt: serverTimestamp(),
+                });
+
+                loadFriendRequests(user.uid);
+                loadFriendsList(user.uid);
+                Swal.fire('Success', 'Friend request accepted!', 'success');
+            } catch (error) {
+                console.error("Error accepting friend request:", error);
+                Swal.fire('Error', 'Failed to accept friend request.', 'error');
+            }
+        };
+
+        // 🔹 Reject Friend Request
+        window.rejectFriendRequest = async (requestId) => {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                await updateDoc(doc(db, "friendRequests", requestId), {
+                    status: "rejected",
+                });
+
+                loadFriendRequests(user.uid);
+                Swal.fire('Success', 'Friend request rejected.', 'info');
+            } catch (error) {
+                console.error("Error rejecting friend request:", error);
+                Swal.fire('Error', 'Failed to reject friend request.', 'error');
+            }
+        };
+
+        // 🔹 Load Friends List
+        async function loadFriendsList(userId) {
+            const friendsRef = collection(db, "friends");
+            const q = query(friendsRef, where("userId", "==", userId));
+            const querySnapshot = await getDocs(q);
+            const friendsList = document.getElementById("friends-list");
+            friendsList.innerHTML = "";
+
+            if (querySnapshot.empty) {
+                friendsList.innerHTML = '<p>No friends found.</p>';
+                return;
+            }
+
+            querySnapshot.forEach(async (doc) => {
+                const friend = doc.data();
+                const userRef = doc(db, "users", friend.friendId);
+                const userDoc = await getDoc(userRef);
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const friendElement = document.createElement("li");
+                    friendElement.innerHTML = `
+                        <span>${userData.displayName || "Anonymous"}</span>
+                    `;
+                    friendsList.appendChild(friendElement);
+                }
+            });
+        }
+
+        // 🔹 Load Posts
+        async function loadPosts(userId) {
+            const postsContainer = document.getElementById("posts-container");
+            postsContainer.innerHTML = "";
+
+            try {
+                const postsRef = collection(db, "posts");
+                const q = query(postsRef, where("userId", "==", userId));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    postsContainer.innerHTML = '<p>No posts found.</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const post = doc.data();
+                    const postElement = document.createElement("div");
+                    postElement.className = "post";
+                    postElement.innerHTML = `
+                        <div class="user-info">
+                            <img src="${post.userPhotoURL || "../pfp.jpg"}" alt="User Photo">
+                            <span>${post.userName || "Anonymous"}</span>
+                        </div>
+                        <p>${post.text}</p>
+                        ${post.imageURL ? `<img src="${post.imageURL}" alt="Post Image" style="max-width: 100%; border-radius: 10px;">` : ''}
+                        <small>Posted ${formatDistanceToNow(post.createdAt.toDate())} ago</small>
+                    `;
+                    postsContainer.appendChild(postElement);
+                });
+            } catch (error) {
+                console.error("Error loading posts:", error);
+                Swal.fire('Error', 'Failed to load posts.', 'error');
+            }
+        }
+
+        // 🔹 Upload Post
+        document.getElementById("post-btn").addEventListener("click", async () => {
+            const postText = document.getElementById("post-text").value.trim();
+            const postImage = document.getElementById("post-image").files[0];
+
+            if (!postText && !postImage) {
+                Swal.fire('Error', 'Please enter text or upload an image.', 'error');
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                let imageURL = null;
+                if (postImage) {
+                    const storageRef = ref(storage, `posts/${user.uid}/${Date.now()}`);
+                    await uploadBytes(storageRef, postImage);
+                    imageURL = await getDownloadURL(storageRef);
+                }
+
+                await addDoc(collection(db, "posts"), {
+                    userId: user.uid,
+                    userName: user.displayName || "Anonymous",
+                    userPhotoURL: user.photoURL || "../pfp.jpg",
+                    text: postText,
+                    imageURL: imageURL,
+                    createdAt: serverTimestamp(),
+                });
+
+                // Clear the form
+                document.getElementById("post-text").value = "";
+                document.getElementById("post-image").value = "";
+
+                // Reload posts
+                loadPosts(user.uid);
+                Swal.fire('Success', 'Post uploaded successfully!', 'success');
+            } catch (error) {
+                console.error("Error uploading post:", error);
+                Swal.fire('Error', 'Failed to upload post.', 'error');
+            }
+        });
+
+        // Apply saved theme from localStorage
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedTheme = localStorage.getItem("theme") || "dark"; // Default to dark
+            document.body.className = `${savedTheme}-theme`;
+        });
+    </script>
 </body>
 </html>
