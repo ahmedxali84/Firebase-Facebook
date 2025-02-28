@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Hashbook</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+/* Basic Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #1E1E1E;
+    color: #EAEAEA;
+    margin: 0;
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.settings-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #2A2A2A;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: #00B8A9;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.theme-selector {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background: #333;
+    color: #EAEAEA;
+    border: 1px solid #555;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #00B8A9;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background: #007D76;
+    transform: translateY(-3px);
+}
+
+/* Theme-specific Styles */
+body.light-theme {
+    background-color: #F5F5F5;
+    color: #333;
+}
+
+body.light-theme .settings-container {
+    background: #FFFFFF;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme h1 {
+    color: #007D76;
+}
+
+body.light-theme select {
+    background: #EAEAEA;
+    color: #333;
+    border-color: #CCC;
+}
+
+body.light-theme button {
+    background: #007D76;
+}
+
+body.light-theme button:hover {
+    background: #005A52;
+}
+body.light-theme .sidebar{
+    background-color: white;
+    color: #333;
+}
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background-color: #292929;
+    padding: 40px 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: auto;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
+    transition: 0.3s;
+}
+
+.sidebar .logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: #00B8A9;
+    text-align: center;
+}
+
+.sidebar a {
+    display: block;
+    color: #B0E4E1;
+    padding: 14px 22px;
+    text-decoration: none;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.sidebar a:hover {
+    background-color: #007D76;
+    color: #fff;
+}
+
+.sidebar .logout-btn {
+    background: #007D76;
+    color: white;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.sidebar .logout-btn:hover {
+    background: #005A52;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .settings-container {
+        padding: 15px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 20px;
+        box-shadow: none;
+    }
+
+    .sidebar .logo {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .sidebar a {
+        padding: 10px 15px;
+        margin-bottom: 5px;
+    }
+
+    .sidebar .logout-btn {
+        padding: 10px;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        padding: 10px;
+    }
+
+    .sidebar .logo {
+        font-size: 20px;
+    }
+
+    .sidebar a {
+        padding: 8px 10px;
+    }
+
+    .settings-container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    select {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+}
+    </style>
+</head>
+<body>  
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">Hashbook</div>
+        <a href="../dashboard.html">Home</a>
+        <a href="../profile/index.html">Profile</a>
+        <a href="../Messaging/index.html">Messages</a>
+        <a href="index.html">Settings</a>
+        <div id="logout-btn" class="logout-btn">Logout</div>
+    </div>
+    <div class="settings-container">
+        <h1>Theme</h1>
+        <div class="theme-selector">
+            <label for="theme">Select Theme:</label>
+            <select id="theme">
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+            </select>
+        </div>
+        <button id="save-theme-btn">Save Theme</button>
+    </div>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+// 🔹 Apply Theme Function
+function applyTheme(theme) {
+    document.body.className = `${theme}-theme`;
+}
+
+// 🔹 Load Theme from LocalStorage
+function loadTheme() {
+    const savedTheme = localStorage.getItem("theme") || "dark"; // Default is dark
+    applyTheme(savedTheme);
+    document.getElementById("theme").value = savedTheme;
+}
+
+// 🔹 Save Theme to LocalStorage
+function saveTheme() {
+    const selectedTheme = document.getElementById("theme").value;
+    localStorage.setItem("theme", selectedTheme);
+    applyTheme(selectedTheme);
+
+    // SweetAlert2 Alert with Theme
+    Swal.fire({
+        title: 'Theme Saved!',
+        text: `Your theme has been set to ${selectedTheme} mode.`,
+        icon: 'success',
+        customClass: {
+            popup: `${selectedTheme}-theme-swal`,
+            title: `${selectedTheme}-theme-swal-title`,
+            content: `${selectedTheme}-theme-swal-content`,
+            confirmButton: `${selectedTheme}-theme-swal-button`
+        },
+        background: selectedTheme === 'dark' ? '#2A2A2A' : '#FFFFFF',
+        color: selectedTheme === 'dark' ? '#EAEAEA' : '#333',
+        confirmButtonColor: selectedTheme === 'dark' ? '#00B8A9' : '#007D76',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirect to the dashboard or profile page after saving the theme
+            window.location.href = "../dashboard.html"; // Change this to your desired redirect URL
+        }
+    });
+}
+
+// 🔹 Apply Theme Across Pages
+document.addEventListener("DOMContentLoaded", loadTheme);
+
+// 🔹 Save Theme on Button Click
+document.getElementById("save-theme-btn").addEventListener("click", saveTheme);
+    </script>
+</body>
+</html>
