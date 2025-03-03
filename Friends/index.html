@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friend Requests - Hashbook</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #1E1E1E;
+            color: #EAEAEA;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Light Theme */
+        .light-theme {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .light-theme .sidebar {
+            background-color: #ffffff;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .light-theme .sidebar a {
+            color: #333;
+        }
+
+        .light-theme .sidebar a:hover {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+
+        .light-theme .sidebar .logout-btn {
+            background: #00B8A9;
+        }
+
+        .light-theme .sidebar .logout-btn:hover {
+            background: #007D76;
+        }
+
+        .light-theme .container {
+            background: #f5f5f5;
+        }
+
+        .light-theme .friend-section {
+            background: #ffffff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .light-theme .friend-requests h3,
+        .light-theme .friends-list h3 {
+            color: #00B8A9;
+        }
+
+        .light-theme .friend-requests li,
+        .light-theme .friends-list li {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .light-theme .search-bar {
+            background: #ffffff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .light-theme .search-bar input {
+            background: #f0f0f0;
+            color: #333;
+            border-color: #ddd;
+        }
+
+        .light-theme .search-bar button {
+            background: #00B8A9;
+        }
+
+        .light-theme .search-bar button:hover {
+            background: #007D76;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: #292929;
+            padding: 40px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        .sidebar .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #00B8A9;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #B0E4E1;
+            padding: 14px 22px;
+            text-decoration: none;
+            transition: 0.3s;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar a:hover {
+            background-color: #007D76;
+            color: #fff;
+        }
+
+        .sidebar .logout-btn {
+            background: #007D76;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .sidebar .logout-btn:hover {
+            background: #005A52;
+        }
+
+        /* Main Container */
+        .container {
+            margin-left: 300px;
+            padding: 40px;
+            width: calc(100% - 300px);
+            transition: 0.3s;
+        }
+
+        /* Navbar for Small Screens */
+        .navbar {
+            display: none;
+            width: 100%;
+            background-color: #292929;
+            padding: 10px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00B8A9;
+            white-space: nowrap;
+        }
+
+        .navbar .menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .navbar a {
+            color: #B0E4E1;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .navbar a:hover {
+            background-color: #007D76;
+            color: #fff;
+        }
+
+        .navbar .logout-btn {
+            background: #007D76;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .navbar .logout-btn:hover {
+            background: #005A52;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1115px) {
+            .sidebar {
+                display: none;
+            }
+
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .container {
+                margin-left: 0;
+                width: 100%;
+                padding: 70px 20px 20px;
+            }
+        }
+
+        /* Friend Requests Section */
+        .friend-section {
+            background: #2A2A2A;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .friend-requests, .friends-list {
+            margin-bottom: 20px;
+        }
+
+        .friend-requests h3, .friends-list h3 {
+            font-size: 18px;
+            color: #00B8A9;
+            margin-bottom: 10px;
+        }
+
+        .friend-requests ul, .friends-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .friend-requests li, .friends-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #333;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .friend-requests button {
+            padding: 8px 15px;
+            background: #00B8A9;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .friend-requests button:hover {
+            background: #007D76;
+        }
+
+        .search-bar {
+            background: #2A2A2A;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            background: #333;
+            color: #EAEAEA;
+            border: 1px solid #555;
+            margin-bottom: 10px;
+        }
+
+        .search-bar button {
+            width: 100%;
+            padding: 10px;
+            background: #00B8A9;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .search-bar button:hover {
+            background: #007D76;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">Hashbook</div>
+        <a href="../dashboard.html">Home</a>
+        <a href="../profile/index.html">Profile</a>
+        <a href="../Messaging/index.html">Messages</a>
+        <a href="../settings/index.html">Settings</a>
+        <a href="./index.html">Friends</a>
+        <div class="logout-btn">Logout</div>
+    </div>
+
+    <!-- Navbar for Small Screens -->
+    <div class="navbar">
+        <div class="logo">Hashbook</div>
+        <div class="menu">
+            <a href="../dashboard.html">Home</a>
+            <a href="../profile/index.html">Profile</a>
+            <a href="../Messaging/index.html">Messages</a>
+            <a href="../settings/index.html">Settings</a>
+            <a href="./index.html">Friends</a>
+            <div class="logout-btn">Logout</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Friend Requests</h1>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search for users by Random UID...">
+            <button id="search-btn">Search</button>
+        </div>
+
+        <!-- Friend Requests Section -->
+        <div class="friend-section">
+            <div class="friend-requests">
+                <h3>Friend Requests</h3>
+                <ul id="friend-requests-list"></ul>
+            </div>
+            <div class="friends-list">
+                <h3>Friends</h3>
+                <ul id="friends-list"></ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { 
+            getFirestore, collection, addDoc, getDocs, query, where, doc, deleteDoc, updateDoc, serverTimestamp, getDoc, setDoc 
+        } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+            authDomain: "facebook-1751a.firebaseapp.com",
+            projectId: "facebook-1751a",
+            storageBucket: "facebook-1751a.appspot.com",
+            messagingSenderId: "852573765318",
+            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
+            measurementId: "G-RZBV4M5Z2F"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // 🔹 Theme Management Functions
+
+        // Save theme preference to localStorage
+        function saveThemePreference(theme) {
+            localStorage.setItem("theme", theme);
+        }
+
+        // Apply theme from localStorage
+        function applyTheme() {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "light") {
+                document.body.classList.add("light-theme");
+            } else {
+                document.body.classList.remove("light-theme");
+            }
+        }
+
+        // 🔹 Initialize Page
+        document.addEventListener("DOMContentLoaded", () => {
+            // Apply saved theme
+            applyTheme();
+
+            const searchBtn = document.getElementById("search-btn");
+            if (searchBtn) {
+                searchBtn.addEventListener("click", searchUser);
+            }
+
+            const searchInput = document.getElementById("search-input");
+            if (searchInput) {
+                searchInput.addEventListener("keypress", function(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        searchUser();
+                    }
+                });
+            }
+
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    window.location.href = "../index.html";
+                } else {
+                    try {
+                        const userRef = doc(db, "users", user.uid);
+                        const userDoc = await getDoc(userRef);
+
+                        if (!userDoc.exists()) {
+                            const randomUID = generateRandomUID();
+                            await setDoc(userRef, { 
+                                displayName: user.displayName || "Anonymous", 
+                                randomUID: randomUID, 
+                                createdAt: serverTimestamp() 
+                            });
+                        }
+
+                        loadFriendRequests(user.uid);
+                        loadFriendsList(user.uid);
+                    } catch (error) {
+                        console.error("Error initializing user:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Initialization Error',
+                            text: 'There was a problem loading your profile. Please refresh the page.'
+                        });
+                    }
+                }
+            });
+        });
+
+
+        // 🔹 Generate a Random UID
+        function generateRandomUID() {
+            const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let randomUID = '';
+            for (let i = 0; i < 8; i++) {
+                randomUID += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return randomUID;
+        }
+
+        // 🔹 Get User ID by Random UID
+        async function getUserIdByRandomUID(randomUID) {
+            try {
+                const usersRef = collection(db, "users");
+                const q = query(usersRef, where("randomUID", "==", randomUID));
+                const querySnapshot = await getDocs(q);
+                
+                if (!querySnapshot.empty) {
+                    return querySnapshot.docs[0].id;
+                } else {
+                    console.error("No user found with this random UID:", randomUID);
+                    return null;
+                }
+            } catch (error) {
+                console.error("Error finding user by random UID:", error);
+                return null;
+            }
+        }
+
+        // 🔹 Get Random UID by User ID
+        async function getRandomUIDByUserId(userId) {
+            try {
+                const userRef = doc(db, "users", userId);
+                const userDoc = await getDoc(userRef);
+                
+                if (userDoc.exists()) {
+                    return userDoc.data().randomUID;
+                } else {
+                    console.error("No user found with this user ID:", userId);
+                    return null;
+                }
+            } catch (error) {
+                console.error("Error finding random UID by user ID:", error);
+                return null;
+            }
+        }
+
+        // 🔹 Send Friend Request
+        async function sendFriendRequest(targetRandomUID) {
+            const user = auth.currentUser;
+            if (!user) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'You must be logged in to send friend requests.'
+                });
+                return;
+            }
+
+            try {
+                const senderRef = doc(db, "users", user.uid);
+                const senderDoc = await getDoc(senderRef);
+
+                if (!senderDoc.exists()) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Your user data could not be found.'
+                    });
+                    return;
+                }
+
+                const senderRandomUID = senderDoc.data().randomUID;
+                const targetUserId = await getUserIdByRandomUID(targetRandomUID);
+                
+                if (!targetUserId) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'User Not Found',
+                        text: 'No user exists with this Random UID.'
+                    });
+                    return;
+                }
+                
+                if (targetUserId === user.uid) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Action',
+                        text: 'You cannot send a friend request to yourself.'
+                    });
+                    return;
+                }
+
+                const requestsRef = collection(db, "friendRequests");
+                const requestQ = query(requestsRef, 
+                    where("fromUserId", "==", senderRandomUID), 
+                    where("toUserId", "==", targetRandomUID),
+                    where("status", "==", "pending"));
+                const requestSnapshot = await getDocs(requestQ);
+                
+                if (!requestSnapshot.empty) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Request Pending',
+                        text: 'You have already sent a friend request to this user.'
+                    });
+                    return;
+                }
+
+                await addDoc(requestsRef, {
+                    fromUserId: senderRandomUID,
+                    fromUserName: senderDoc.data().displayName || "Anonymous",
+                    toUserId: targetRandomUID,
+                    status: "pending",
+                    createdAt: serverTimestamp()
+                });
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Friend request sent successfully!'
+                });
+                
+                document.getElementById('search-input').value = '';
+                
+            } catch (error) {
+                console.error("Error sending friend request:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to send friend request. Please try again.'
+                });
+            }
+        }
+
+        // 🔹 Load Friend Requests
+        async function loadFriendRequests(userId) {
+            try {
+                const randomUID = await getRandomUIDByUserId(userId);
+                if (!randomUID) {
+                    console.error("Could not find random UID for user");
+                    return;
+                }
+                
+                const friendRequestsRef = collection(db, "friendRequests");
+                const q = query(friendRequestsRef, where("toUserId", "==", randomUID), where("status", "==", "pending"));
+                const querySnapshot = await getDocs(q);
+                const friendRequestsList = document.getElementById("friend-requests-list");
+                friendRequestsList.innerHTML = "";
+
+                if (querySnapshot.empty) {
+                    friendRequestsList.innerHTML = '<p>No friend requests found.</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const request = doc.data();
+                    const requestElement = document.createElement("li");
+                    requestElement.innerHTML = `
+                        <span>${request.fromUserName}</span>
+                        <div>
+                            <button class="accept-btn" data-request-id="${doc.id}" data-from-uid="${request.fromUserId}">Accept</button>
+                            <button class="reject-btn" data-request-id="${doc.id}">Reject</button>
+                        </div>
+                    `;
+                    friendRequestsList.appendChild(requestElement);
+                });
+                
+                document.querySelectorAll('.accept-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const requestId = this.getAttribute('data-request-id');
+                        const fromUID = this.getAttribute('data-from-uid');
+                        acceptFriendRequest(requestId, fromUID);
+                    });
+                });
+                
+                document.querySelectorAll('.reject-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const requestId = this.getAttribute('data-request-id');
+                        rejectFriendRequest(requestId);
+                    });
+                });
+                
+            } catch (error) {
+                console.error("Error loading friend requests:", error);
+            }
+        }
+
+        // 🔹 Accept Friend Request
+        async function acceptFriendRequest(requestId, fromUserRandomUID) {
+            const user = auth.currentUser;
+            if (!user) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'You must be logged in to accept friend requests.'
+                });
+                return;
+            }
+
+            try {
+                const requestRef = doc(db, "friendRequests", requestId);
+                const requestDoc = await getDoc(requestRef);
+                
+                if (!requestDoc.exists()) {
+                    console.error("Friend request document does not exist");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'This friend request no longer exists.'
+                    });
+                    return;
+                }
+                
+                const userRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+
+                if (!userDoc.exists()) {
+                    console.error("User document does not exist");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Your user data could not be found.'
+                    });
+                    return;
+                }
+
+                const currentUserRandomUID = userDoc.data().randomUID;
+
+                if (!currentUserRandomUID || !fromUserRandomUID) {
+                    console.error("Missing UIDs", {currentUID: currentUserRandomUID, fromUID: fromUserRandomUID});
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'User identification issue. Please try again.'
+                    });
+                    return;
+                }
+
+                const friendsRef = collection(db, "friends");
+                
+                await addDoc(friendsRef, { 
+                    userId: currentUserRandomUID, 
+                    friendId: fromUserRandomUID, 
+                    createdAt: serverTimestamp() 
+                });
+                
+                await addDoc(friendsRef, { 
+                    userId: fromUserRandomUID, 
+                    friendId: currentUserRandomUID, 
+                    createdAt: serverTimestamp() 
+                });
+
+                await updateDoc(requestRef, {
+                    status: "accepted",
+                    updatedAt: serverTimestamp()
+                });
+                
+                await deleteDoc(requestRef);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Friend request accepted!'
+                });
+                
+                loadFriendRequests(user.uid);
+                loadFriendsList(user.uid);
+                
+            } catch (error) {
+                console.error("Error accepting friend request:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to accept friend request: ' + error.message
+                });
+            }
+        }
+
+        // 🔹 Reject Friend Request
+        async function rejectFriendRequest(requestId) {
+            try {
+                const requestRef = doc(db, "friendRequests", requestId);
+                const requestDoc = await getDoc(requestRef);
+                
+                if (!requestDoc.exists()) {
+                    console.error("Friend request document does not exist");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'This friend request no longer exists.'
+                    });
+                    return;
+                }
+                
+                await updateDoc(requestRef, {
+                    status: "rejected",
+                    updatedAt: serverTimestamp()
+                });
+                
+                await deleteDoc(requestRef);
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Request Rejected',
+                    text: 'Friend request has been rejected.'
+                });
+                
+                const user = auth.currentUser;
+                if (user) {
+                    loadFriendRequests(user.uid);
+                }
+            } catch (error) {
+                console.error("Error rejecting friend request:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to reject friend request. Please try again.'
+                });
+            }
+        }
+
+        // 🔹 Load Friends List
+        async function loadFriendsList(userId) {
+            try {
+                const randomUID = await getRandomUIDByUserId(userId);
+                if (!randomUID) {
+                    console.error("Could not find random UID for user");
+                    return;
+                }
+                
+                const friendsRef = collection(db, "friends");
+                const q = query(friendsRef, where("userId", "==", randomUID));
+                const querySnapshot = await getDocs(q);
+                const friendsList = document.getElementById("friends-list");
+                friendsList.innerHTML = "";
+
+                if (querySnapshot.empty) {
+                    friendsList.innerHTML = '<p>No friends found.</p>';
+                    return;
+                }
+
+                for (const doc of querySnapshot.docs) {
+                    const friend = doc.data();
+                    const friendUserId = await getUserIdByRandomUID(friend.friendId);
+                    
+                    if (friendUserId) {
+                        const friendRef = doc(db, "users", friendUserId);
+                        const friendDoc = await getDoc(friendRef);
+                        
+                        if (friendDoc.exists()) {
+                            const friendData = friendDoc.data();
+                            const friendElement = document.createElement("li");
+                            friendElement.innerHTML = `<span>${friendData.displayName || "Anonymous"}</span>`;
+                            friendsList.appendChild(friendElement);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading friends list:", error);
+            }
+        }
+
+        // 🔹 Search for User by Random UID
+        async function searchUser() {
+            const searchInput = document.getElementById("search-input");
+            const searchUID = searchInput.value.trim();
+            
+            if (!searchUID) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Empty Search',
+                    text: 'Please enter a Random UID to search.'
+                });
+                return;
+            }
+            
+            try {
+                const userId = await getUserIdByRandomUID(searchUID);
+                
+                if (userId) {
+                    if (userId === auth.currentUser.uid) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'That\'s You!',
+                            text: 'You cannot send a friend request to yourself.'
+                        });
+                        return;
+                    }
+                    
+                    const userRef = doc(db, "users", userId);
+                    const userDoc = await getDoc(userRef);
+                    const userName = userDoc.exists() ? userDoc.data().displayName || "This user" : "This user";
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'User Found',
+                        text: `${userName} was found! Would you like to send a friend request?`,
+                        showCancelButton: true,
+                        confirmButtonText: 'Send Request',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            sendFriendRequest(searchUID);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'User Not Found',
+                        text: 'No user found with this Random UID.'
+                    });
+                }
+            } catch (error) {
+                console.error("Error searching for user:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to search for user. Please try again.'
+                });
+            }
+        }
+
+        // 🔹 Initialize Page
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchBtn = document.getElementById("search-btn");
+            if (searchBtn) {
+                searchBtn.addEventListener("click", searchUser);
+            }
+            
+            const searchInput = document.getElementById("search-input");
+            if (searchInput) {
+                searchInput.addEventListener("keypress", function(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        searchUser();
+                    }
+                });
+            }
+            
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    window.location.href = "../index.html";
+                } else {
+                    try {
+                        const userRef = doc(db, "users", user.uid);
+                        const userDoc = await getDoc(userRef);
+
+                        if (!userDoc.exists()) {
+                            const randomUID = generateRandomUID();
+                            await setDoc(userRef, { 
+                                displayName: user.displayName || "Anonymous", 
+                                randomUID: randomUID, 
+                                createdAt: serverTimestamp() 
+                            });
+                        }
+
+                        loadFriendRequests(user.uid);
+                        loadFriendsList(user.uid);
+                    } catch (error) {
+                        console.error("Error initializing user:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Initialization Error',
+                            text: 'There was a problem loading your profile. Please refresh the page.'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
