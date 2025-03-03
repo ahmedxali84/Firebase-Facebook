@@ -387,9 +387,7 @@ body {
             <div class="profile-info">
                 <h1 id="profile-name">Loading...</h1>
                 <div class="profile-uid" id="profile-uid">Random UID: Loading...</div>
-                <div class="bio-box">
-                    <p id="profile-bio"></p>
-                </div>
+                <div class="profile-bio" id="profile-bio">Loading bio...</div>
             </div>
         </div>
 
@@ -499,7 +497,8 @@ body {
         
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
-                    profileName.textContent = userData.uername || "Anonymous";
+                    // Fixed typo: changed 'uername' to 'displayName' and added fallback
+                    profileName.textContent = userData.displayName || "Anonymous";
                     profileUID.textContent = `UID: ${userData.randomUID || "Not Set"}`;
                     profileBio.textContent = userData.bio || "You can add your bio from profile management.";
                     profilePicture.src = userData.photoURL || "../pfp.jpg";
@@ -537,7 +536,7 @@ body {
                         </div>
                         <p>${post.text}</p>
                         ${post.imageURL ? `<img src="${post.imageURL}" alt="Post Image">` : ""}
-                        <small>Posted ${formatDistanceToNow(post.createdAt.toDate(), { addSuffix: true })}</small>
+                        <small>Posted ${formatDistanceToNow(post.createdAt?.toDate() || new Date(), { addSuffix: true })}</small>
                     `;
                     postsContainer.appendChild(postElement);
                 });
@@ -632,12 +631,14 @@ body {
         // Apply theme from localStorage
         function applyTheme() {
             const savedTheme = localStorage.getItem("theme");
+            const themeToggle = document.getElementById("theme-toggle");
+            
             if (savedTheme === "light") {
                 document.body.classList.add("light-theme");
-                document.getElementById("theme-toggle").textContent = "Dark Mode";
+                if (themeToggle) themeToggle.textContent = "Dark Mode";
             } else {
                 document.body.classList.remove("light-theme");
-                document.getElementById("theme-toggle").textContent = "Light Mode";
+                if (themeToggle) themeToggle.textContent = "Light Mode";
             }
         }
 
@@ -716,6 +717,6 @@ body {
                 }
             });
         });
-        </script>
+    </script>
 </body>
 </html>
