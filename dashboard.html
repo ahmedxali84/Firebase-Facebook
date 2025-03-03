@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+v<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,6 @@
     <title>Hashbook</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module" src="firebasetheme.js"></script>
     <style>
         /* CSS Variables for Themes */
         :root {
@@ -393,6 +392,7 @@
             <a href="./profile/index.html">Profile</a>
             <a href="./Messaging/index.html">Messages</a>
             <a href="./settings/index.html">Settings</a>
+            <a href="./Friends/index.html">Friends</a>
             <div class="logout-btn">Logout</div>
         </div>
     </div>
@@ -404,6 +404,7 @@
         <a href="./profile/index.html">Profile</a>
         <a href="./Messaging/index.html">Messages</a>
         <a href="./settings/index.html">Settings</a>
+        <a href="./Friends/index.html">Friends</a>
         <div class="logout-btn">Logout</div>
     </div>
 
@@ -426,7 +427,6 @@
         import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
         import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
-
         const firebaseConfig = {
             apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
             authDomain: "facebook-1751a.firebaseapp.com",
