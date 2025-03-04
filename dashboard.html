@@ -494,7 +494,7 @@ v<!DOCTYPE html>
             userInfo.appendChild(userImage);
 
             const username = document.createElement("span");
-            username.textContent = post.displayName || "Anonymous";
+            username.textContent = post.displayName;
             userInfo.appendChild(username);
 
             // Dropdown menu for edit/delete (only for the logged-in user's posts)
@@ -614,7 +614,7 @@ v<!DOCTYPE html>
                     imageUrl: imageUrl,
                     createdAt: serverTimestamp(),
                     userId: user.uid, // Ensure userId is saved
-                    displayName: user.displayName || "Anonymous",
+                    displayName: user.displayName,
                     photoURL: user.photoURL || "pfp.jpg",
                 });
 
