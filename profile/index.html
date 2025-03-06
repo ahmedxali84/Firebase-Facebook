@@ -321,7 +321,54 @@ body {
     color: #B0E4E1;
     font-size: 12px;
 }
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 40px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 4px 0 10px var(--shadow);
+            transition: 0.3s;
+        }
 
+        .sidebar .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .sidebar a {
+            display: block;
+            color: var(--sidebar-text);
+            padding: 14px 22px;
+            text-decoration: none;
+            transition: 0.3s;
+            border-radius: 10px;
+        }
+
+        .sidebar a:hover {
+            background-color: var(--hover-bg);
+            color: var(--hover-text);
+        }
+
+        .sidebar .logout-btn {
+            background: var(--logout-bg);
+            color: white;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .sidebar .logout-btn:hover {
+            background: var(--logout-hover-bg);
+        }
 /* Animations */
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -366,357 +413,253 @@ body {
 </head>
 <body>
     
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">Hashbook</div>
-        <a href="../dashboard.html">Home</a>
-        <a href="./index.html">Profile</a>
-        <a href="../Messaging/index.html">Messages</a>
-        <a href="../settings/index.html">Settings</a>
-        <a href="../Friends/index.html">Friends</a>
-        <div class="logout-btn">Logout</div>
+   <!-- Sidebar -->
+   <div class="sidebar">
+    <div class="logo">Hashbook</div>
+    <a href="../dashboard.html">Home</a>
+    <a href="./index.html">Profile</a>
+    <a href="../Messaging/index.html">Messages</a>
+    <a href="../settings/index.html">Settings</a>
+    <a href="../Friends/index.html">Friends</a>
+    <div class="logout-btn">Logout</div>
+</div>
+
+<div class="container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <label for="profile-picture-input">
+            <img id="profile-picture" src="../pfp.jpg" alt="Profile Picture">
+        </label>
+        <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
+        <div class="profile-info">
+            <h1 id="profile-name">Loading...</h1>
+            <div class="profile-uid" id="profile-uid">UID: Loading...</div>
+            <div class="profile-bio" id="profile-bio">Loading bio...</div>
+        </div>
     </div>
 
-    <div class="container">
-        <!-- Profile Header -->
-        <div class="profile-header">
-            <label for="profile-picture-input">
-                <img id="profile-picture" src="../pfp.jpg" alt="Profile Picture">
-            </label>
-            <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
-            <div class="profile-info">
-                <h1 id="profile-name">Loading...</h1>
-                <div class="profile-uid" id="profile-uid">Random UID: Loading...</div>
-                <div class="profile-bio" id="profile-bio">Loading bio...</div>
-            </div>
-        </div>
-
-        <!-- Post Form -->
-        <div class="post-form">
-            <h3>Create a New Post</h3>
-            <textarea id="post-text" rows="4" placeholder="What's on your mind?"></textarea>
-            <input type="file" id="post-image" accept="image/*">
-            <button id="post-btn">Post</button>
-        </div>
-
-        <!-- User's Posts -->
-        <div class="posts-container" id="posts-container"></div>
+    <!-- Post Form -->
+    <div class="post-form">
+        <h3>Create a New Post</h3>
+        <textarea id="post-text" rows="4" placeholder="What's on your mind?"></textarea>
+        <input type="file" id="post-image" accept="image/*">
+        <button id="post-btn">Post</button>
     </div>
 
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-        import { 
-            getFirestore, collection, addDoc, getDocs, query, where, doc, deleteDoc, updateDoc, serverTimestamp, getDoc, setDoc 
-        } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
-        import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
-        
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
-            authDomain: "facebook-1751a.firebaseapp.com",
-            projectId: "facebook-1751a",
-            storageBucket: "facebook-1751a.appspot.com",
-            messagingSenderId: "852573765318",
-            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
-            measurementId: "G-RZBV4M5Z2F"
+    <!-- User's Posts -->
+    <div class="posts-container" id="posts-container"></div>
+</div>
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module">
+   // Firebase imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAuth, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { 
+    getFirestore, collection, addDoc, getDocs, query, where, doc, deleteDoc, updateDoc, serverTimestamp, getDoc, setDoc 
+} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
+
+// 🔹 Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+    authDomain: "facebook-1751a.firebaseapp.com",
+    projectId: "facebook-1751a",
+    storageBucket: "facebook-1751a.appspot.com",
+    messagingSenderId: "852573765318",
+    appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
+    measurementId: "G-RZBV4M5Z2F"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+// 🔹 Generate a Random UID
+function generateRandomUID() {
+    return Math.random().toString(36).substring(2, 10).toUpperCase();
+}
+
+// 🔹 Get User ID from URL
+function getUserIdFromURL() {
+    return new URLSearchParams(window.location.search).get("userId");
+}
+
+async function loadProfile(userId) {
+    const profileName = document.getElementById("profile-name");
+    const profileUID = document.getElementById("profile-uid");
+    const profileBio = document.getElementById("profile-bio");
+    const profilePicture = document.getElementById("profile-picture");
+
+    try {
+        const userRef = doc(db, "users", userId);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            console.log("Firestore User Data:", userData);
+
+            profileName.textContent = auth.currentUser.displayName || "No Name Provided";
+            const uid = userData.randomUID; // Declare uid here
+            const username = userData.username; // Declare username here
+            profileUID.textContent = uid || username;
+            profileBio.textContent = userData.bio || "You can add your bio from profile settings.";
+            profilePicture.src = userData.photoURL || "../pfp.jpg";
+        } else {
+            console.error("User document does not exist.");
+        }
+    } catch (error) {
+        console.error("Error loading profile:", error);
+    }
+}
+// 🔹 Ensure Display Name Syncs with Firebase Auth
+async function ensureAuthDisplayName(user) {
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
+
+    let firestoreName = userDoc.exists() ? userDoc.data().displayName : null;
+    let authName = user.displayName;
+
+    console.log("Auth Name:", authName, "| Firestore Name:", firestoreName);
+
+    // If Auth has no name but Firestore does, update Firebase Auth
+    if (!authName && firestoreName) {
+        try {
+            await updateProfile(user, { displayName: firestoreName });
+            console.log("Updated Firebase Auth displayName:", firestoreName);
+        } catch (error) {
+            console.error("Error updating Firebase Auth displayName:", error);
+        }
+    }
+}
+
+// 🔹 Load Posts
+async function loadPosts(userId) {
+    const postsContainer = document.getElementById("posts-container");
+    postsContainer.innerHTML = ""; // Clear existing posts
+
+    try {
+        const postsRef = collection(db, "posts");
+        const q = query(postsRef, where("userId", "==", userId));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+            postsContainer.innerHTML = "<p>No posts found.</p>";
+            return;
+        }
+
+        querySnapshot.forEach((doc) => {
+            const post = doc.data();
+            const postElement = document.createElement("div");
+            postElement.classList.add("post");
+            postElement.innerHTML = `
+                <div class="user-info">
+                    <img src="${post.userPhotoURL || "../pfp.jpg"}" alt="User Photo">
+                    <a href="#">${post.userName || "Anonymous"}</a>
+                </div>
+                <p>${post.text}</p>
+                ${post.imageURL ? `<img src="${post.imageURL}" alt="Post Image">` : ""}
+                <small>Posted ${formatDistanceToNow(post.createdAt?.toDate() || new Date(), { addSuffix: true })}</small>
+            `;
+            postsContainer.appendChild(postElement);
+        });
+    } catch (error) {
+        console.error("Error loading posts:", error);
+    }
+}
+
+// 🔹 Handle New Post Submission
+async function handlePostSubmit() {
+    const user = auth.currentUser;
+    if (!user) {
+        alert("You must be logged in to create a post.");
+        return;
+    }
+
+    const postText = document.getElementById("post-text").value.trim();
+    const postImage = document.getElementById("post-image").files[0];
+
+    if (!postText && !postImage) {
+        alert("Please enter text or upload an image to create a post.");
+        return;
+    }
+
+    try {
+        const userRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userRef);
+
+        if (!userDoc.exists()) {
+            alert("Your user data could not be found.");
+            return;
+        }
+
+        const userData = userDoc.data();
+        const postData = {
+            userId: user.uid,
+            userName: userData.authName|| "No Name Provided",
+            userPhotoURL: userData.photoURL || "../pfp.jpg",
+            text: postText,
+            createdAt: serverTimestamp()
         };
-        
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
-        
-        // 🔹 Generate a Random UID
-        function generateRandomUID() {
-            const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            let randomUID = '';
-            for (let i = 0; i < 8; i++) {
-                randomUID += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            return randomUID;
-        }
-        
-        // 🔹 Get User ID from URL
-        function getUserIdFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get("userId");
-        }
-        
-        // 🔹 Get User ID by Random UID
-        async function getUserIdByRandomUID(randomUID) {
-            try {
-                const usersRef = collection(db, "users");
-                const q = query(usersRef, where("randomUID", "==", randomUID));
-                const querySnapshot = await getDocs(q);
-                
-                if (!querySnapshot.empty) {
-                    return querySnapshot.docs[0].id; // Return the first matching user ID
-                } else {
-                    console.error("No user found with this random UID:", randomUID);
-                    return null;
-                }
-            } catch (error) {
-                console.error("Error finding user by random UID:", error);
-                return null;
-            }
-        }
-        
-        // 🔹 Get Random UID by User ID
-        async function getRandomUIDByUserId(userId) {
-            try {
-                const userRef = doc(db, "users", userId);
-                const userDoc = await getDoc(userRef);
-                
-                if (userDoc.exists()) {
-                    return userDoc.data().randomUID;
-                } else {
-                    console.error("No user found with this user ID:", userId);
-                    return null;
-                }
-            } catch (error) {
-                console.error("Error finding random UID by user ID:", error);
-                return null;
-            }
-        }
-        
-        // 🔹 Load Profile Data
-        async function loadProfile(userId) {
-            const profileName = document.getElementById("profile-name");
-            const profileUID = document.getElementById("profile-uid");
-            const profileBio = document.getElementById("profile-bio");
-            const profilePicture = document.getElementById("profile-picture");
-        
-            try {
-                const userRef = doc(db, "users", userId);
-                const userDoc = await getDoc(userRef);
-        
-                if (userDoc.exists()) {
-                    const userData = userDoc.data();
-                    // Fixed typo: changed 'uername' to 'displayName' and added fallback
-                    profileName.textContent = userData.displayName || "Anonymous";
-                    profileUID.textContent = `UID: ${userData.randomUID || "Not Set"}`;
-                    profileBio.textContent = userData.bio || "You can add your bio from profile management.";
-                    profilePicture.src = userData.photoURL || "../pfp.jpg";
-                } else {
-                    console.error("User document does not exist.");
-                }
-            } catch (error) {
-                console.error("Error loading profile:", error);
-            }
-        }
-        
-        // 🔹 Load Posts
-        async function loadPosts(userId) {
-            const postsContainer = document.getElementById("posts-container");
-            postsContainer.innerHTML = ""; // Clear existing posts
-        
-            try {
-                const postsRef = collection(db, "posts");
-                const q = query(postsRef, where("userId", "==", userId));
-                const querySnapshot = await getDocs(q);
-        
-                if (querySnapshot.empty) {
-                    postsContainer.innerHTML = "<p>No posts found.</p>";
-                    return;
-                }
-        
-                querySnapshot.forEach((doc) => {
-                    const post = doc.data();
-                    const postElement = document.createElement("div");
-                    postElement.classList.add("post");
-                    postElement.innerHTML = `
-                        <div class="user-info">
-                            <img src="${post.userPhotoURL || "../pfp.jpg"}" alt="User Photo">
-                            <a href="#">${post.userName || "Anonymous"}</a>
-                        </div>
-                        <p>${post.text}</p>
-                        ${post.imageURL ? `<img src="${post.imageURL}" alt="Post Image">` : ""}
-                        <small>Posted ${formatDistanceToNow(post.createdAt?.toDate() || new Date(), { addSuffix: true })}</small>
-                    `;
-                    postsContainer.appendChild(postElement);
-                });
-            } catch (error) {
-                console.error("Error loading posts:", error);
-            }
-        }
-        
-        // 🔹 Handle New Post Submission
-        async function handlePostSubmit() {
-            const user = auth.currentUser;
-            if (!user) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'You must be logged in to create a post.'
-                });
-                return;
-            }
-        
-            const postText = document.getElementById("post-text").value.trim();
-            const postImage = document.getElementById("post-image").files[0];
-        
-            if (!postText && !postImage) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Empty Post',
-                    text: 'Please enter text or upload an image to create a post.'
-                });
-                return;
-            }
-        
-            try {
-                const userRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userRef);
-        
-                if (!userDoc.exists()) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Your user data could not be found.'
-                    });
-                    return;
-                }
-        
-                const userData = userDoc.data();
-                const postData = {
-                    userId: user.uid,
-                    userName: userData.displayName || "Anonymous",
-                    userPhotoURL: userData.photoURL || "../pfp.jpg",
-                    text: postText,
-                    createdAt: serverTimestamp()
-                };
-        
-                if (postImage) {
-                    const storageRef = ref(storage, `posts/${user.uid}/${Date.now()}_${postImage.name}`);
-                    await uploadBytes(storageRef, postImage);
-                    postData.imageURL = await getDownloadURL(storageRef);
-                }
-        
-                await addDoc(collection(db, "posts"), postData);
-        
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Your post has been created!'
-                });
-        
-                // Clear the form
-                document.getElementById("post-text").value = "";
-                document.getElementById("post-image").value = "";
-        
-                // Reload posts
-                loadPosts(user.uid);
-            } catch (error) {
-                console.error("Error creating post:", error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to create post. Please try again.'
-                });
-            }
-        }
-        
-        // 🔹 Theme Management Functions
 
-        // Save theme preference to localStorage
-        function saveThemePreference(theme) {
-            localStorage.setItem("theme", theme);
+        if (postImage) {
+            const storageRef = ref(storage, `posts/${user.uid}/${Date.now()}_${postImage.name}`);
+            await uploadBytes(storageRef, postImage);
+            postData.imageURL = await getDownloadURL(storageRef);
         }
 
-        // Apply theme from localStorage
-        function applyTheme() {
-            const savedTheme = localStorage.getItem("theme");
-            const themeToggle = document.getElementById("theme-toggle");
-            
-            if (savedTheme === "light") {
-                document.body.classList.add("light-theme");
-                if (themeToggle) themeToggle.textContent = "Dark Mode";
-            } else {
-                document.body.classList.remove("light-theme");
-                if (themeToggle) themeToggle.textContent = "Light Mode";
-            }
-        }
+        await addDoc(collection(db, "posts"), postData);
+        alert("Your post has been created!");
 
-        // Toggle between light and dark themes
-        function toggleTheme() {
-            if (document.body.classList.contains("light-theme")) {
-                document.body.classList.remove("light-theme");
-                saveThemePreference("dark");
-                document.getElementById("theme-toggle").textContent = "Light Mode";
-            } else {
-                document.body.classList.add("light-theme");
-                saveThemePreference("light");
-                document.getElementById("theme-toggle").textContent = "Dark Mode";
-            }
-        }
-        
-        // 🔹 Initialize Page
-        document.addEventListener("DOMContentLoaded", () => {
-            // Apply saved theme
-            applyTheme();
-            
-            // Theme toggle button event listener
-            const themeToggle = document.getElementById("theme-toggle");
-            if (themeToggle) {
-                themeToggle.addEventListener("click", toggleTheme);
-            }
-            
-            const postBtn = document.getElementById("post-btn");
-            if (postBtn) {
-                postBtn.addEventListener("click", handlePostSubmit);
-            }
-        
-            // 🔹 Logout functionality
-            document.querySelectorAll(".logout-btn").forEach(button => {
-                button.addEventListener("click", () => {
-                    signOut(auth).then(() => {
-                        window.location.href = "../index.html";
-                    }).catch((error) => {
-                        console.error("Error signing out:", error);
-                    });
-                });
-            });
-        
-            // 🔹 Load profile and posts when the page loads
-            onAuthStateChanged(auth, async (user) => {
-                if (!user) {
-                    window.location.href = "../index.html";
-                } else {
-                    try {
-                        const userRef = doc(db, "users", user.uid);
-                        const userDoc = await getDoc(userRef);
-        
-                        if (!userDoc.exists()) {
-                            // Create user profile if it doesn't exist
-                            const randomUID = generateRandomUID();
-                            await setDoc(userRef, { 
-                                displayName: user.displayName || "Anonymous", 
-                                randomUID: randomUID, 
-                                createdAt: serverTimestamp() 
-                            });
-                        }
-        
-                        const userId = getUserIdFromURL() || user.uid;
-                        if (userId) {
-                            loadProfile(userId);
-                            loadPosts(userId);
-                        }
-                    } catch (error) {
-                        console.error("Error initializing user:", error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Initialization Error',
-                            text: 'There was a problem loading your profile. Please refresh the page.'
-                        });
-                    }
-                }
+        // Clear the form
+        document.getElementById("post-text").value = "";
+        document.getElementById("post-image").value = "";
+
+        // Reload posts
+        loadPosts(user.uid);
+    } catch (error) {
+        console.error("Error creating post:", error);
+        alert("Failed to create post. Please try again.");
+    }
+}
+
+// 🔹 Initialize Page
+document.addEventListener("DOMContentLoaded", () => {
+    const postBtn = document.getElementById("post-btn");
+    if (postBtn) {
+        postBtn.addEventListener("click", handlePostSubmit);
+    }
+
+    // Logout functionality
+    document.querySelectorAll(".logout-btn").forEach(button => {
+        button.addEventListener("click", () => {
+            signOut(auth).then(() => {
+                window.location.href = "../index.html";
+            }).catch((error) => {
+                console.error("Error signing out:", error);
             });
         });
-    </script>
+    });
+
+    // Load profile and posts when the page loads
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+            window.location.href = "../index.html";
+        } else {
+            await ensureAuthDisplayName(user);
+            const userId = getUserIdFromURL() || user.uid;
+            if (userId) {
+                loadProfile(userId);
+                loadPosts(userId);
+            }
+        }
+    });
+});
+
+</script>
 </body>
 </html>
