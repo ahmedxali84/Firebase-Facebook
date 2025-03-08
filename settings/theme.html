@@ -5,35 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Hashbook</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
-    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
-/* Basic Styles */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #1E1E1E;
-    color: #EAEAEA;
-    margin: 0;
-    padding: 20px;
-    transition: background-color 0.3s, color 0.3s;
+/* CSS Variables for Themes */
+:root {
+    --primary-color: #00B8A9;
+    --secondary-color: #007D76;
+    --background-color: #1E1E1E;
+    --text-color: #EAEAEA;
+    --navbar-bg: #292929;
+    --hover-bg: #007D76;
+    --hover-text: #ffffff;
+    --logout-bg: #007D76;
+    --logout-hover-bg: #005A52;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --card-bg: #2C2C2C;
+    --border-radius: 15px;
+    --transition-speed: 0.3s;
+    --gradient-primary: linear-gradient(135deg, #00B8A9, #007D76);
+    --gradient-secondary: linear-gradient(135deg, #007D76, #00B8A9);
+    --glow: 0 0 15px rgba(0, 184, 169, 0.7);
 }
 
-.settings-container {
-    max-width: 600px;
-    margin: 0 auto;
+[data-theme="light"] {
+    --primary-color: #007D76;
+    --secondary-color: #00B8A9;
+    --background-color: #F5F5F5;
+    --text-color: #333;
+    --navbar-bg: #ffffff;
+    --hover-bg: #e0e0e0;
+    --hover-text: #000;
+    --logout-bg: #007D76;
+    --logout-hover-bg: #005A52;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --card-bg: #ffffff;
+    --gradient-primary: linear-gradient(135deg, #007D76, #00B8A9);
+    --gradient-secondary: linear-gradient(135deg, #00B8A9, #007D76);
+    --glow: 0 0 15px rgba(0, 125, 118, 0.5);
+}
+
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     padding: 20px;
-    background: #2A2A2A;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+/* Navbar Styles */
+.navbar {
+    width: 100%;
+    background-color: var(--navbar-bg);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px var(--shadow);
+    transition: var(--transition-speed);
+}
+
+.navbar-logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-shadow: var(--glow);
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px rgba(0, 184, 169, 0.7);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(0, 184, 169, 1);
+    }
+}
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar-menu a {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    transition: var(--transition-speed);
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar-menu a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, rgba(0, 184, 169, 0.3), transparent);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform var(--transition-speed);
+    border-radius: 50%;
+}
+
+.navbar-menu a:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.navbar-menu a:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+.navbar-menu .logout-btn {
+    background: var(--logout-bg);
+    color: white;
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition-speed);
+    box-shadow: var(--glow);
+}
+
+.navbar-menu .logout-btn:hover {
+    background: var(--logout-hover-bg);
+    transform: translateY(-2px);
+}
+
+.navbar-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.navbar-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-color);
+    transition: var(--transition-speed);
+}
+
+/* Settings Container */
+.settings-container {
+    width: 100%;
+    max-width: 1200px; /* Wider container */
+    margin: 80px auto 20px auto; /* Adjusted margin-top for navbar */
+    padding: 40px; /* Increased padding */
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px var(--shadow);
+    animation: fadeIn 1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 h1 {
-    color: #00B8A9;
+    color: var(--primary-color);
     text-align: center;
     margin-bottom: 20px;
+    text-shadow: var(--glow);
 }
 
 .theme-selector {
+    width: 100%;
+    max-width: 600px; /* Adjusted width for the form */
     margin-bottom: 20px;
 }
 
@@ -41,194 +206,115 @@ label {
     display: block;
     margin-bottom: 10px;
     font-weight: bold;
+    color: var(--primary-color);
 }
 
 select {
     width: 100%;
     padding: 10px;
-    border-radius: 10px;
-    background: #333;
-    color: #EAEAEA;
-    border: 1px solid #555;
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--hover-bg);
     font-size: 16px;
     cursor: pointer;
+    transition: var(--transition-speed);
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: var(--glow);
 }
 
 button {
     width: 100%;
+    max-width: 600px; /* Adjusted width for the button */
     padding: 12px;
-    background: #00B8A9;
+    background: var(--gradient-primary);
     color: white;
     font-size: 16px;
     font-weight: bold;
     border: none;
-    border-radius: 15px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
+    transition: var(--transition-speed);
+    box-shadow: var(--glow);
 }
 
 button:hover {
-    background: #007D76;
+    background: var(--gradient-secondary);
     transform: translateY(-3px);
 }
 
-/* Theme-specific Styles */
-body.light-theme {
-    background-color: #F5F5F5;
-    color: #333;
-}
-
-body.light-theme .settings-container {
-    background: #FFFFFF;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-body.light-theme h1 {
-    color: #007D76;
-}
-
-body.light-theme select {
-    background: #EAEAEA;
-    color: #333;
-    border-color: #CCC;
-}
-
-body.light-theme button {
-    background: #007D76;
-}
-
-body.light-theme button:hover {
-    background: #005A52;
-}
-body.light-theme .sidebar{
-    background-color: white;
-    color: #333;
-}
-/* Sidebar */
-.sidebar {
-    width: 280px;
-    background-color: #292929;
-    padding: 40px 30px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    overflow-y: auto;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
-    transition: 0.3s;
-}
-
-.sidebar .logo {
-    font-size: 30px;
-    font-weight: 700;
-    color: #00B8A9;
-    text-align: center;
-}
-
-.sidebar a {
-    display: block;
-    color: #B0E4E1;
-    padding: 14px 22px;
-    text-decoration: none;
-    transition: 0.3s;
-    border-radius: 10px;
-}
-
-.sidebar a:hover {
-    background-color: #007D76;
-    color: #fff;
-}
-
-.sidebar .logout-btn {
-    background: #007D76;
-    color: white;
-    padding: 14px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 20px;
-    transition: 0.3s;
-}
-
-.sidebar .logout-btn:hover {
-    background: #005A52;
-}
-
-/* Responsive Styles */
+/* Responsive Design */
 @media (max-width: 768px) {
-    body {
+    .navbar-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: var(--navbar-bg);
         padding: 10px;
+        box-shadow: 0 4px 10px var(--shadow);
+    }
+
+    .navbar-menu.active {
+        display: flex;
+    }
+
+    .navbar-toggle {
+        display: flex;
     }
 
     .settings-container {
-        padding: 15px;
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
+        margin: 80px 20px 20px 20px;
         padding: 20px;
-        box-shadow: none;
-    }
-
-    .sidebar .logo {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-    .sidebar a {
-        padding: 10px 15px;
-        margin-bottom: 5px;
-    }
-
-    .sidebar .logout-btn {
-        padding: 10px;
-        margin-top: 10px;
     }
 }
 
 @media (max-width: 480px) {
-    .sidebar {
+    .navbar {
         padding: 10px;
     }
 
-    .sidebar .logo {
+    .navbar-logo {
         font-size: 20px;
     }
 
-    .sidebar a {
+    .navbar-menu a {
         padding: 8px 10px;
     }
 
     .settings-container {
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 24px;
-    }
-
-    select {
-        font-size: 14px;
-    }
-
-    button {
-        font-size: 14px;
+        margin: 80px 10px 10px 10px;
+        padding: 15px;
     }
 }
     </style>
 </head>
-<body>  
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">Hashbook</div>
-        <a href="../dashboard.html">Home</a>
-        <a href="../profile/index.html">Profile</a>
-        <a href="../Messaging/index.html">Messages</a>
-        <a href="index.html">Settings</a>
-        <a href="../Friends/index.html">Friends</a>
-        <div id="logout-btn" class="logout-btn">Logout</div>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-logo">Hashbook</div>
+        <div class="navbar-menu">
+            <a href="../dashboard.html">Home</a>
+            <a href="../profile/index.html">Profile</a>
+            <a href="../Messaging/index.html">Messages</a>
+            <a href="index.html">Settings</a>
+            <a href="../Friends/index.html">Friends</a>
+            <div id="logout-btn" class="logout-btn">Logout</div>
+        </div>
+        <div class="navbar-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
+
+    <!-- Settings Container -->
     <div class="settings-container">
         <h1>Theme</h1>
         <div class="theme-selector">
@@ -244,51 +330,59 @@ body.light-theme .sidebar{
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-// 🔹 Apply Theme Function
-function applyTheme(theme) {
-    document.body.className = `${theme}-theme`;
-}
-
-// 🔹 Load Theme from LocalStorage
-function loadTheme() {
-    const savedTheme = localStorage.getItem("theme") || "dark"; // Default is dark
-    applyTheme(savedTheme);
-    document.getElementById("theme").value = savedTheme;
-}
-
-// 🔹 Save Theme to LocalStorage
-function saveTheme() {
-    const selectedTheme = document.getElementById("theme").value;
-    localStorage.setItem("theme", selectedTheme);
-    applyTheme(selectedTheme);
-
-    // SweetAlert2 Alert with Theme
-    Swal.fire({
-        title: 'Theme Saved!',
-        text: `Your theme has been set to ${selectedTheme} mode.`,
-        icon: 'success',
-        customClass: {
-            popup: `${selectedTheme}-theme-swal`,
-            title: `${selectedTheme}-theme-swal-title`,
-            content: `${selectedTheme}-theme-swal-content`,
-            confirmButton: `${selectedTheme}-theme-swal-button`
-        },
-        background: selectedTheme === 'dark' ? '#2A2A2A' : '#FFFFFF',
-        color: selectedTheme === 'dark' ? '#EAEAEA' : '#333',
-        confirmButtonColor: selectedTheme === 'dark' ? '#00B8A9' : '#007D76',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Redirect to the dashboard or profile page after saving the theme
-            window.location.href = "../dashboard.html"; // Change this to your desired redirect URL
+        // 🔹 Apply Theme Function
+        function applyTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
         }
-    });
-}
 
-// 🔹 Apply Theme Across Pages
-document.addEventListener("DOMContentLoaded", loadTheme);
+        // 🔹 Load Theme from LocalStorage
+        function loadTheme() {
+            const savedTheme = localStorage.getItem("theme") || "dark"; // Default is dark
+            applyTheme(savedTheme);
+            document.getElementById("theme").value = savedTheme;
+        }
 
-// 🔹 Save Theme on Button Click
-document.getElementById("save-theme-btn").addEventListener("click", saveTheme);
+        // 🔹 Save Theme to LocalStorage
+        function saveTheme() {
+            const selectedTheme = document.getElementById("theme").value;
+            localStorage.setItem("theme", selectedTheme);
+            applyTheme(selectedTheme);
+
+            // SweetAlert2 Alert with Theme
+            Swal.fire({
+                title: 'Theme Saved!',
+                text: `Your theme has been set to ${selectedTheme} mode.`,
+                icon: 'success',
+                customClass: {
+                    popup: `${selectedTheme}-theme-swal`,
+                    title: `${selectedTheme}-theme-swal-title`,
+                    content: `${selectedTheme}-theme-swal-content`,
+                    confirmButton: `${selectedTheme}-theme-swal-button`
+                },
+                background: selectedTheme === 'light' ? '#F5F5F5' : '#2A2A2A',
+                color: selectedTheme === 'light' ? '#333' : '#EAEAEA',
+                confirmButtonColor: selectedTheme === 'light' ? '#007D76' : '#00B8A9',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect to the dashboard or profile page after saving the theme
+                    window.location.href = "../dashboard.html"; // Change this to your desired redirect URL
+                }
+            });
+        }
+
+        // 🔹 Apply Theme Across Pages
+        document.addEventListener("DOMContentLoaded", loadTheme);
+
+        // 🔹 Save Theme on Button Click
+        document.getElementById("save-theme-btn").addEventListener("click", saveTheme);
+
+        // Navbar Toggle for Mobile
+        const navbarToggle = document.querySelector('.navbar-toggle');
+        const navbarMenu = document.querySelector('.navbar-menu');
+
+        navbarToggle.addEventListener('click', () => {
+            navbarMenu.classList.toggle('active');
+        });
     </script>
 </body>
 </html>
