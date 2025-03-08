@@ -10,8 +10,7 @@
     --primary-color: #00B8A9;
     --background-color: #1E1E1E;
     --text-color: #EAEAEA;
-    --sidebar-bg: #292929;
-    --sidebar-text: #B0E4E1;
+    --navbar-bg: #292929;
     --hover-bg: #007D76;
     --hover-text: #ffffff;
     --logout-bg: #007D76;
@@ -23,8 +22,7 @@
     --primary-color: #007D76;
     --background-color: #F5F5F5;
     --text-color: #333;
-    --sidebar-bg: #ffffff;
-    --sidebar-text: #333;
+    --navbar-bg: #ffffff;
     --hover-bg: #e0e0e0;
     --hover-text: #000;
     --logout-bg: #007D76;
@@ -42,65 +40,84 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* Sidebar Styles */
-.sidebar {
-    width: 280px;
-    background-color: var(--sidebar-bg);
-    padding: 40px 30px;
+/* Navbar Styles */
+.navbar {
+    width: 100%;
+    background-color: var(--navbar-bg);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: fixed;
     top: 0;
     left: 0;
-    height: 100%;
-    overflow-y: auto;
-    box-shadow: 4px 0 10px var(--shadow);
+    z-index: 1000;
+    box-shadow: 0 4px 10px var(--shadow);
     transition: 0.3s;
 }
 
-.sidebar .logo {
-    font-size: 30px;
+.navbar-logo {
+    font-size: 24px;
     font-weight: 700;
     color: var(--primary-color);
-    text-align: center;
-    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(0, 184, 169, 0.7);
 }
 
-.sidebar a {
-    display: block;
-    color: var(--sidebar-text);
-    padding: 14px 22px;
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar-menu a {
+    color: var(--text-color);
     text-decoration: none;
-    transition: 0.3s;
+    padding: 8px 12px;
     border-radius: 10px;
-    margin-bottom: 10px;
+    transition: 0.3s;
 }
 
-.sidebar a:hover {
+.navbar-menu a:hover {
     background-color: var(--hover-bg);
     color: var(--hover-text);
 }
 
-.sidebar .logout-btn {
+.navbar-menu .logout-btn {
     background: var(--logout-bg);
     color: white;
-    padding: 14px;
-    text-align: center;
-    cursor: pointer;
+    padding: 8px 12px;
     border-radius: 20px;
+    cursor: pointer;
     transition: 0.3s;
-    margin-top: 20px;
+    margin-left: auto; /* Move logout button to the left */
 }
 
-.sidebar .logout-btn:hover {
+.navbar-menu .logout-btn:hover {
     background: var(--logout-hover-bg);
+}
+
+.navbar-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    margin-left: 20px; /* Move toggle to the left */
+}
+
+.navbar-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-color);
+    transition: 0.3s;
 }
 
 /* Settings Page Styles */
 .settings-container {
     max-width: 500px;
-    margin: 80px 20px 20px 400px; /* Adjusted margin-left to 300px for a smaller gap */
+    margin: 80px auto 20px auto; /* Centered with margin-top for navbar */
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 15px var(--shadow);
     font-size: 20px;
 }
 
@@ -113,8 +130,8 @@ body {
 .settings-container a {
     display: block;
     padding: 12px;
-    background-color: var(--sidebar-bg);
-    color: var(--sidebar-text);
+    background-color: var(--navbar-bg);
+    color: var(--text-color);
     text-decoration: none;
     border-radius: 10px;
     margin-bottom: 10px;
@@ -143,90 +160,69 @@ body[data-theme="light"] .settings-container a:hover {
 }
 
 /* Responsive Styles */
-/* Responsive Styles */
-@media (max-width: 1115px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        padding: 10px 20px;
-        box-shadow: none;
-        display: flex;
-        flex-direction: row; /* Make the contents inline */
-        align-items: center;
-        justify-content: space-between; /* Space out the items */
-        flex-wrap: wrap; /* Allow wrapping if needed */
-    }
-
-    .sidebar .logo {
-        font-size: 24px;
-        margin-bottom: 0; /* Remove margin for inline layout */
-    }
-
-    .sidebar a {
-        padding: 10px 15px;
-        margin-bottom: 0; /* Remove margin for inline layout */
-        display: inline-block; /* Make links inline */
-    }
-
-    .sidebar .logout-btn {
-        padding: 10px;
-        margin-top: 0; /* Remove margin for inline layout */
-        display: inline-block; /* Make logout button inline */
-    }
-
-    .settings-container {
-        margin: 20px;
-    }
-}
-
 @media (max-width: 768px) {
-    .sidebar {
-        flex-direction: row; /* Keep contents inline */
-        align-items: center;
-        justify-content: space-around; /* Distribute space evenly */
+    .navbar-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: var(--navbar-bg);
+        padding: 10px;
+        box-shadow: 0 4px 10px var(--shadow);
     }
 
-    .sidebar a {
-        width: auto; /* Allow links to take up only the space they need */
-        text-align: center;
+    .navbar-menu.active {
+        display: flex;
+    }
+
+    .navbar-toggle {
+        display: flex;
     }
 
     .settings-container {
-        margin: 20px;
+        margin: 80px 20px 20px 20px;
     }
 }
 
 @media (max-width: 480px) {
-    .sidebar {
+    .navbar {
         padding: 10px;
     }
 
-    .sidebar .logo {
+    .navbar-logo {
         font-size: 20px;
     }
 
-    .sidebar a {
+    .navbar-menu a {
         padding: 8px 10px;
     }
 
     .settings-container {
-        margin: 10px;
+        margin: 80px 10px 10px 10px;
         padding: 15px;
     }
 }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">Hashbook</div>
-        <a href="../dashboard.html">Home</a>
-        <a href="../profile/index.html">Profile</a>
-        <a href="../Messaging/index.html">Messages</a>
-        <a href="index.html">Settings</a>
-        <a href="../Friends/index.html">Friends</a>
-        <div id="logout-btn" class="logout-btn">Logout</div>
+        <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-logo">Hashbook</div>
+        <div class="navbar-menu">
+            <a href="../dashboard.html">Home</a>
+            <a href="../profile/index.html">Profile</a>
+            <a href="../Messaging/index.html">Messages</a>
+            <a href="index.html">Settings</a>
+            <a href="../Friends/index.html">Friends</a>
+            <div id="logout-btn" class="logout-btn">Logout</div>
+        </div>
+        <div class="navbar-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
 
     <!-- Settings Content -->
@@ -240,6 +236,7 @@ body[data-theme="light"] .settings-container a:hover {
         <a href="./Privacy&Security.html">Privacy and security</a>
         <a href="#">Reels</a> 
     </div>
+
       <script type="module">
     // Import Firebase Authentication
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
