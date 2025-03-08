@@ -3,663 +3,650 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Hashbook</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <title>Profile</title>
     <style>
-/* General Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
+        /* CSS Variables for Themes */
+        :root {
+            --primary-color: #00B8A9;
+            --secondary-color: #007D76;
+            --background-color: #1E1E1E;
+            --text-color: #EAEAEA;
+            --navbar-bg: #292929;
+            --hover-bg: #007D76;
+            --hover-text: #ffffff;
+            --logout-bg: #007D76;
+            --logout-hover-bg: #005A52;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --card-bg: #2C2C2C;
+            --border-radius: 15px;
+            --transition-speed: 0.3s;
+            --gradient-primary: linear-gradient(135deg, #00B8A9, #007D76);
+            --gradient-secondary: linear-gradient(135deg, #007D76, #00B8A9);
+            --glow: 0 0 15px rgba(0, 184, 169, 0.7);
+        }
 
-body {
-    background: #1E1E1E;
-    color: #EAEAEA;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: row;
-    overflow-y: auto;
-}
+        [data-theme="light"] {
+            --primary-color: #007D76;
+            --secondary-color: #00B8A9;
+            --background-color: #F5F5F5;
+            --text-color: #333;
+            --navbar-bg: #ffffff;
+            --hover-bg: #e0e0e0;
+            --hover-text: #000;
+            --logout-bg: #007D76;
+            --logout-hover-bg: #005A52;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #007D76, #00B8A9);
+            --gradient-secondary: linear-gradient(135deg, #00B8A9, #007D76);
+            --glow: 0 0 15px rgba(0, 125, 118, 0.5);
+        }
 
-/* Light Theme */
-.light-theme {
-    background: #f5f5f5;
-    color: #333;
-}
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-.light-theme .sidebar {
-    background-color: #ffffff;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-}
+        body {
+            background: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            overflow-y: auto;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
 
-.light-theme .sidebar a {
-    color: #333;
-}
-
-.light-theme .sidebar a:hover {
-    background-color: #f0f0f0;
-    color: #000;
-}
-
-.light-theme .sidebar .theme-toggle {
-    background: #00B8A9;
-}
-
-.light-theme .sidebar .theme-toggle:hover {
-    background: #007D76;
-}
-
-.light-theme .post-form {
-    background: #ffffff;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.light-theme .post-form h3 {
-    color: #00B8A9;
-}
-
-.light-theme .post {
-    background: #ffffff;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    color: #333;
-}
-
-.light-theme .post small {
-    color: #666;
-}
-
-.light-theme .profile-header img {
-    border-color: #00B8A9;
-}
-
-.light-theme .profile-info h1 {
-    color: #00B8A9;
-}
-
-.light-theme .profile-uid {
-    color: #666;
-}
-
-.light-theme .profile-bio {
-    color: #333;
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.light-theme .post-form textarea {
-    background: #f0f0f0;
-    color: #333;
-    border-color: #ddd;
-}
-
-.light-theme .post-form textarea:focus {
-    border-color: #00B8A9;
-    box-shadow: 0 0 10px rgba(0, 184, 169, 0.5);
-}
-
-/* Sidebar */
-.sidebar {
-    width: 280px;
-    background-color: #292929;
-    padding: 40px 30px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    overflow-y: auto;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
-    transition: 0.3s;
-}
-
-.sidebar .logo {
-    font-size: 30px;
-    font-weight: 700;
-    color: #00B8A9;
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.sidebar a {
-    display: block;
-    color: #B0E4E1;
-    padding: 14px 22px;
-    text-decoration: none;
-    transition: 0.3s;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.sidebar a:hover {
-    background-color: #007D76;
-    color: #fff;
-}
-
-.sidebar .logout-btn,
-.sidebar .theme-toggle {
-    background: #007D76;
-    color: white;
-    padding: 14px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 20px;
-    transition: 0.3s;
-    margin-bottom: 10px;
-}
-
-.sidebar .logout-btn:hover,
-.sidebar .theme-toggle:hover {
-    background: #005A52;
-}
-
-/* Main Container */
-.container {
-    margin-left: 300px;
-    padding: 40px;
-    width: calc(100% - 300px);
-    transition: 0.3s;
-}
-
-/* Profile Header */
-.profile-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-    animation: fadeIn 1s ease-in-out;
-}
-
-.profile-header img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin-right: 20px;
-    border: 4px solid #00B8A9;
-    transition: transform 0.3s ease;
-}
-
-.profile-header img:hover {
-    transform: scale(1.1);
-}
-
-/* Profile Info */
-.profile-info {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.profile-info h1 {
-    font-size: 32px;
-    color: #00B8A9;
-    margin: 0;
-}
-
-.profile-uid {
-    font-size: 14px;
-    color: #B0E4E1;
-    margin: 0;
-}
-
-/* Bio Section */
-.profile-bio {
-    font-size: 18px; /* Avg heading size */
-    font-weight: 500;
-    color: #EAEAEA;
-    margin-top: 5px;
-    padding: 5px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    width: fit-content;
-}
-
-/* Post Form */
-.post-form {
-    background: #2A2A2A;
-    padding: 25px;
-    border-radius: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 1s ease-in-out;
-}
-
-.post-form h3 {
-    font-size: 24px;
-    color: #00B8A9;
-    margin-bottom: 20px;
-}
-
-.post-form textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    background: #333;
-    color: #EAEAEA;
-    border: 1px solid #555;
-    margin-bottom: 15px;
-    resize: vertical;
-    transition: border-color 0.3s ease;
-}
-
-.post-form textarea:focus {
-    outline: none;
-    border-color: #00B8A9;
-    box-shadow: 0 0 10px rgba(0, 184, 169, 0.5);
-}
-
-.post-form input[type="file"] {
-    margin-bottom: 15px;
-}
-
-.post-form button {
-    padding: 12px 20px;
-    background: #00B8A9;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.post-form button:hover {
-    background: #007D76;
-    transform: translateY(-3px);
-}
-
-/* Posts Section */
-.posts-container {
-    margin-top: 20px;
-}
-
-/* Individual Post */
-.post {
-    background: #292929;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    color: #EAEAEA;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.post .user-info {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.post .user-info img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-    border: 2px solid #00B8A9;
-}
-
-.post .user-info a {
-    color: #00B8A9;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.post .user-info a:hover {
-    text-decoration: underline;
-}
-
-.post p {
-    margin: 10px 0;
-}
-
-.post img {
-    max-width: 100%;
-    border-radius: 10px;
-    margin-top: 10px;
-}
-
-.post small {
-    color: #B0E4E1;
-    font-size: 12px;
-}
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            background-color: var(--sidebar-bg);
-            padding: 40px 30px;
+        /* Navbar */
+        .navbar {
+            width: 100%;
+            background-color: var(--navbar-bg);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             position: fixed;
             top: 0;
             left: 0;
-            height: 100%;
-            overflow-y: auto;
-            box-shadow: 4px 0 10px var(--shadow);
-            transition: 0.3s;
+            z-index: 1000;
+            box-shadow: 0 4px 10px var(--shadow);
+            transition: var(--transition-speed);
         }
 
-        .sidebar .logo {
-            font-size: 30px;
+        .navbar-logo {
+            font-size: 24px;
             font-weight: 700;
             color: var(--primary-color);
-            text-align: center;
+            text-shadow: var(--glow);
         }
 
-        .sidebar a {
-            display: block;
-            color: var(--sidebar-text);
-            padding: 14px 22px;
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .navbar-menu a {
+            color: var(--text-color);
             text-decoration: none;
-            transition: 0.3s;
-            border-radius: 10px;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: var(--transition-speed);
         }
 
-        .sidebar a:hover {
+        .navbar-menu a:hover {
             background-color: var(--hover-bg);
             color: var(--hover-text);
         }
 
-        .sidebar .logout-btn {
+        .navbar-menu .logout-btn {
             background: var(--logout-bg);
             color: white;
-            padding: 14px;
-            text-align: center;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            border-radius: 20px;
-            transition: 0.3s;
+            transition: var(--transition-speed);
+            box-shadow: var(--glow);
         }
 
-        .sidebar .logout-btn:hover {
+        .navbar-menu .logout-btn:hover {
             background: var(--logout-hover-bg);
+            transform: translateY(-2px);
         }
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
 
-@keyframes slideIn {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
+        .navbar-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
 
-/* Responsive Design */
-@media (max-width: 1115px) {
-    .sidebar {
-        display: none;
-    }
+        .navbar-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-color);
+            transition: var(--transition-speed);
+        }
 
-    .container {
-        margin-left: 0;
-        width: 100%;
-        padding: 70px 20px 20px;
-    }
+        /* Responsive Navbar */
+        @media (max-width: 768px) {
+            .navbar-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: var(--navbar-bg);
+                padding: 10px;
+                box-shadow: 0 4px 10px var(--shadow);
+            }
 
-    .profile-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+            .navbar-menu.active {
+                display: flex;
+            }
 
-    .profile-header img {
-        width: 80px;
-        height: 80px;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
+            .navbar-toggle {
+                display: flex;
+            }
+        }
 
-    .profile-header h1 {
-        font-size: 24px;
-    }
-}
+        /* Main Container */
+        .container {
+            margin-top: 80px; /* Add this to prevent content from being hidden behind the navbar */
+            padding: 40px;
+            width: 100%;
+            transition: var(--transition-speed);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the content horizontally */
+            gap: 20px;
+            height: 100%;
+        }
 
+        /* Profile Header */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-in-out;
+            width: 100%;
+            max-width: 800px; /* Limit the width for better readability */
+        }
+
+        .profile-header img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-right: 20px;
+            border: 4px solid var(--primary-color);
+            transition: transform var(--transition-speed);
+            box-shadow: var(--glow);
+        }
+
+        .profile-header img:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .profile-info h1 {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin: 0;
+            text-shadow: var(--glow);
+        }
+
+        .profile-uid {
+            font-size: 14px;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .profile-bio {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-top: 5px;
+            padding: 5px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            width: fit-content;
+        }
+
+        /* Post Form */
+        .post-form {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px var(--shadow);
+            animation: fadeIn 1s ease-in-out;
+            width: 100%;
+            max-width: 800px; /* Limit the width for better readability */
+        }
+
+        .post-form h3 {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-shadow: var(--glow);
+        }
+
+        .post-form textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            background: var(--background-color);
+            color: var(--text-color);
+            border: 1px solid var(--hover-bg);
+            margin-bottom: 15px;
+            resize: vertical;
+            transition: var(--transition-speed);
+        }
+
+        .post-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--glow);
+        }
+
+        .post-form input[type="file"] {
+            margin-bottom: 15px;
+        }
+
+        .post-form button {
+            width: 100%;
+            padding: 12px 20px;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition-speed);
+            box-shadow: var(--glow);
+        }
+
+        .post-form button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Posts Section */
+        .posts-container {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 800px; /* Limit the width for better readability */
+        }
+
+        /* Individual Post */
+        .post {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            color: var(--text-color);
+            box-shadow: 0 5px 15px var(--shadow);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .post .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .post .user-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid var(--primary-color);
+            box-shadow: var(--glow);
+        }
+
+        .post .user-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .post .user-info a:hover {
+            text-decoration: underline;
+        }
+
+        .post p {
+            margin: 10px 0;
+        }
+
+        .post img {
+            max-width: 100%;
+            border-radius: var(--border-radius);
+            margin-top: 10px;
+            box-shadow: var(--glow);
+        }
+
+        .post small {
+            color: var(--text-color);
+            font-size: 12px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1115px) {
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .profile-header img {
+                width: 80px;
+                height: 80px;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .profile-header h1 {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 <body>
-    
-   <!-- Sidebar -->
-   <div class="sidebar">
-    <div class="logo">Hashbook</div>
-    <a href="../dashboard.html">Home</a>
-    <a href="./index.html">Profile</a>
-    <a href="../Messaging/index.html">Messages</a>
-    <a href="../settings/index.html">Settings</a>
-    <a href="../Friends/index.html">Friends</a>
-    <div class="logout-btn">Logout</div>
-</div>
-
-<div class="container">
-    <!-- Profile Header -->
-    <div class="profile-header">
-        <label for="profile-picture-input">
-            <img id="profile-picture" src="../pfp.jpg" alt="Profile Picture">
-        </label>
-        <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
-        <div class="profile-info">
-            <h1 id="profile-name">Loading...</h1>
-            <div class="profile-uid" id="profile-uid">UID: Loading...</div>
-            <div class="profile-bio" id="profile-bio">Loading bio...</div>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-logo">Hashbook</div>
+        <div class="navbar-menu">
+            <a href="../dashboard.html">Home</a>
+            <a href="./index.html">Profile</a>
+            <a href="../Messaging/index.html">Messages</a>
+            <a href="../settings/index.html">Settings</a>
+            <a href="../Friends/index.html">Friends</a>
+            <div class="logout-btn">Logout</div>
+        </div>
+        <div class="navbar-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </div>
 
-    <!-- Post Form -->
-    <div class="post-form">
-        <h3>Create a New Post</h3>
-        <textarea id="post-text" rows="4" placeholder="What's on your mind?"></textarea>
-        <input type="file" id="post-image" accept="image/*">
-        <button id="post-btn">Post</button>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <label for="profile-picture-input">
+                <img id="profile-picture" src="../pfp.jpg" alt="Profile Picture">
+            </label>
+            <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
+            <div class="profile-info">
+                <h1 id="profile-name">Loading...</h1>
+                <div class="profile-uid" id="profile-uid">UID: Loading...</div>
+                <div class="profile-bio" id="profile-bio">Loading bio...</div>
+            </div>
+        </div>
+
+        <!-- Post Form -->
+        <div class="post-form">
+            <h3>Create a New Post</h3>
+            <textarea id="post-text" rows="4" placeholder="What's on your mind?"></textarea>
+            <input type="file" id="post-image" accept="image/*">
+            <button id="post-btn">Post</button>
+        </div>
+
+        <!-- User's Posts -->
+        <div class="posts-container" id="posts-container"></div>
     </div>
 
-    <!-- User's Posts -->
-    <div class="posts-container" id="posts-container"></div>
-</div>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { 
+            getFirestore, collection, addDoc, getDocs, query, where, doc, deleteDoc, updateDoc, serverTimestamp, getDoc, setDoc 
+        } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+        import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
 
-<!-- SweetAlert2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="module">
-   // Firebase imports
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { 
-    getFirestore, collection, addDoc, getDocs, query, where, doc, deleteDoc, updateDoc, serverTimestamp, getDoc, setDoc 
-} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
-import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
-
-// 🔹 Firebase Configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
-    authDomain: "facebook-1751a.firebaseapp.com",
-    projectId: "facebook-1751a",
-    storageBucket: "facebook-1751a.appspot.com",
-    messagingSenderId: "852573765318",
-    appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
-    measurementId: "G-RZBV4M5Z2F"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
-
-// 🔹 Generate a Random UID
-function generateRandomUID() {
-    return Math.random().toString(36).substring(2, 10).toUpperCase();
-}
-
-// 🔹 Get User ID from URL
-function getUserIdFromURL() {
-    return new URLSearchParams(window.location.search).get("userId");
-}
-
-async function loadProfile(userId) {
-    const profileName = document.getElementById("profile-name");
-    const profileUID = document.getElementById("profile-uid");
-    const profileBio = document.getElementById("profile-bio");
-    const profilePicture = document.getElementById("profile-picture");
-
-    try {
-        const userRef = doc(db, "users", userId);
-        const userDoc = await getDoc(userRef);
-
-        if (userDoc.exists()) {
-            const userData = userDoc.data();
-            console.log("Firestore User Data:", userData);
-
-            profileName.textContent = auth.currentUser.displayName || "No Name Provided";
-            const uid = userData.randomUID; // Declare uid here
-            const username = userData.username; // Declare username here
-            profileUID.textContent = uid || username;
-            profileBio.textContent = userData.bio || "You can add your bio from profile settings.";
-            profilePicture.src = userData.photoURL || "../pfp.jpg";
-        } else {
-            console.error("User document does not exist.");
-        }
-    } catch (error) {
-        console.error("Error loading profile:", error);
-    }
-}
-// 🔹 Ensure Display Name Syncs with Firebase Auth
-async function ensureAuthDisplayName(user) {
-    const userRef = doc(db, "users", user.uid);
-    const userDoc = await getDoc(userRef);
-
-    let firestoreName = userDoc.exists() ? userDoc.data().displayName : null;
-    let authName = user.displayName;
-
-    console.log("Auth Name:", authName, "| Firestore Name:", firestoreName);
-
-    // If Auth has no name but Firestore does, update Firebase Auth
-    if (!authName && firestoreName) {
-        try {
-            await updateProfile(user, { displayName: firestoreName });
-            console.log("Updated Firebase Auth displayName:", firestoreName);
-        } catch (error) {
-            console.error("Error updating Firebase Auth displayName:", error);
-        }
-    }
-}
-
-// 🔹 Load Posts
-async function loadPosts(userId) {
-    const postsContainer = document.getElementById("posts-container");
-    postsContainer.innerHTML = ""; // Clear existing posts
-
-    try {
-        const postsRef = collection(db, "posts");
-        const q = query(postsRef, where("userId", "==", userId));
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) {
-            postsContainer.innerHTML = "<p>No posts found.</p>";
-            return;
-        }
-
-        querySnapshot.forEach((doc) => {
-            const post = doc.data();
-            const postElement = document.createElement("div");
-            postElement.classList.add("post");
-            postElement.innerHTML = `
-                <div class="user-info">
-                    <img src="${post.userPhotoURL || "../pfp.jpg"}" alt="User Photo">
-                    <a href="#">${post.userName || "Anonymous"}</a>
-                </div>
-                <p>${post.text}</p>
-                ${post.imageURL ? `<img src="${post.imageURL}" alt="Post Image">` : ""}
-                <small>Posted ${formatDistanceToNow(post.createdAt?.toDate() || new Date(), { addSuffix: true })}</small>
-            `;
-            postsContainer.appendChild(postElement);
-        });
-    } catch (error) {
-        console.error("Error loading posts:", error);
-    }
-}
-
-// 🔹 Handle New Post Submission
-async function handlePostSubmit() {
-    const user = auth.currentUser;
-    if (!user) {
-        alert("You must be logged in to create a post.");
-        return;
-    }
-
-    const postText = document.getElementById("post-text").value.trim();
-    const postImage = document.getElementById("post-image").files[0];
-
-    if (!postText && !postImage) {
-        alert("Please enter text or upload an image to create a post.");
-        return;
-    }
-
-    try {
-        const userRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userRef);
-
-        if (!userDoc.exists()) {
-            alert("Your user data could not be found.");
-            return;
-        }
-
-        const userData = userDoc.data();
-        const postData = {
-            userId: user.uid,
-            userName: userData.authName|| "No Name Provided",
-            userPhotoURL: userData.photoURL || "../pfp.jpg",
-            text: postText,
-            createdAt: serverTimestamp()
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKv8qaAw8bcHwprm1IRA1NWyXQ47tBWRY",
+            authDomain: "facebook-1751a.firebaseapp.com",
+            projectId: "facebook-1751a",
+            storageBucket: "facebook-1751a.appspot.com",
+            messagingSenderId: "852573765318",
+            appId: "1:852573765318:web:00d8edf77b925d7a5e21c7",
+            measurementId: "G-RZBV4M5Z2F"
         };
 
-        if (postImage) {
-            const storageRef = ref(storage, `posts/${user.uid}/${Date.now()}_${postImage.name}`);
-            await uploadBytes(storageRef, postImage);
-            postData.imageURL = await getDownloadURL(storageRef);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // 🔹 Generate a Random UID
+        function generateRandomUID() {
+            return Math.random().toString(36).substring(2, 10).toUpperCase();
         }
 
-        await addDoc(collection(db, "posts"), postData);
-        alert("Your post has been created!");
+        // 🔹 Get User ID from URL
+        function getUserIdFromURL() {
+            return new URLSearchParams(window.location.search).get("userId");
+        }
 
-        // Clear the form
-        document.getElementById("post-text").value = "";
-        document.getElementById("post-image").value = "";
+        // 🔹 Apply Theme from LocalStorage
+        function applyThemeFromLocalStorage() {
+            const currentTheme = localStorage.getItem("theme") || "dark"; // Default to dark theme if no theme is set
+            document.body.setAttribute("data-theme", currentTheme);
+            console.log("Theme applied from localStorage:", currentTheme);
+        }
 
-        // Reload posts
-        loadPosts(user.uid);
-    } catch (error) {
-        console.error("Error creating post:", error);
-        alert("Failed to create post. Please try again.");
-    }
-}
+        // 🔹 Toggle Theme
+        function toggleTheme() {
+            const currentTheme = localStorage.getItem("theme") || "dark";
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            
+            // Update localStorage
+            localStorage.setItem("theme", newTheme);
+            
+            // Apply the new theme
+            document.body.setAttribute("data-theme", newTheme);
+            console.log("Theme toggled to:", newTheme);
+        }
 
-// 🔹 Initialize Page
-document.addEventListener("DOMContentLoaded", () => {
-    const postBtn = document.getElementById("post-btn");
-    if (postBtn) {
-        postBtn.addEventListener("click", handlePostSubmit);
-    }
+        // 🔹 Load Profile Data
+        async function loadProfile(userId) {
+            const profileName = document.getElementById("profile-name");
+            const profileUID = document.getElementById("profile-uid");
+            const profileBio = document.getElementById("profile-bio");
+            const profilePicture = document.getElementById("profile-picture");
 
-    // Logout functionality
-    document.querySelectorAll(".logout-btn").forEach(button => {
-        button.addEventListener("click", () => {
-            signOut(auth).then(() => {
-                window.location.href = "../index.html";
-            }).catch((error) => {
-                console.error("Error signing out:", error);
-            });
-        });
-    });
+            try {
+                const userRef = doc(db, "users", userId);
+                const userDoc = await getDoc(userRef);
 
-    // Load profile and posts when the page loads
-    onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-            window.location.href = "../index.html";
-        } else {
-            await ensureAuthDisplayName(user);
-            const userId = getUserIdFromURL() || user.uid;
-            if (userId) {
-                loadProfile(userId);
-                loadPosts(userId);
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    console.log("Firestore User Data:", userData);
+
+                    // Update profile details
+                    profileName.textContent = userData.name || "No Name Provided";
+                    profileUID.textContent = `UID: ${userData.randomUID || userData.username || "If UID is not set, set username from settings.."}`;
+                    profileBio.textContent = userData.bio || "You can add your bio from profile settings.";
+                    profilePicture.src = userData.photoURL || "../pfp.jpg";
+                } else {
+                    // If the user document doesn't exist, create it
+                    console.warn("User document does not exist. Creating a new one...");
+
+                    const user = auth.currentUser;
+                    if (user) {
+                        const newUserData = {
+                            displayName: user.displayName || "New User",
+                            email: user.email,
+                            photoURL: user.photoURL || "../pfp.jpg",
+                            randomUID: generateRandomUID(),
+                            bio: "Welcome to Hashbook! Update your bio in settings.",
+                            createdAt: serverTimestamp()
+                        };
+
+                        await setDoc(userRef, newUserData);
+                        console.log("New user document created:", newUserData);
+
+                        // Reload profile data
+                        loadProfile(userId);
+                    } else {
+                        console.error("No authenticated user found.");
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading profile:", error);
             }
         }
-    });
-});
 
-</script>
+        // 🔹 Load Posts
+        async function loadPosts(userId) {
+            const postsContainer = document.getElementById("posts-container");
+            postsContainer.innerHTML = ""; // Clear existing posts
+
+            try {
+                const postsRef = collection(db, "posts");
+                const q = query(postsRef, where("userId", "==", userId));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    postsContainer.innerHTML = "<p>No posts found.</p>";
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const post = doc.data();
+                    const postElement = document.createElement("div");
+                    postElement.classList.add("post");
+                    postElement.innerHTML = `
+                        <div class="user-info">
+                            <img src="${post.userPhotoURL || "../pfp.jpg"}" alt="User Photo">
+                            <a href="#">${post.userName || "Anonymous"}</a>
+                        </div>
+                        <p>${post.text}</p>
+                        ${post.imageURL ? `<img src="${post.imageURL}" alt="Post Image">` : ""}
+                        <small>Posted ${formatDistanceToNow(post.createdAt?.toDate() || new Date(), { addSuffix: true })}</small>
+                    `;
+                    postsContainer.appendChild(postElement);
+                });
+            } catch (error) {
+                console.error("Error loading posts:", error);
+            }
+        }
+
+        // 🔹 Handle New Post Submission
+        async function handlePostSubmit() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("You must be logged in to create a post.");
+                return;
+            }
+
+            const postText = document.getElementById("post-text").value.trim();
+            const postImage = document.getElementById("post-image").files[0];
+
+            if (!postText && !postImage) {
+                alert("Please enter text or upload an image to create a post.");
+                return;
+            }
+
+            try {
+                const userRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+
+                if (!userDoc.exists()) {
+                    alert("Your user data could not be found.");
+                    return;
+                }
+
+                const userData = userDoc.data();
+                const postData = {
+                    userId: user.uid,
+                    userName: userData.displayName || "No Name Provided",
+                    userPhotoURL: userData.photoURL || "../pfp.jpg",
+                    text: postText,
+                    createdAt: serverTimestamp()
+                };
+
+                if (postImage) {
+                    const storageRef = ref(storage, `posts/${user.uid}/${Date.now()}_${postImage.name}`);
+                    await uploadBytes(storageRef, postImage);
+                    postData.imageURL = await getDownloadURL(storageRef);
+                }
+
+                await addDoc(collection(db, "posts"), postData);
+                alert("Your post has been created!");
+
+                // Clear the form
+                document.getElementById("post-text").value = "";
+                document.getElementById("post-image").value = "";
+
+                // Reload posts
+                loadPosts(user.uid);
+            } catch (error) {
+                console.error("Error creating post:", error);
+                alert("Failed to create post. Please try again.");
+            }
+        }
+
+        // 🔹 Initialize Page
+        document.addEventListener("DOMContentLoaded", () => {
+            // Apply the theme from localStorage when the page loads
+            applyThemeFromLocalStorage();
+
+            const postBtn = document.getElementById("post-btn");
+            if (postBtn) {
+                postBtn.addEventListener("click", handlePostSubmit);
+            }
+
+            // Logout functionality
+            document.querySelectorAll(".logout-btn").forEach(button => {
+                button.addEventListener("click", () => {
+                    signOut(auth).then(() => {
+                        window.location.href = "../index.html";
+                    }).catch((error) => {
+                        console.error("Error signing out:", error);
+                    });
+                });
+            });
+
+            // Load profile and posts when the page loads
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    window.location.href = "../index.html";
+                } else {
+                    const userId = getUserIdFromURL() || user.uid;
+                    if (userId) {
+                        loadProfile(userId);
+                        loadPosts(userId);
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
