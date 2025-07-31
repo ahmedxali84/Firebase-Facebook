@@ -3,278 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Hashbook</title>
-    <script type="module" src="firebasetheme.js"></script>
+    <title>Hashbook - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-body {
-    background-color: #1B1B1B;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: #EAEAEA;
-    overflow: hidden;
-}
-
-.wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
-    max-width: 1400px;
-    padding: 20px;
-}
-
-.brand {
-    flex: 1;
-    text-align: left;
-    animation: fade-in 1s ease-in-out;
-}
-
-.brand h1 {
-    color: #00C9A7;
-    font-size: 90px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 20px;
-    text-shadow: 0 4px 15px rgba(0, 201, 167, 0.4);
-    animation: slide-in-left 1s ease-in-out;
-}
-
-.brand .headline {
-    color: rgba(234, 234, 234, 0.9);
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 1.6;
-    margin-top: 10px;
-    text-align: left;
-    max-width: 600px;
-    text-shadow: 0 2px 10px rgba(234, 234, 234, 0.2);
-    animation: fade-in 1.5s ease-in-out;
-}
-
-.container {
-    background: linear-gradient(to bottom, #242424, #1B1B1B);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 20px 60px rgba(0, 0, 0, 0.4);
-    width: 450px;
-    text-align: center;
-    animation: pop-up 0.8s ease-out;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-h2 {
-    margin-bottom: 20px;
-    color: #00C9A7;
-    font-size: 28px;
-    font-weight: 600;
-    text-shadow: 0 2px 5px rgba(0, 201, 167, 0.3);
-}
-
-input {
-    width: 100%;
-    padding: 15px;
-    margin: 15px 0;
-    border-radius: 12px;
-    border: 1px solid rgba(85, 85, 85, 0.5);
-    font-size: 16px;
-    background-color: rgba(51, 51, 51, 0.8);
-    color: white;
-    transition: all 0.3s ease;
-}
-
-input:focus {
-    outline: none;
-    border-color: #00C9A7;
-    box-shadow: 0 0 15px rgba(0, 201, 167, 0.5);
-    background-color: rgba(51, 51, 51, 1);
-}
-
-#login-btn {
-    width: 100%;
-    padding: 15px;
-    margin-top: 15px;
-    border: none;
-    background-color: #007D76;
-    color: white;
-    font-size: 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 125, 118, 0.3);
-}
-
-#login-btn:hover {
-    background: #00A89C;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 168, 156, 0.4);
-}
-
-.google-btn {
-    border: 2px solid #BB86FC;
-    color: #BB86FC;
-    background: linear-gradient(to bottom, #242424, #1B1B1B);
-    margin-top: 15px;
-    width: 100%;
-    padding: 15px;
-    font-size: 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(187, 134, 252, 0.2);
-}
-
-.google-btn:hover {
-    background: #3700B3;
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(55, 0, 179, 0.4);
-}
-
-.switch {
-    margin-top: 20px;
-    font-size: 14px;
-    color: rgba(234, 234, 234, 0.8);
-}
-
-.switch a {
-    color: #00C9A7;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.switch a:hover { 
-    color: #00A89C;
-    text-decoration: underline;
-}
-
-#error-msg {
-    color: #FF6B6B;
-    font-size: 14px;
-    margin-top: 10px;
-    text-shadow: 0 2px 5px rgba(255, 107, 107, 0.2);
-}
-
-@keyframes pop-up {
-    0% { opacity: 0; transform: scale(0.8); }
-    100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes fade-in {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-@keyframes slide-in-left {
-    0% { transform: translateX(-50px); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-}
-
-/* Loading Screen Styles */
-.loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #242424;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #F4C430;
-    font-size: 24px;
-    font-weight: bold;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.loading-screen.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Media Query for Responsive Layout */
-@media (max-width: 1180px) {
-    .wrapper {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        padding: 0 20px;
-    }
-
-    .brand {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .brand h1 {
-        font-size: 80px;
-        margin-bottom: 10px;
-    }
-
-    .brand .headline {
-        font-size: 20px;
-        text-align: center;
-        max-width: 100%;
-    }
-
-    .container {
-        width: 90%;
-        padding: 30px;
-    }
-
-    h2 {
-        font-size: 24px;
-    }
-
-    input {
-        font-size: 14px;
-        padding: 12px;
-    }
-
-    #login-btn {
-        font-size: 14px;
-    }
-
-    .google-btn {
-        font-size: 14px;
-    }
-}
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .loading-screen {
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(1, 60, 57, 0.3);
+        }
+        
+        .google-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(1, 60, 57, 0.4);
+        }
     </style>
 </head>
-<body>
-
-    <div class="loading-screen" id="loading-screen">
-        <p>Loading...</p>
-    </div>
-
-    <div class="wrapper">
-        <div class="brand">
-            <h1>Hashbook</h1>
-            <p class="headline">One Post at a Time: Connect, Share, and Discover the World!</p>
+<body class="bg-gray-50 font-sans" style="font-family: 'Poppins', sans-serif;">
+    <!-- Loading Screen -->
+    <div class="loading-screen fixed inset-0 bg-[#013c39] flex flex-col items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-500" id="loading-screen">
+        <div class="floating mb-8">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="#ffffff" opacity="0.3"/>
+                <path d="M12 6C8.69 6 6 8.69 6 12C6 15.31 8.69 18 12 18C15.31 18 18 15.31 18 12C18 8.69 15.31 6 12 6Z" fill="#ffffff"/>
+            </svg>
         </div>
-        <div class="container">
-            <h2>Login</h2>
-            <input type="email" id="login-email" placeholder="Email Address" required>
-            <input type="password" id="login-password" placeholder="Password" required>
-            <button id="login-btn">Login</button>
-            <p id="error-msg"></p>
-            <button class="google-btn" id="google-login">Login with Google</button>
-            <p class="switch">Don't have an account? <a href="signup.html">Sign Up</a></p>
+        <p class="text-white text-xl font-medium">Authenticating...</p>
+        <div class="w-64 h-1 bg-white bg-opacity-30 rounded-full mt-4 overflow-hidden">
+            <div class="h-full bg-white rounded-full animate-pulse" style="width: 60%;"></div>
         </div>
     </div>
-     
+
+    <!-- Main Content -->
+    <div class="min-h-screen flex flex-col md:flex-row">
+        <!-- Left Side - Brand Section -->
+        <div class="w-full md:w-1/2 bg-[#013c39] text-white p-8 md:p-12 flex flex-col justify-center items-center md:items-start relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full opacity-10">
+                <div class="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-white"></div>
+                <div class="absolute top-2/3 left-2/3 w-48 h-48 rounded-full bg-white"></div>
+                <div class="absolute top-1/3 right-1/4 w-24 h-24 rounded-full bg-white"></div>
+            </div>
+            
+            <div class="relative z-10 text-center md:text-left max-w-md">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Hashbook</h1>
+                <p class="text-xl md:text-2xl mb-8 leading-relaxed">One Post at a Time: Connect, Share, and Discover the World!</p>
+                
+                <div class="hidden md:block">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="w-12 h-12 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                            <i class="fas fa-users text-xl"></i>
+                        </div>
+                        <p class="text-lg">Connect with friends and family</p>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="w-12 h-12 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                            <i class="fas fa-globe-americas text-xl"></i>
+                        </div>
+                        <p class="text-lg">Discover what's happening worldwide</p>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                            <i class="fas fa-share-alt text-xl"></i>
+                        </div>
+                        <p class="text-lg">Share your moments with the world</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Side - Login Form -->
+        <div class="w-full md:w-1/2 flex items-center justify-center p-8">
+            <div class="w-full max-w-md">
+                <div class="text-center mb-10 md:hidden">
+                    <h1 class="text-3xl font-bold text-[#013c39]">Hashbook</h1>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-xl p-8 md:p-10">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-8 text-center">Welcome back!</h2>
+                    
+                    <form class="space-y-6">
+                        <div>
+                            <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-envelope text-gray-400"></i>
+                                </div>
+                                <input type="email" id="login-email" placeholder="Enter your email" 
+                                    class="input-field w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#013c39] transition duration-300">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-lock text-gray-400"></i>
+                                </div>
+                                <input type="password" id="login-password" placeholder="Enter your password" 
+                                    class="input-field w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#013c39] transition duration-300">
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-[#013c39] focus:ring-[#013c39] border-gray-300 rounded">
+                                <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                            </div>
+                            <div class="text-sm">
+                                <a href="#" class="font-medium text-[#013c39] hover:text-[#012a27]">Forgot password?</a>
+                            </div>
+                        </div>
+                        
+                        <button id="login-btn" type="button" 
+                            class="login-btn w-full py-3 px-4 bg-[#013c39] hover:bg-[#012a27] text-white font-medium rounded-lg transition duration-300 transform hover:-translate-y-0.5 shadow-md">
+                            Login
+                        </button>
+                        
+                        <p id="error-msg" class="text-red-500 text-sm text-center h-5"></p>
+                        
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+                        
+                        <button id="google-login" type="button" 
+                            class="google-btn w-full py-3 px-4 border border-gray-300 rounded-lg font-medium flex items-center justify-center space-x-2 transition duration-300 hover:bg-gray-50 hover:shadow-sm">
+                            <img src="https://www.svgrepo.com/show/355037/google.svg" class="w-5 h-5" alt="Google logo">
+                            <span>Google</span>
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 text-center text-sm">
+                        <p class="text-gray-600">Don't have an account? 
+                            <a href="signup.html" class="font-medium text-[#013c39] hover:text-[#012a27]">Sign up</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center text-xs text-gray-500">
+                    <p>By continuing, you agree to our <a href="#" class="underline">Terms of Service</a> and <a href="#" class="underline">Privacy Policy</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
@@ -298,7 +198,13 @@ input:focus {
         const loadingScreen = document.getElementById("loading-screen");
 
         async function handleLogin(email, password) {
+            if (!email || !password) {
+                errorMsg.innerText = "Please fill in all fields";
+                return;
+            }
+            
             try {
+                errorMsg.innerText = "";
                 await signInWithEmailAndPassword(auth, email, password);
                 showLoadingScreen();
             } catch (error) {
@@ -314,6 +220,7 @@ input:focus {
 
         googleLoginBtn.addEventListener("click", async () => {
             try {
+                errorMsg.innerText = "";
                 await signInWithPopup(auth, provider);
                 showLoadingScreen();
             } catch (error) {
@@ -327,7 +234,15 @@ input:focus {
                 window.location.href = "dashboard.html";
             }, 3000);
         }
-    </script>
 
+        // Add enter key functionality
+        document.getElementById("login-password").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                const email = document.getElementById("login-email").value.trim();
+                const password = document.getElementById("login-password").value.trim();
+                handleLogin(email, password);
+            }
+        });
+    </script>
 </body>
 </html>
