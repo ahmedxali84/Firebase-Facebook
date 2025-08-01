@@ -3,985 +3,705 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hashbook</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+  <title>Hashbook | Next-Gen Social</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Advanced Styling */
+    /* Custom CSS for ultra-modern design */
+    @layer utilities {
+      /* Glassmorphism effect */
+      .glass {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .glass-light {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      
+      /* Neon gradient */
+      .neon-gradient {
+        background: linear-gradient(135deg, #00F5A0 0%, #00D9F5 50%, #0083F5 100%);
+      }
+      
+      /* 3D floating effect */
+      .float-3d {
+        transform-style: preserve-3d;
+        transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .float-3d:hover {
+        transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(20px);
+      }
+      
+      /* Advanced glow effects */
+      .text-neon {
+        text-shadow: 0 0 10px rgba(0, 245, 160, 0.7), 
+                     0 0 20px rgba(0, 245, 160, 0.5),
+                     0 0 30px rgba(0, 245, 160, 0.3);
+      }
+      
+      .box-neon {
+        box-shadow: 0 0 15px rgba(0, 245, 160, 0.5),
+                   0 0 30px rgba(0, 245, 160, 0.3);
+      }
+      
+      .box-neon-hover:hover {
+        box-shadow: 0 0 20px rgba(0, 245, 160, 0.7),
+                   0 0 40px rgba(0, 245, 160, 0.5);
+      }
+      
+      /* Futuristic animations */
+      @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(5deg); }
+      }
+      
+      @keyframes pulse-slow {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.7; transform: scale(1.05); }
+      }
+      
+      @keyframes wave {
+        0% { transform: translateX(0) rotate(0deg); }
+        25% { transform: translateX(-5px) rotate(5deg); }
+        50% { transform: translateX(0) rotate(0deg); }
+        75% { transform: translateX(5px) rotate(-5deg); }
+        100% { transform: translateX(0) rotate(0deg); }
+      }
+      
+      @keyframes hologram {
+        0% { opacity: 0.8; transform: translateY(0); }
+        50% { opacity: 1; transform: translateY(-5px); }
+        100% { opacity: 0.8; transform: translateY(0); }
+      }
+      
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+      
+      .animate-pulse-slow {
+        animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      
+      .animate-wave {
+        animation: wave 8s ease-in-out infinite;
+      }
+      
+      .animate-hologram {
+        animation: hologram 3s ease-in-out infinite;
+      }
+      
+      /* Cyberpunk scanlines */
+      .scanlines {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .scanlines:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 245, 160, 0.05) 50%,
+          transparent 50%
+        );
+        background-size: 100% 4px;
+        pointer-events: none;
+      }
+      
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: rgba(15, 23, 42, 0.5);
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, #00F5A0, #00D9F5);
+        border-radius: 3px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(to bottom, #00D9F5, #0083F5);
+      }
+      
+      /* Advanced input styling */
+      .cyber-input {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(0, 245, 160, 0.3);
+        transition: all 0.3s ease;
+      }
+      
+      .cyber-input:focus {
+        border-color: #00F5A0;
+        box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.2);
+        background: rgba(15, 23, 42, 0.9);
+      }
+      
+      /* Holographic effect */
+      .holographic {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .holographic:before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          rgba(0, 245, 160, 0.1) 0%,
+          rgba(0, 217, 245, 0.1) 25%,
+          rgba(0, 131, 245, 0.1) 50%,
+          rgba(0, 217, 245, 0.1) 75%,
+          rgba(0, 245, 160, 0.1) 100%
+        );
+        transform: rotate(45deg);
+        animation: shine 6s linear infinite;
+      }
+      
+      @keyframes shine {
+        0% { transform: translateX(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) rotate(45deg); }
+      }
+      
+      /* Particle background */
+      .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1;
+      }
+      
+      .particle {
+        position: absolute;
+        background: rgba(0, 245, 160, 0.5);
+        border-radius: 50%;
+        animation: float-particle 15s linear infinite;
+      }
+      
+      @keyframes float-particle {
+        0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+      }
+      
+      /* Advanced card hover effect */
+      .card-3d {
+        transform-style: preserve-3d;
+        transform: perspective(1000px);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .card-3d:hover {
+        transform: perspective(1000px) rotateX(5deg) translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+      
+      /* Cyberpunk button */
+      .cyber-button {
+        position: relative;
+        overflow: hidden;
+        border: 2px solid #00F5A0;
+        color: #00F5A0;
+        background: transparent;
+        transition: all 0.3s ease;
+      }
+      
+      .cyber-button:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 245, 160, 0.2), transparent);
+        transition: all 0.5s ease;
+      }
+      
+      .cyber-button:hover {
+        color: #0F172A;
+        background: #00F5A0;
+        box-shadow: 0 0 10px rgba(0, 245, 160, 0.5),
+                   0 0 20px rgba(0, 245, 160, 0.3);
+      }
+      
+      .cyber-button:hover:before {
+        left: 100%;
+      }
+      
+      /* Advanced dropdown */
+      .cyber-dropdown {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px) rotateX(-30deg);
+        transform-origin: top center;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .dropdown:hover .cyber-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) rotateX(0);
+      }
+      
+      /* Story progress bar */
+      .story-progress {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .story-progress:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, #00F5A0, #00D9F5);
+        animation: progressBar 5s linear forwards;
+      }
+      
+      @keyframes progressBar {
+        to { width: 100%; }
+      }
+      
+      /* Like button animation */
+      .like-btn.liked {
+        animation: heartBeat 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      @keyframes heartBeat {
+        0% { transform: scale(1); }
+        15% { transform: scale(1.3); }
+        30% { transform: scale(1); }
+        45% { transform: scale(1.2); }
+        60% { transform: scale(1); }
+        100% { transform: scale(1); }
+      }
+      
+      /* Modal entrance animation */
+      .modal-enter {
+        animation: modalFadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+      
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-30px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      
+      /* Ripple effect for buttons */
+      .ripple {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .ripple:after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        background-image: radial-gradient(circle, #00F5A0 10%, transparent 10.01%);
+        background-repeat: no-repeat;
+        background-position: 50%;
+        transform: scale(10,10);
+        opacity: 0;
+        transition: transform .5s, opacity 1s;
+      }
+      
+      .ripple:active:after {
+        transform: scale(0,0);
+        opacity: 0.3;
+        transition: 0s;
+      }
+      
+      /* Loading spinner */
+      .cyber-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(0, 245, 160, 0.2);
+        border-top: 4px solid #00F5A0;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Text gradient */
+      .text-gradient {
+        background: linear-gradient(90deg, #00F5A0, #00D9F5, #0083F5);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      
+      /* Floating action button */
+      .cyber-fab {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 5px 25px rgba(0, 245, 160, 0.3);
+      }
+      
+      .cyber-fab:hover {
+        transform: scale(1.1) rotate(90deg);
+        box-shadow: 0 8px 30px rgba(0, 245, 160, 0.5);
+      }
+    }
+    
+    /* Custom variables */
     :root {
-      --primary-color: #00B8A9;
-      --secondary-color: #007D76;
-      --background-color: #1E1E1E;
-      --text-color: #EAEAEA;
-      --navbar-bg: #292929;
-      --hover-bg: #007D76;
-      --hover-text: #ffffff;
-      --logout-bg: #007D76;
-      --logout-hover-bg: #005A52;
-      --shadow: rgba(0, 0, 0, 0.5);
-      --card-bg: #2C2C2C;
-      --border-radius: 15px;
-      --transition-speed: 0.3s;
-      --gradient-primary: linear-gradient(135deg, #00B8A9, #007D76);
-      --gradient-secondary: linear-gradient(135deg, #007D76, #00B8A9);
-      --glow: 0 0 15px rgba(0, 184, 169, 0.7);
+      --primary-color: #00F5A0;
+      --secondary-color: #00D9F5;
+      --accent-color: #0083F5;
+      --dark-bg: #0F172A;
+      --darker-bg: #0B1120;
+      --text-color: #E2E8F0;
+      --text-muted: #94A3B8;
+      --navbar-bg: rgba(15, 23, 42, 0.9);
+      --card-bg: rgba(15, 23, 42, 0.7);
+      --border-radius: 16px;
+      --transition-speed: 0.4s;
+      --glow: 0 0 20px rgba(0, 245, 160, 0.5);
     }
-
+    
     [data-theme="light"] {
-      --primary-color: #007D76;
-      --secondary-color: #00B8A9;
-      --background-color: #F5F5F5;
-      --text-color: #333;
-      --navbar-bg: #ffffff;
-      --hover-bg: #e0e0e0;
-      --hover-text: #000;
-      --logout-bg: #007D76;
-      --logout-hover-bg: #005A52;
-      --shadow: rgba(0, 0, 0, 0.1);
-      --card-bg: #ffffff;
-      --gradient-primary: linear-gradient(135deg, #007D76, #00B8A9);
-      --gradient-secondary: linear-gradient(135deg, #00B8A9, #007D76);
-      --glow: 0 0 15px rgba(0, 125, 118, 0.5);
+      --primary-color: #0083F5;
+      --secondary-color: #00D9F5;
+      --accent-color: #00F5A0;
+      --dark-bg: #F8FAFC;
+      --darker-bg: #F1F5F9;
+      --text-color: #0F172A;
+      --text-muted: #64748B;
+      --navbar-bg: rgba(248, 250, 252, 0.9);
+      --card-bg: rgba(248, 250, 252, 0.7);
     }
-
-    /* General Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
+    
+    /* Base styles */
     body {
-      background: var(--background-color);
+      background-color: var(--dark-bg);
       color: var(--text-color);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-      overflow-y: auto;
-      transition: background-color var(--transition-speed), color var(--transition-speed);
+      overflow-x: hidden;
     }
-
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Particle background */
+    #particles-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
     /* Navbar */
     .navbar {
-      width: 100%;
-      background-color: var(--navbar-bg);
-      padding: 15px 20px;
-      box-shadow: 0 4px 20px var(--shadow);
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: var(--transition-speed);
+      background: var(--navbar-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     }
-
-    .navbar .logo {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--primary-color);
-      white-space: nowrap;
-      text-shadow: var(--glow);
+    
+    /* Mobile bottom nav */
+    .mobile-nav {
+      background: var(--navbar-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.1);
     }
-
-    .navbar .menu {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      overflow-x: auto;
-      white-space: nowrap;
+    
+    /* Story card */
+    .story-card {
+      perspective: 1000px;
+      transform-style: preserve-3d;
     }
-
-    .navbar a {
-      color: var(--text-color);
-      text-decoration: none;
-      padding: 8px 12px;
-      border-radius: var(--border-radius);
-      transition: var(--transition-speed);
-      font-size: 14px;
+    
+    .story-card-inner {
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+    }
+    
+    .story-card:hover .story-card-inner {
+      transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+    }
+    
+    /* Post card */
+    .post-card {
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+    }
+    
+    .post-card:hover {
+      transform: translateY(-10px) scale(1.01);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Input focus effect */
+    .input-focus:focus {
+      box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.3);
+      border-color: var(--primary-color);
+    }
+    
+    /* Custom file upload */
+    .file-upload-label {
+      transition: all 0.3s ease;
+    }
+    
+    .file-upload-label:hover {
+      border-color: var(--primary-color);
+      background: rgba(15, 23, 42, 0.9);
+    }
+    
+    /* Theme toggle */
+    .theme-toggle {
       position: relative;
+      width: 50px;
+      height: 26px;
+      border-radius: 13px;
+      background: var(--darker-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
-
-    .navbar a::after {
+    
+    .theme-toggle:after {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 0;
-      height: 2px;
-      background: var(--primary-color);
-      transition: var(--transition-speed);
-      transform: translateX(-50%);
-    }
-
-    .navbar a:hover::after {
-      width: 100%;
-    }
-
-    .navbar a:hover {
-      color: var(--hover-text);
-      background-color: var(--hover-bg);
-    }
-
-    .navbar .logout-btn {
-      background: var(--logout-bg);
-      color: white;
-      padding: 8px 12px;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: var(--transition-speed);
-      box-shadow: var(--glow);
-    }
-
-    .navbar .logout-btn:hover {
-      background: var(--logout-hover-bg);
-      transform: translateY(-2px);
-    }
-
-    /* Main Container */
-    .container {
-      margin-top: 80px;
-      padding: 20px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: var(--transition-speed);
-    }
-
-    /* Story Box */
-    .story-box {
-      position: fixed;
-      top: 100px;
-      right: 20px;
-      background: var(--card-bg);
-      width: 60px;
-      height: 60px;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: var(--glow);
-      cursor: pointer;
-      transition: var(--transition-speed);
+      background: linear-gradient(135deg, #00F5A0, #00D9F5);
+      transition: all 0.3s ease;
     }
-
-    .story-box:hover {
-      transform: scale(1.1);
+    
+    [data-theme="light"] .theme-toggle:after {
+      transform: translateX(24px);
+      background: linear-gradient(135deg, #0083F5, #00D9F5);
     }
-
-    .story-box .add-icon {
-      font-size: 24px;
+    
+    /* Hover effects */
+    .nav-link:hover {
       color: var(--primary-color);
-    }
-
-    /* Story Modal */
-    .story-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .story-modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: var(--card-bg);
-      padding: 25px;
-      border-radius: var(--border-radius);
-      box-shadow: 0 5px 25px var(--shadow);
-      width: 100%;
-      max-width: 500px;
-      position: relative;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 24px;
-      color: var(--text-color);
-      cursor: pointer;
-      transition: var(--transition-speed);
-    }
-
-    .close-modal:hover {
-      color: var(--primary-color);
-    }
-
-    .modal-content h3 {
-      font-size: 24px;
-      color: var(--primary-color);
-      margin-bottom: 20px;
-      text-align: center;
-      text-shadow: var(--glow);
-    }
-
-    .modal-content textarea {
-      width: 100%;
-      padding: 12px;
-      border-radius: var(--border-radius);
-      background: var(--background-color);
-      color: var(--text-color);
-      border: 1px solid var(--hover-bg);
-      resize: none;
-      transition: var(--transition-speed);
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
-
-    .modal-content textarea:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: var(--glow);
-    }
-
-    .modal-content .file-upload-label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 12px;
-      background: var(--background-color);
-      border: 1px solid var(--hover-bg);
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: var(--transition-speed);
-      margin-bottom: 20px;
-    }
-
-    .modal-content .file-upload-label:hover {
-      background: var(--hover-bg);
-      border-color: var(--primary-color);
-    }
-
-    .modal-content .file-upload-label .upload-icon {
-      font-size: 18px;
-    }
-
-    .modal-content .file-upload-label .upload-text {
-      font-size: 14px;
-      color: var(--text-color);
-    }
-
-    .modal-content .file-upload-input {
-      display: none;
-    }
-
-    .modal-content .story-button {
-      width: 100%;
-      padding: 12px 20px;
-      background: var(--gradient-primary);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: var(--transition-speed);
-      box-shadow: var(--glow);
-    }
-
-    .modal-content .story-button:hover {
-      opacity: 0.9;
       transform: translateY(-2px);
     }
-
-    /* Story Form */
-    .story-form {
-      background: var(--card-bg);
-      padding: 25px;
-      border-radius: var(--border-radius);
-      box-shadow: 0 5px 25px var(--shadow);
-      margin-bottom: 20px;
-      width: 100%;
-      max-width: 600px;
-      transition: var(--transition-speed);
-      display: none; /* Hidden by default */
-    }
-
-    .story-form h3 {
-      font-size: 24px;
-      color: var(--primary-color);
-      margin-bottom: 15px;
-      text-align: center;
-      text-shadow: var(--glow);
-    }
-
-    .story-form textarea {
-      width: 100%;
-      margin-bottom: 15px;
-      padding: 12px;
-      border-radius: var(--border-radius);
-      background: var(--background-color);
-      color: var(--text-color);
-      border: 1px solid var(--hover-bg);
-      resize: none;
-      transition: var(--transition-speed);
-      font-size: 14px;
-    }
-
-    .story-form textarea:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: var(--glow);
-    }
-
-    .story-form input[type="file"] {
-      width: 100%;
-      margin-bottom: 15px;
-      padding: 12px;
-      border-radius: var(--border-radius);
-      background: var(--background-color);
-      color: var(--text-color);
-      border: 1px solid var(--hover-bg);
-      transition: var(--transition-speed);
-      font-size: 14px;
-    }
-
-    .story-form input[type="file"]:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: var(--glow);
-    }
-
-    .story-form button {
-      width: 100%;
-      padding: 12px 20px;
-      background: var(--gradient-primary);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: var(--transition-speed);
-      box-shadow: var(--glow);
-    }
-
-    .story-form button:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-    }
-
-    /* Story View Modal */
-    .story-view-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 1001;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .story-view-modal.active {
-      display: flex;
-    }
-
-    .story-content {
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: var(--glow);
-      width: 90%;
-      max-width: 500px;
-      position: relative;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .close-story-modal {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 24px;
-      color: var(--text-color);
-      cursor: pointer;
-      transition: var(--transition-speed);
-    }
-
-    .close-story-modal:hover {
-      color: var(--primary-color);
-    }
-
-    .story-media img {
-      max-width: 100%;
-      max-height: 70vh;
-      border-radius: var(--border-radius);
-    }
-
-    .story-media p {
-      font-size: 18px;
-      color: var(--text-color);
-      margin: 20px 0;
-    }
-
-    .story-controls {
-      margin-top: 20px;
-    }
-
-    .control-btn {
-      background: none;
-      border: none;
-      font-size: 24px;
-      color: var(--text-color);
-      cursor: pointer;
-      transition: var(--transition-speed);
-    }
-
-    .control-btn:hover {
-      color: var(--primary-color);
-    }
-
-    /* Stories Container */
-    .stories-container {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 20px;
-      overflow-x: auto;
-      padding: 10px;
-    }
-
-    .story-card {
-      background: var(--card-bg);
-      width: 120px;
-      height: 180px;
-      border-radius: var(--border-radius);
-      box-shadow: var(--glow);
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      transition: var(--transition-speed);
-    }
-
-    .story-card:hover {
-      transform: scale(1.05);
-    }
-
-    .story-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .story-card .user-info {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      display: flex;
-      align-items: center;
-    }
-
-    .story-card .user-info img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 2px solid var(--primary-color);
-      margin-right: 5px;
-    }
-
-    .story-card .user-info span {
-      font-size: 14px;
-      color: var(--text-color);
-      font-weight: 600;
-    }
-
-    .story-card .dropdown {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-
-    .story-card .dropdown-btn {
-      background: none;
-      border: none;
-      color: var(--text-color);
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .story-card .dropdown-content {
-      display: none;
-      position: absolute;
-      right: 0;
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: var(--glow);
-      z-index: 1;
-    }
-
-    .story-card .dropdown-content button {
-      display: block;
-      width: 100%;
-      padding: 8px 12px;
-      background: none;
-      border: none;
-      color: var(--text-color);
-      text-align: left;
-      cursor: pointer;
-      transition: var(--transition-speed);
-    }
-
-    .story-card .dropdown-content button:hover {
-      background: var(--hover-bg);
-    }
-
-    .story-card .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    /* Posts Section */
-    .posts-container {
-      margin-top: 20px;
-      width: 100%;
-      max-width: 600px;
-    }
-
-    /* Individual Post */
-    .post {
-      background: var(--card-bg);
-      padding: 20px;
-      border-radius: var(--border-radius);
-      margin-bottom: 20px;
-      color: var(--text-color);
-      box-shadow: 0 5px 25px var(--shadow);
-      transition: var(--transition-speed);
-      position: relative;
-    }
-
-    .post:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px var(--shadow);
-    }
-
-    .post .user-info {
-      display: flex;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .post .user-info img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      margin-right: 15px;
-      border: 2px solid var(--primary-color);
-      box-shadow: var(--glow);
-    }
-
-    .post .user-info span {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--primary-color);
-      text-shadow: var(--glow);
-    }
-
-    .post .dropdown {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-
-    .post .dropdown-btn {
-      background: none;
-      border: none;
-      color: var(--text-color);
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .post .dropdown-content {
-      display: none;
-      position: absolute;
-      right: 0;
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: var(--glow);
-      z-index: 1;
-    }
-
-    .post .dropdown-content button {
-      display: block;
-      width: 100%;
-      padding: 8px 12px;
-      background: none;
-      border: none;
-      color: var(--text-color);
-      text-align: left;
-      cursor: pointer;
-      transition: var(--transition-speed);
-    }
-
-    .post .dropdown-content button:hover {
-      background: var(--hover-bg);
-    }
-
-    .post .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .post .post-text {
-      font-size: 16px;
-      line-height: 1.6;
-      margin-bottom: 15px;
-    }
-
-    .post .post-image {
-      width: 100%;
-      border-radius: var(--border-radius);
-      margin-bottom: 15px;
-      box-shadow: var(--glow);
-    }
-
-    .post .post-actions {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-
-    .post .like-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-      padding: 8px;
-      transition: var(--transition-speed);
-      color: var(--text-color);
-    }
-
-    .post .like-btn.liked {
-      color: red;
-      text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
-    }
-
-    .post .like-btn:hover {
-      transform: scale(1.1);
-    }
-
-    .post .comment-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-      padding: 8px;
-      transition: var(--transition-speed);
-      color: var(--text-color);
-    }
-
-    .post .comment-btn:hover {
-      transform: scale(1.1);
-    }
-
-    .post .time-ago {
-      font-size: 14px;
-      color: var(--sidebar-text);
-      margin-bottom: 15px;
-    }
-
-    /* Comments Section */
-    .comments-container {
-      margin-top: 15px;
-      padding: 15px;
-      background: var(--background-color);
-      border-radius: var(--border-radius);
-      border: 1px solid var(--hover-bg);
-      max-height: 200px;
-      overflow-y: auto;
-      box-shadow: var(--glow);
-    }
-
-    .comments-container h4 {
-      font-size: 16px;
-      color: var(--primary-color);
-      margin-bottom: 10px;
-      text-shadow: var(--glow);
-    }
-
-    .comment {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .comment img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin-right: 10px;
-      border: 1px solid var(--primary-color);
-      box-shadow: var(--glow);
-    }
-
-    .comment p {
-      margin: 0;
-      font-size: 14px;
-      color: var(--text-color);
-    }
-
-    .comment-input {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .comment-input input {
-      flex: 1;
-      padding: 8px;
-      border-radius: var(--border-radius);
-      border: 1px solid var(--hover-bg);
-      background: var(--background-color);
-      color: var(--text-color);
-      transition: var(--transition-speed);
-    }
-
-    .comment-input input:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: var(--glow);
-    }
-
-    .comment-input button {
-      padding: 8px 12px;
-      background: var(--gradient-primary);
-      color: white;
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: var(--transition-speed);
-      box-shadow: var(--glow);
-    }
-
-    .comment-input button:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-    }
-
-    /* Post Form */
-    .post-form {
-      background: var(--card-bg);
-      padding: 25px;
-      border-radius: var(--border-radius);
-      box-shadow: 0 5px 25px var(--shadow);
-      margin-bottom: 20px;
-      width: 100%;
-      max-width: 600px;
-      transition: var(--transition-speed);
-    }
-
-    .post-form h3 {
-      font-size: 24px;
-      color: var(--primary-color);
-      margin-bottom: 20px;
-      text-align: center;
-      text-shadow: var(--glow);
-    }
-
-    .post-form .form-group {
-      margin-bottom: 20px;
-    }
-
-    .post-form textarea {
-      width: 100%;
-      padding: 12px;
-      border-radius: var(--border-radius);
-      background: var(--background-color);
-      color: var(--text-color);
-      border: 1px solid var(--hover-bg);
-      resize: none;
-      transition: var(--transition-speed);
-      font-size: 14px;
-    }
-
-    .post-form textarea:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: var(--glow);
-    }
-
-    .post-form .file-upload-label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 12px;
-      background: var(--background-color);
-      border: 1px solid var(--hover-bg);
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: var(--transition-speed);
-    }
-
-    .post-form .file-upload-label:hover {
-      background: var(--hover-bg);
-      border-color: var(--primary-color);
-    }
-
-    .post-form .file-upload-label .upload-icon {
-      font-size: 18px;
-    }
-
-    .post-form .file-upload-label .upload-text {
-      font-size: 14px;
-      color: var(--text-color);
-    }
-
-    .post-form .file-upload-input {
-      display: none;
-    }
-
-    .post-form .post-button {
-      width: 100%;
-      padding: 12px 20px;
-      background: var(--gradient-primary);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: var(--transition-speed);
-      box-shadow: var(--glow);
-    }
-
-    .post-form .post-button:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-    }
-
-    /* Responsive Design */
+    
+    .nav-link:hover i {
+      transform: scale(1.2);
+    }
+    
+    /* Responsive adjustments */
     @media (max-width: 768px) {
-      .navbar .menu {
-        gap: 10px;
-        overflow-x: auto;
-        white-space: nowrap;
+      .navbar-logo {
+        font-size: 1.5rem;
       }
-
-      .navbar a {
-        font-size: 12px;
-        padding: 6px 10px;
-      }
-
-      .navbar .logout-btn {
-        padding: 6px 10px;
-        font-size: 12px;
-      }
-
-      .container {
-        padding: 15px;
-      }
-
-      .story-box {
-        top: 90px;
-        right: 15px;
-        width: 50px;
-        height: 50px;
-      }
-
-      .story-box .add-icon {
-        font-size: 20px;
-      }
-
-      .story-card {
-        width: 100px;
-        height: 150px;
-      }
-
-      .story-card .user-info img {
-        width: 25px;
-        height: 25px;
-      }
-
-      .story-card .user-info span {
-        font-size: 12px;
+      
+      .post-card {
+        margin-bottom: 1.5rem;
       }
     }
   </style>
 </head>
-<body>
+<body class="relative">
+  <!-- Particle Background -->
+  <div id="particles-container"></div>
+  
   <!-- Navbar -->
-  <div class="navbar">
-    <div class="logo">Hashbook</div>
-    <div class="menu">
-      <a href="../dashboard.html">Home</a>
-      <a href="./profile/index.html">Profile</a>
-      <a href="./Messaging/index.html">Messages</a>
-      <a href="./settings/index.html">Settings</a>
-      <a href="./Friends/index.html">Friends</a>
-      <div class="logout-btn">Logout</div>
+  <nav class="navbar fixed top-0 left-0 w-full z-50 py-4 px-6 flex justify-between items-center">
+    <div class="flex items-center space-x-4">
+      <h1 class="text-3xl font-bold text-gradient bg-gradient-to-r from-teal-400 to-teal-600 text-neon animate-wave">
+        <span class="inline-block transform rotate-3">H</span>
+        <span class="inline-block transform -rotate-3">a</span>
+        <span class="inline-block transform rotate-2">s</span>
+        <span class="inline-block transform -rotate-2">h</span>
+        <span class="inline-block transform rotate-1">b</span>
+        <span class="inline-block transform -rotate-1">o</span>
+        <span class="inline-block transform rotate-3">o</span>
+        <span class="inline-block transform -rotate-3">k</span>
+      </h1>
     </div>
+    
+    <div class="hidden md:flex items-center space-x-8">
+      <a href="../dashboard.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
+        <i class="fas fa-home text-xl transition-transform"></i>
+        <span class="text-xs mt-1">Home</span>
+      </a>
+      <a href="./profile/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
+        <i class="fas fa-user text-xl transition-transform"></i>
+        <span class="text-xs mt-1">Profile</span>
+      </a>
+      <a href="./Messaging/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
+        <i class="fas fa-comment-dots text-xl transition-transform"></i>
+        <span class="text-xs mt-1">Messages</span>
+      </a>
+      <a href="./settings/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
+        <i class="fas fa-cog text-xl transition-transform"></i>
+        <span class="text-xs mt-1">Settings</span>
+      </a>
+      <a href="./Friends/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
+        <i class="fas fa-users text-xl transition-transform"></i>
+        <span class="text-xs mt-1">Friends</span>
+      </a>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <div class="theme-toggle" id="theme-toggle"></div>
+      <button class="logout-btn cyber-button px-6 py-2 rounded-full font-medium transition-all duration-300 ripple">
+        <i class="fas fa-sign-out-alt mr-2"></i>
+        <span class="hidden md:inline">Logout</span>
+      </button>
+    </div>
+  </nav>
+  
+  <!-- Mobile Bottom Navigation -->
+  <div class="mobile-nav md:hidden fixed bottom-0 left-0 w-full z-40 py-3 px-6 flex justify-around items-center">
+    <a href="../dashboard.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
+      <i class="fas fa-home text-xl transition-transform"></i>
+      <span class="text-xs mt-1">Home</span>
+    </a>
+    <a href="./profile/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
+      <i class="fas fa-user text-xl transition-transform"></i>
+      <span class="text-xs mt-1">Profile</span>
+    </a>
+    <a href="./Messaging/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
+      <i class="fas fa-comment-dots text-xl transition-transform"></i>
+      <span class="text-xs mt-1">Chat</span>
+    </a>
+    <a href="./Friends/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
+      <i class="fas fa-users text-xl transition-transform"></i>
+      <span class="text-xs mt-1">Friends</span>
+    </a>
   </div>
-
-  <!-- Story Box -->
-  <div class="story-box" id="story-box">
-    <span class="add-icon">+</span>
+  
+  <!-- Story Box (FAB) -->
+  <div id="story-box" class="cyber-fab fixed right-6 top-24 z-40 w-16 h-16 neon-gradient rounded-full flex items-center justify-center text-white text-2xl shadow-xl cursor-pointer animate-float">
+    <i class="fas fa-plus"></i>
   </div>
-
+  
   <!-- Story Modal for Viewing -->
-  <div class="story-view-modal" id="story-view-modal">
-    <div class="story-content">
-      <span class="close-story-modal" id="close-story-modal">&times;</span>
-      <div class="story-media" id="story-media">
-        <!-- Image or text will be dynamically inserted here -->
+  <div id="story-view-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center hidden">
+    <div class="relative glass rounded-2xl w-full max-w-md mx-4 overflow-hidden modal-enter">
+      <span id="close-story-modal" class="absolute top-4 right-4 text-white text-3xl cursor-pointer z-50 hover:text-primary transition-colors">&times;</span>
+      
+      <div class="story-progress"></div>
+      
+      <div id="story-media" class="p-6 flex flex-col items-center justify-center min-h-[60vh]">
+        <!-- Content will be dynamically inserted here -->
       </div>
-      <div class="story-controls">
-        <button id="play-pause-btn" class="control-btn">⏸️</button>
+      
+      <div class="story-controls p-4 flex justify-center bg-gray-900 bg-opacity-50">
+        <button id="play-pause-btn" class="control-btn text-white text-3xl mx-6 hover:text-primary transition-colors">
+          <i class="fas fa-pause"></i>
+        </button>
       </div>
     </div>
   </div>
-
-  <!-- Story Modal -->
-  <div class="story-modal" id="story-modal">
-    <div class="modal-content">
-      <span class="close-modal" id="close-modal">&times;</span>
-      <h3>Create a Story</h3>
-      <textarea id="story-text" rows="4" placeholder="Write your story..."></textarea>
-      <label for="story-image" class="file-upload-label">
-        <span class="upload-icon">📷</span>
-        <span class="upload-text">Upload Image (Optional)</span>
-        <input type="file" id="story-image" accept="image/*" class="file-upload-input">
+  
+  <!-- Story Creation Modal -->
+  <div id="story-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center hidden">
+    <div class="glass rounded-2xl w-full max-w-md mx-4 p-8 shadow-2xl modal-enter">
+      <div class="flex justify-between items-center mb-8">
+        <h3 class="text-2xl font-bold text-gradient">Create a Story</h3>
+        <span id="close-modal" class="text-gray-400 text-3xl cursor-pointer hover:text-primary transition-colors">&times;</span>
+      </div>
+      
+      <textarea id="story-text" rows="4" class="cyber-input w-full rounded-xl p-4 mb-6 focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Write your story..."></textarea>
+      
+      <label for="story-image" class="file-upload-label flex items-center justify-center w-full rounded-xl p-6 mb-8 cursor-pointer transition-all border-2 border-dashed border-gray-700 hover:border-primary">
+        <i class="fas fa-camera text-primary text-2xl mr-3"></i>
+        <span class="text-gray-300">Upload Image (Optional)</span>
+        <input type="file" id="story-image" accept="image/*" class="hidden">
       </label>
-      <button id="story-btn" class="story-button">Post Story</button>
+      
+      <button id="story-btn" class="w-full cyber-button px-6 py-4 rounded-xl font-bold transition-all duration-300 ripple">
+        <i class="fas fa-paper-plane mr-2"></i> Post Story
+      </button>
     </div>
   </div>
-
-  <!-- Main Container -->
-  <div class="container">
+  
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 pt-28 pb-24 md:pb-16">
     <!-- Stories Container -->
-    <div class="stories-container" id="stories-container"></div>
-
+    <div id="stories-container" class="flex space-x-4 mb-10 pb-6 overflow-x-auto scrollbar-hide">
+      <!-- Stories will be dynamically inserted here -->
+    </div>
+    
     <!-- Post Form -->
-    <div class="post-form">
-      <h3>Share With Us</h3>
-      <div class="form-group">
-        <textarea id="post-text" rows="4" placeholder="What's on your mind?"></textarea>
+    <div class="glass rounded-2xl shadow-2xl mb-10 p-8 card-3d">
+      <h3 class="text-2xl font-bold text-gradient mb-8 text-center animate-hologram">Share With The Universe</h3>
+      
+      <div class="mb-6">
+        <textarea id="post-text" rows="4" class="cyber-input w-full rounded-xl p-5 focus:outline-none focus:ring-1 focus:ring-primary" placeholder="What's on your mind?"></textarea>
       </div>
-      <div class="form-group">
-        <label for="post-image" class="file-upload-label">
-          <span class="upload-icon">📷</span>
-          <span class="upload-text">Upload Image</span>
-          <input type="file" id="post-image" accept="image/*" class="file-upload-input">
+      
+      <div class="mb-8">
+        <label for="post-image" class="file-upload-label flex items-center justify-center w-full rounded-xl p-6 cursor-pointer transition-all border-2 border-dashed border-gray-700 hover:border-primary">
+          <i class="fas fa-image text-primary text-2xl mr-3"></i>
+          <span class="text-gray-300">Upload Image</span>
+          <input type="file" id="post-image" accept="image/*" class="hidden">
         </label>
       </div>
-      <button id="post-btn" class="post-button">Post</button>
+      
+      <button id="post-btn" class="w-full cyber-button px-6 py-4 rounded-xl font-bold transition-all duration-300 ripple">
+        <i class="fas fa-share-square mr-2"></i> Post
+      </button>
     </div>
-
+    
     <!-- Posts Section -->
-    <div class="posts-container" id="posts-container"></div>
-  </div>
+    <div id="posts-container" class="space-y-8">
+      <!-- Posts will be dynamically inserted here -->
+    </div>
+  </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
@@ -1021,11 +741,57 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
+    // Create particle background
+    function createParticles() {
+      const container = document.getElementById('particles-container');
+      const particleCount = Math.floor(window.innerWidth / 10);
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random size between 1px and 3px
+        const size = Math.random() * 2 + 1;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        
+        // Random animation duration between 10s and 20s
+        const duration = Math.random() * 10 + 10;
+        particle.style.animationDuration = `${duration}s`;
+        
+        // Random delay
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        
+        container.appendChild(particle);
+      }
+    }
+    
+    // Theme toggle functionality
+    function setupThemeToggle() {
+      const themeToggle = document.getElementById('theme-toggle');
+      const currentTheme = localStorage.getItem('theme') || 'dark';
+      
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      });
+    }
+
     // Redirect if not authenticated
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.replace("./index.html"); // Redirect to login page
       } else {
+        createParticles();
+        setupThemeToggle();
         loadPosts(); // Load posts after authentication
         loadStories(); // Load stories after authentication
       }
@@ -1087,7 +853,13 @@
         postsContainer.innerHTML = "";
 
         if (querySnapshot.empty) {
-          postsContainer.innerHTML = "<p>No posts found.</p>";
+          postsContainer.innerHTML = `
+            <div class="glass rounded-2xl p-10 text-center card-3d">
+              <i class="fas fa-newspaper text-5xl text-primary mb-6 animate-pulse-slow"></i>
+              <h3 class="text-2xl font-bold text-gray-300 mb-4">No posts yet</h3>
+              <p class="text-gray-400">Be the first to share something amazing!</p>
+            </div>
+          `;
           return;
         }
 
@@ -1095,7 +867,7 @@
           const post = doc.data();
           const userData = await getUserData(post.userId); // Fetch user data
           const displayName = resolveDisplayName(auth.currentUser, userData); // Resolve display name
-          const photoURL = userData?.photoURL || "pfp.jpg"; // Default profile picture
+          const photoURL = userData?.photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"; // Default profile picture
 
           const postElement = createPostElement(post, doc.id, displayName, photoURL);
           postsContainer.appendChild(postElement);
@@ -1106,134 +878,216 @@
     // Create a Post Element
     function createPostElement(post, postId, displayName, photoURL) {
       const postElement = document.createElement("div");
-      postElement.classList.add("post");
+      postElement.className = "glass rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 post-card";
 
+      // Post Header
+      const postHeader = document.createElement("div");
+      postHeader.className = "p-6 flex items-center justify-between border-b border-gray-700";
+
+      // User Info
       const userInfo = document.createElement("div");
-      userInfo.classList.add("user-info");
+      userInfo.className = "flex items-center";
 
       // User Profile Picture
       const userImage = document.createElement("img");
-      userImage.src = photoURL; // Use fetched or default profile picture
+      userImage.src = photoURL;
       userImage.alt = "Profile Picture";
-      userImage.classList.add("profile-pic");
+      userImage.className = "w-12 h-12 rounded-full object-cover border-2 border-primary shadow-md";
       userInfo.appendChild(userImage);
 
-      // User Display Name
+      // User Display Name and Time
+      const userDetails = document.createElement("div");
+      userDetails.className = "ml-4";
+
       const username = document.createElement("span");
-      username.textContent = displayName; // Use resolved display name
-      username.classList.add("username");
-      userInfo.appendChild(username);
+      username.textContent = displayName;
+      username.className = "block font-semibold text-gray-200";
+      userDetails.appendChild(username);
+
+      const timeAgo = document.createElement("span");
+      timeAgo.textContent = formatDistanceToNow(post.createdAt.toDate(), { addSuffix: true });
+      timeAgo.className = "block text-sm text-gray-400";
+      userDetails.appendChild(timeAgo);
+
+      userInfo.appendChild(userDetails);
+      postHeader.appendChild(userInfo);
 
       // Dropdown for Edit/Delete (only for the logged-in user's posts)
       if (post.userId === auth.currentUser.uid) {
         const dropdown = document.createElement("div");
-        dropdown.classList.add("dropdown");
+        dropdown.className = "relative dropdown";
 
         const dropdownButton = document.createElement("button");
-        dropdownButton.classList.add("dropdown-btn");
-        dropdownButton.innerHTML = "&#8942;"; // Three dots icon
+        dropdownButton.className = "text-gray-400 hover:text-white transition-colors dropdown-btn";
+        dropdownButton.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
         dropdown.appendChild(dropdownButton);
 
         const dropdownContent = document.createElement("div");
-        dropdownContent.classList.add("dropdown-content");
+        dropdownContent.className = "absolute right-0 mt-2 w-48 bg-gray-800 rounded-xl shadow-lg z-10 cyber-dropdown border border-gray-700";
 
         const editButton = document.createElement("button");
-        editButton.textContent = "Edit";
+        editButton.className = "block w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-700 transition-colors rounded-t-xl";
+        editButton.innerHTML = '<i class="fas fa-edit mr-2"></i> Edit';
         editButton.addEventListener("click", () => editPost(postId, post.text));
         dropdownContent.appendChild(editButton);
 
         const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
+        deleteButton.className = "block w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-700 transition-colors rounded-b-xl";
+        deleteButton.innerHTML = '<i class="fas fa-trash mr-2"></i> Delete';
         deleteButton.addEventListener("click", () => deletePost(postId, post.deleteUrl));
         dropdownContent.appendChild(deleteButton);
 
         dropdown.appendChild(dropdownContent);
-        postElement.appendChild(dropdown);
-
-        // Show dropdown on click
-        dropdownButton.addEventListener("click", (e) => {
-          e.stopPropagation(); // Prevent event bubbling
-          dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
-        });
-
-        // Hide dropdown when clicking outside
-        document.addEventListener("click", () => {
-          dropdownContent.style.display = "none";
-        });
+        postHeader.appendChild(dropdown);
       }
 
-      // Post Text
-      const postText = document.createElement("p");
-      postText.textContent = post.text;
-      postText.classList.add("post-text");
-      postElement.appendChild(postText);
+      postElement.appendChild(postHeader);
 
-      // Display Post Image (if available)
+      // Post Content
+      const postContent = document.createElement("div");
+      postContent.className = "p-6";
+
+      // Post Text
+      if (post.text) {
+        const postText = document.createElement("p");
+        postText.textContent = post.text;
+        postText.className = "text-gray-300 mb-6 text-lg";
+        postContent.appendChild(postText);
+      }
+
+      // Post Image
       if (post.imageUrl) {
+        const postImageContainer = document.createElement("div");
+        postImageContainer.className = "mb-6 rounded-xl overflow-hidden";
+
         const postImage = document.createElement("img");
         postImage.src = post.imageUrl;
         postImage.alt = "Post Image";
-        postImage.classList.add("post-image");
-        postElement.appendChild(postImage);
+        postImage.className = "w-full h-auto max-h-[80vh] object-cover rounded-xl";
+        postImageContainer.appendChild(postImage);
+        postContent.appendChild(postImageContainer);
       }
 
-      // Time Ago
-      const timeAgo = document.createElement("span");
-      timeAgo.textContent = formatDistanceToNow(post.createdAt.toDate(), {
-        addSuffix: true,
-      });
-      timeAgo.classList.add("time-ago");
-      postElement.appendChild(timeAgo);
+      postElement.appendChild(postContent);
 
-      // Like Button
+      // Post Footer (Likes and Comments)
+      const postFooter = document.createElement("div");
+      postFooter.className = "px-6 py-4 border-t border-gray-700";
+
+      // Likes Section
+      const likesSection = document.createElement("div");
+      likesSection.className = "flex items-center mb-4";
+
       const likeButton = document.createElement("button");
-      likeButton.classList.add("like-btn");
+      likeButton.className = `flex items-center mr-6 like-btn ${post.likes && post.likes.includes(auth.currentUser.uid) ? 'text-red-500' : 'text-gray-400'}`;
       likeButton.innerHTML = post.likes && post.likes.includes(auth.currentUser.uid)
-        ? '<span style="color: red;">❤️</span>' // Red heart if liked
-        : '<span>🤍</span>'; // White heart if not liked
+        ? '<i class="fas fa-heart mr-2 text-xl"></i>'
+        : '<i class="far fa-heart mr-2 text-xl"></i>';
       likeButton.addEventListener("click", () => toggleLike(postId));
-      postElement.appendChild(likeButton);
+      likesSection.appendChild(likeButton);
 
-      // Likes Count
       const likesCount = document.createElement("span");
+      likesCount.className = "text-sm text-gray-400";
       likesCount.textContent = `${post.likes ? post.likes.length : 0} likes`;
-      likesCount.classList.add("likes-count");
-      postElement.appendChild(likesCount);
+      likesSection.appendChild(likesCount);
+
+      postFooter.appendChild(likesSection);
 
       // Comments Section
       const commentsContainer = document.createElement("div");
-      commentsContainer.classList.add("comments-container");
+      commentsContainer.className = "comments-container bg-gray-900 bg-opacity-30 rounded-xl p-4 mt-4";
 
-      const commentsHeader = document.createElement("h4");
-      commentsHeader.textContent = "Comments:";
+      // Comments Header
+      const commentsHeader = document.createElement("div");
+      commentsHeader.className = "flex items-center justify-between mb-4";
+
+      const commentsTitle = document.createElement("h4");
+      commentsTitle.className = "text-sm font-semibold text-gray-300";
+      commentsTitle.innerHTML = '<i class="fas fa-comments mr-2"></i> Comments';
+      commentsHeader.appendChild(commentsTitle);
+
+      const commentsCount = document.createElement("span");
+      commentsCount.className = "text-xs text-gray-400";
+      commentsCount.textContent = post.comments ? `${post.comments.length} comments` : "0 comments";
+      commentsHeader.appendChild(commentsCount);
+
       commentsContainer.appendChild(commentsHeader);
 
-      // Display Existing Comments
-      if (post.comments) {
+      // Existing Comments
+      if (post.comments && post.comments.length > 0) {
+        const commentsList = document.createElement("div");
+        commentsList.className = "space-y-4 max-h-60 overflow-y-auto pr-2";
+
         post.comments.forEach((comment) => {
-          const commentElement = document.createElement("p");
-          const commentTime = formatDistanceToNow(new Date(comment.createdAt), {
-            addSuffix: true,
-          });
-          commentElement.textContent = `${comment.displayName}: ${comment.text} (${commentTime})`;
-          commentsContainer.appendChild(commentElement);
+          const commentElement = document.createElement("div");
+          commentElement.className = "flex items-start";
+
+          const commentUserImage = document.createElement("img");
+          commentUserImage.src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+          commentUserImage.alt = "Profile Picture";
+          commentUserImage.className = "w-8 h-8 rounded-full mr-3 mt-1";
+          commentElement.appendChild(commentUserImage);
+
+          const commentContent = document.createElement("div");
+          commentContent.className = "flex-1";
+
+          const commentHeader = document.createElement("div");
+          commentHeader.className = "flex items-center";
+
+          const commentUsername = document.createElement("span");
+          commentUsername.className = "text-sm font-semibold text-gray-300 mr-3";
+          commentUsername.textContent = comment.displayName || "Anonymous";
+          commentHeader.appendChild(commentUsername);
+
+          const commentTime = document.createElement("span");
+          commentTime.className = "text-xs text-gray-500";
+          commentTime.textContent = formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true });
+          commentHeader.appendChild(commentTime);
+
+          commentContent.appendChild(commentHeader);
+
+          const commentText = document.createElement("p");
+          commentText.className = "text-sm text-gray-300 mt-2";
+          commentText.textContent = comment.text;
+          commentContent.appendChild(commentText);
+
+          commentElement.appendChild(commentContent);
+          commentsList.appendChild(commentElement);
         });
+
+        commentsContainer.appendChild(commentsList);
+      } else {
+        const noComments = document.createElement("p");
+        noComments.className = "text-sm text-gray-500 text-center py-4";
+        noComments.textContent = "No comments yet";
+        commentsContainer.appendChild(noComments);
       }
 
       // Comment Input
+      const commentInputContainer = document.createElement("div");
+      commentInputContainer.className = "mt-4 flex items-center";
+
       const commentInput = document.createElement("input");
       commentInput.type = "text";
-      commentInput.placeholder = "Add a comment...";
-      commentInput.classList.add("comment-input");
-      commentsContainer.appendChild(commentInput);
+      commentInput.placeholder = "Write a comment...";
+      commentInput.className = "flex-1 cyber-input text-sm rounded-l-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary";
+      commentInputContainer.appendChild(commentInput);
 
       const commentButton = document.createElement("button");
-      commentButton.textContent = "Comment";
-      commentButton.classList.add("comment-btn");
-      commentButton.addEventListener("click", () => addComment(postId, commentInput.value));
-      commentsContainer.appendChild(commentButton);
+      commentButton.className = "bg-primary hover:bg-primary-dark text-white px-5 py-3 rounded-r-xl transition-colors";
+      commentButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+      commentButton.addEventListener("click", () => {
+        if (commentInput.value.trim()) {
+          addComment(postId, commentInput.value);
+          commentInput.value = "";
+        }
+      });
+      commentInputContainer.appendChild(commentButton);
 
-      postElement.appendChild(commentsContainer);
+      commentsContainer.appendChild(commentInputContainer);
+      postFooter.appendChild(commentsContainer);
+      postElement.appendChild(postFooter);
+
       return postElement;
     }
 
@@ -1315,6 +1169,12 @@
       let imageUrl = null;
       let deleteUrl = null;
       if (postImage) {
+        // Show loading state
+        const postBtn = document.getElementById("post-btn");
+        const originalText = postBtn.innerHTML;
+        postBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading...';
+        postBtn.disabled = true;
+
         // Upload image to ImgBB
         const formData = new FormData();
         formData.append("image", postImage);
@@ -1341,8 +1201,16 @@
         } catch (error) {
           console.error("Error uploading image:", error);
           Swal.fire("Error", "Failed to upload image. Please try again.", "error");
+
+          // Reset button state
+          postBtn.innerHTML = originalText;
+          postBtn.disabled = false;
           return;
         }
+
+        // Reset button state
+        postBtn.innerHTML = originalText;
+        postBtn.disabled = false;
       }
 
       try {
@@ -1353,7 +1221,7 @@
           createdAt: serverTimestamp(),
           userId: user.uid,
           displayName: resolveDisplayName(user, userData), // Store resolved display name
-          photoURL: userData.photoURL || "pfp.jpg", // Store profile picture
+          photoURL: userData.photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png", // Store profile picture
           likes: [], // Initialize likes array
           comments: [], // Initialize comments array
         });
@@ -1375,11 +1243,23 @@
         text: "You will not be able to recover this post!",
         icon: "warning",
         showCancelButton: true,
+        confirmButtonColor: "#007D76",
+        cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
         cancelButtonText: "No, cancel!",
       });
 
       if (isConfirmed) {
+        // Show loading state
+        Swal.fire({
+          title: "Deleting...",
+          html: "Please wait while we delete your post",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
         // Delete the image from ImgBB (if it exists)
         if (deleteUrl) {
           try {
@@ -1392,7 +1272,13 @@
         // Delete the post from Firestore
         await deleteDoc(doc(db, "posts", postId));
         loadPosts();
-        Swal.fire("Deleted!", "Your post has been deleted.", "success");
+
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Your post has been deleted.",
+          confirmButtonColor: "#007D76",
+        });
       }
     }
 
@@ -1402,28 +1288,50 @@
         title: "Edit your post",
         input: "textarea",
         inputValue: currentText,
+        inputAttributes: {
+          "aria-label": "Type your post here"
+        },
         showCancelButton: true,
+        confirmButtonColor: "#007D76",
+        cancelButtonColor: "#d33",
         inputValidator: (value) => {
           if (!value) {
             return "You need to write something!";
           }
-        },
+        }
       });
 
       if (newText && newText !== currentText) {
+        // Show loading state
+        Swal.fire({
+          title: "Updating...",
+          html: "Please wait while we update your post",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
         await updateDoc(doc(db, "posts", postId), { text: newText });
         loadPosts();
+
+        Swal.fire({
+          icon: "success",
+          title: "Updated!",
+          text: "Your post has been updated.",
+          confirmButtonColor: "#007D76",
+        });
       }
     }
 
     // Handle Creating a Story
     document.getElementById("story-box").addEventListener("click", () => {
-      document.getElementById("story-modal").classList.add("active");
+      document.getElementById("story-modal").classList.remove("hidden");
     });
 
     // Close Story Modal
     document.getElementById("close-modal").addEventListener("click", () => {
-      document.getElementById("story-modal").classList.remove("active");
+      document.getElementById("story-modal").classList.add("hidden");
     });
 
     // Handle Posting a Story
@@ -1451,6 +1359,12 @@
       let imageUrl = null;
       let deleteUrl = null;
       if (storyImage) {
+        // Show loading state
+        const storyBtn = document.getElementById("story-btn");
+        const originalText = storyBtn.innerHTML;
+        storyBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading...';
+        storyBtn.disabled = true;
+
         // Upload image to ImgBB
         const formData = new FormData();
         formData.append("image", storyImage);
@@ -1477,8 +1391,16 @@
         } catch (error) {
           console.error("Error uploading image:", error);
           Swal.fire("Error", "Failed to upload image. Please try again.", "error");
+
+          // Reset button state
+          storyBtn.innerHTML = originalText;
+          storyBtn.disabled = false;
           return;
         }
+
+        // Reset button state
+        storyBtn.innerHTML = originalText;
+        storyBtn.disabled = false;
       }
 
       try {
@@ -1495,7 +1417,7 @@
         // Clear input and close modal
         document.getElementById("story-text").value = "";
         document.getElementById("story-image").value = "";
-        document.getElementById("story-modal").classList.remove("active");
+        document.getElementById("story-modal").classList.add("hidden");
         loadStories();
       } catch (error) {
         console.error("Error creating story:", error);
@@ -1514,7 +1436,11 @@
         storiesContainer.innerHTML = ""; // Clear the container before appending new stories
 
         if (querySnapshot.empty) {
-          storiesContainer.innerHTML = "<p>No stories found.</p>";
+          storiesContainer.innerHTML = `
+            <div class="flex items-center justify-center w-full py-6">
+              <p class="text-gray-400">No stories yet. Be the first to share!</p>
+            </div>
+          `;
           return;
         }
 
@@ -1522,7 +1448,7 @@
           const story = doc.data();
           const userData = await getUserData(story.userId); // Fetch user data
           const displayName = resolveDisplayName(auth.currentUser, userData); // Resolve display name
-          const photoURL = userData?.photoURL || "pfp.jpg"; // Default profile picture
+          const photoURL = userData?.photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"; // Default profile picture
 
           const storyElement = createStoryElement(story, doc.id, displayName, photoURL);
           storiesContainer.appendChild(storyElement);
@@ -1533,63 +1459,72 @@
     // Create a Story Element
     function createStoryElement(story, storyId, displayName, photoURL) {
       const storyElement = document.createElement("div");
-      storyElement.classList.add("story-card");
-      storyElement.setAttribute("data-story-id", storyId); // Add unique ID to story card
+      storyElement.className = "flex-shrink-0 w-32 h-48 rounded-2xl overflow-hidden relative cursor-pointer story-card";
 
-      // Story Image
+      const storyInner = document.createElement("div");
+      storyInner.className = "w-full h-full story-card-inner";
+
+      // Story background (gradient overlay)
+      const storyBg = document.createElement("div");
+      storyBg.className = "absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70";
+      storyInner.appendChild(storyBg);
+
+      // Story content
       if (story.imageUrl) {
         const storyImage = document.createElement("img");
         storyImage.src = story.imageUrl;
         storyImage.alt = "Story Image";
-        storyElement.appendChild(storyImage);
+        storyImage.className = "w-full h-full object-cover";
+        storyInner.appendChild(storyImage);
+      } else {
+        const storyText = document.createElement("div");
+        storyText.className = "w-full h-full flex items-center justify-center p-4 bg-gray-800 text-white text-lg";
+        storyText.textContent = story.text;
+        storyInner.appendChild(storyText);
       }
 
-      // User Info
+      // User info at bottom
       const userInfo = document.createElement("div");
-      userInfo.classList.add("user-info");
+      userInfo.className = "absolute bottom-3 left-3 right-3 flex items-center";
 
       const userImage = document.createElement("img");
       userImage.src = photoURL;
       userImage.alt = "Profile Picture";
+      userImage.className = "w-10 h-10 rounded-full border-2 border-primary object-cover";
       userInfo.appendChild(userImage);
 
       const username = document.createElement("span");
+      username.className = "ml-3 text-white text-sm font-semibold truncate";
       username.textContent = displayName;
       userInfo.appendChild(username);
 
-      storyElement.appendChild(userInfo);
+      storyInner.appendChild(userInfo);
+      storyElement.appendChild(storyInner);
 
       // Dropdown for Delete (only for the logged-in user's stories)
       if (story.userId === auth.currentUser.uid) {
         const dropdown = document.createElement("div");
-        dropdown.classList.add("dropdown");
+        dropdown.className = "absolute top-3 right-3 dropdown";
 
         const dropdownButton = document.createElement("button");
-        dropdownButton.classList.add("dropdown-btn");
-        dropdownButton.innerHTML = "&#8942;"; // Three dots icon
+        dropdownButton.className = "w-8 h-8 rounded-full bg-gray-900 bg-opacity-50 text-white flex items-center justify-center hover:bg-opacity-70 transition-colors";
+        dropdownButton.innerHTML = '<i class="fas fa-ellipsis-h text-sm"></i>';
         dropdown.appendChild(dropdownButton);
 
         const dropdownContent = document.createElement("div");
-        dropdownContent.classList.add("dropdown-content");
+        dropdownContent.className = "absolute right-0 mt-2 w-36 bg-gray-800 rounded-xl shadow-lg z-10 cyber-dropdown border border-gray-700";
 
         const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
-        deleteButton.addEventListener("click", () => deleteStory(storyId, story.deleteUrl));
+        deleteButton.className = "block w-full text-left px-4 py-3 text-xs text-gray-300 hover:bg-gray-700 transition-colors rounded-xl";
+        deleteButton.innerHTML = '<i class="fas fa-trash mr-2"></i> Delete';
+        deleteButton.addEventListener("click", (e) => {
+          e.stopPropagation();
+          deleteStory(storyId, story.deleteUrl);
+        });
         dropdownContent.appendChild(deleteButton);
 
         dropdown.appendChild(dropdownContent);
         storyElement.appendChild(dropdown);
-
-        // Show dropdown on click
-        dropdownButton.addEventListener("click", (e) => {
-          e.stopPropagation(); // Prevent event bubbling
-          dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
-        });
-
-        // Hide dropdown when clicking outside
-        document.addEventListener("click", () => {
-          dropdownContent.style.display = "none";
-        });
       }
 
       // Add click event listener to open the story
@@ -1607,11 +1542,23 @@
         text: "You will not be able to recover this story!",
         icon: "warning",
         showCancelButton: true,
+        confirmButtonColor: "#007D76",
+        cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
         cancelButtonText: "No, cancel!",
       });
 
       if (isConfirmed) {
+        // Show loading state
+        Swal.fire({
+          title: "Deleting...",
+          html: "Please wait while we delete your story",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
         // Delete the image from ImgBB (if it exists)
         if (deleteUrl) {
           try {
@@ -1624,7 +1571,13 @@
         // Delete the story from Firestore
         await deleteDoc(doc(db, "stories", storyId));
         loadStories();
-        Swal.fire("Deleted!", "Your story has been deleted.", "success");
+
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Your story has been deleted.",
+          confirmButtonColor: "#007D76",
+        });
       }
     }
 
@@ -1658,34 +1611,58 @@
 
       // Add story content
       if (story.imageUrl) {
+        const imgContainer = document.createElement("div");
+        imgContainer.className = "w-full h-full flex items-center justify-center";
+
         const img = document.createElement("img");
         img.src = story.imageUrl;
         img.alt = "Story Image";
-        storyMedia.appendChild(img);
+        img.className = "max-w-full max-h-[70vh] object-contain rounded-lg";
+        imgContainer.appendChild(img);
+        storyMedia.appendChild(imgContainer);
       } else {
+        const textContainer = document.createElement("div");
+        textContainer.className = "w-full h-full flex items-center justify-center p-8";
+
         const text = document.createElement("p");
         text.textContent = story.text;
-        storyMedia.appendChild(text);
+        text.className = "text-3xl text-center text-white";
+        textContainer.appendChild(text);
+        storyMedia.appendChild(textContainer);
       }
 
+      // Reset progress bar
+      const progressBar = document.querySelector(".story-progress");
+      progressBar.innerHTML = '';
+      const progressBarInner = document.createElement("div");
+      progressBarInner.className = "absolute inset-0 bg-gradient-to-r from-primary to-secondary";
+      progressBarInner.style.width = "0%";
+      progressBar.appendChild(progressBarInner);
+
       // Show the modal
-      storyViewModal.classList.add("active");
+      storyViewModal.classList.remove("hidden");
 
       // Set the timer based on story type
       const duration = story.imageUrl ? 5000 : 7000; // 5 seconds for image, 7 seconds for text
-      startStoryTimer(duration);
+      startStoryTimer(duration, progressBarInner);
+
+      // Animate progress bar
+      progressBarInner.style.transition = `width ${duration/1000}s linear`;
+      setTimeout(() => {
+        progressBarInner.style.width = "100%";
+      }, 10);
 
       // Play/Pause Button
-      playPauseBtn.innerHTML = "⏸️"; // Pause icon
-      playPauseBtn.addEventListener("click", () => {
+      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      playPauseBtn.onclick = () => {
         if (isPaused) {
-          resumeStoryTimer();
-          playPauseBtn.innerHTML = "⏸️"; // Pause icon
+          resumeStoryTimer(duration, progressBarInner);
+          playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
         } else {
-          pauseStoryTimer();
-          playPauseBtn.innerHTML = "▶️"; // Play icon
+          pauseStoryTimer(progressBarInner);
+          playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
         }
-      });
+      };
 
       // Close Modal on Click Outside
       storyViewModal.addEventListener("click", (e) => {
@@ -1698,30 +1675,47 @@
     // Close Story Modal
     function closeStoryModal() {
       const storyViewModal = document.getElementById("story-view-modal");
-      storyViewModal.classList.remove("active");
+      storyViewModal.classList.add("hidden");
       clearTimeout(storyTimer); // Clear the timer
       isPaused = false; // Reset pause state
     }
 
     // Start Story Timer
-    function startStoryTimer(duration) {
+    function startStoryTimer(duration, progressBar) {
       storyTimer = setTimeout(() => {
         closeStoryModal();
       }, duration);
     }
 
     // Pause Story Timer
-    function pauseStoryTimer() {
+    function pauseStoryTimer(progressBar) {
       clearTimeout(storyTimer);
       isPaused = true;
+      progressBar.style.transition = 'none';
+      const computedStyle = getComputedStyle(progressBar);
+      const width = parseFloat(computedStyle.getPropertyValue('width'));
+      const parentWidth = parseFloat(computedStyle.getPropertyValue('width'));
+      const percentage = (width / parentWidth) * 100;
+      progressBar.style.width = `${percentage}%`;
     }
 
     // Resume Story Timer
-    function resumeStoryTimer() {
-      const remainingTime = isPaused ? 5000 : 7000; // Adjust based on story type
+    function resumeStoryTimer(duration, progressBar) {
+      const computedStyle = getComputedStyle(progressBar);
+      const width = parseFloat(computedStyle.getPropertyValue('width'));
+      const parentWidth = parseFloat(computedStyle.getPropertyValue('width'));
+      const percentage = (width / parentWidth);
+      const remainingTime = duration * (1 - percentage);
+            
+      progressBar.style.transition = `width ${remainingTime/1000}s linear`;
+      progressBar.style.width = "100%";
+            
       startStoryTimer(remainingTime);
       isPaused = false;
     }
+
+    // Close story modal button
+    document.getElementById("close-story-modal").addEventListener("click", closeStoryModal);
 
     // Check for expired stories every minute
     setInterval(deleteExpiredStories, 60 * 1000);
