@@ -3,389 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hashbook | Next-Gen Social</title>
+  <title>Hashbook | Dashboard</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Custom CSS for ultra-modern design */
-    @layer utilities {
-      /* Glassmorphism effect */
-      .glass {
-        background: rgba(15, 23, 42, 0.7);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      
-      .glass-light {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(0, 0, 0, 0.1);
-      }
-      
-      /* Neon gradient */
-      .neon-gradient {
-        background: linear-gradient(135deg, #00F5A0 0%, #00D9F5 50%, #0083F5 100%);
-      }
-      
-      /* 3D floating effect */
-      .float-3d {
-        transform-style: preserve-3d;
-        transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
-        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-      
-      .float-3d:hover {
-        transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(20px);
-      }
-      
-      /* Advanced glow effects */
-      .text-neon {
-        text-shadow: 0 0 10px rgba(0, 245, 160, 0.7), 
-                     0 0 20px rgba(0, 245, 160, 0.5),
-                     0 0 30px rgba(0, 245, 160, 0.3);
-      }
-      
-      .box-neon {
-        box-shadow: 0 0 15px rgba(0, 245, 160, 0.5),
-                   0 0 30px rgba(0, 245, 160, 0.3);
-      }
-      
-      .box-neon-hover:hover {
-        box-shadow: 0 0 20px rgba(0, 245, 160, 0.7),
-                   0 0 40px rgba(0, 245, 160, 0.5);
-      }
-      
-      /* Futuristic animations */
-      @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(5deg); }
-      }
-      
-      @keyframes pulse-slow {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.7; transform: scale(1.05); }
-      }
-      
-      @keyframes wave {
-        0% { transform: translateX(0) rotate(0deg); }
-        25% { transform: translateX(-5px) rotate(5deg); }
-        50% { transform: translateX(0) rotate(0deg); }
-        75% { transform: translateX(5px) rotate(-5deg); }
-        100% { transform: translateX(0) rotate(0deg); }
-      }
-      
-      @keyframes hologram {
-        0% { opacity: 0.8; transform: translateY(0); }
-        50% { opacity: 1; transform: translateY(-5px); }
-        100% { opacity: 0.8; transform: translateY(0); }
-      }
-      
-      .animate-float {
-        animation: float 6s ease-in-out infinite;
-      }
-      
-      .animate-pulse-slow {
-        animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      }
-      
-      .animate-wave {
-        animation: wave 8s ease-in-out infinite;
-      }
-      
-      .animate-hologram {
-        animation: hologram 3s ease-in-out infinite;
-      }
-      
-      /* Cyberpunk scanlines */
-      .scanlines {
-        position: relative;
-        overflow: hidden;
-      }
-      
-      .scanlines:after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          to bottom,
-          rgba(0, 245, 160, 0.05) 50%,
-          transparent 50%
-        );
-        background-size: 100% 4px;
-        pointer-events: none;
-      }
-      
-      /* Custom scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      
-      ::-webkit-scrollbar-track {
-        background: rgba(15, 23, 42, 0.5);
-      }
-      
-      ::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #00F5A0, #00D9F5);
-        border-radius: 3px;
-      }
-      
-      ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(to bottom, #00D9F5, #0083F5);
-      }
-      
-      /* Advanced input styling */
-      .cyber-input {
-        background: rgba(15, 23, 42, 0.8);
-        border: 1px solid rgba(0, 245, 160, 0.3);
-        transition: all 0.3s ease;
-      }
-      
-      .cyber-input:focus {
-        border-color: #00F5A0;
-        box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.2);
-        background: rgba(15, 23, 42, 0.9);
-      }
-      
-      /* Holographic effect */
-      .holographic {
-        position: relative;
-        overflow: hidden;
-      }
-      
-      .holographic:before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-          45deg,
-          rgba(0, 245, 160, 0.1) 0%,
-          rgba(0, 217, 245, 0.1) 25%,
-          rgba(0, 131, 245, 0.1) 50%,
-          rgba(0, 217, 245, 0.1) 75%,
-          rgba(0, 245, 160, 0.1) 100%
-        );
-        transform: rotate(45deg);
-        animation: shine 6s linear infinite;
-      }
-      
-      @keyframes shine {
-        0% { transform: translateX(-100%) rotate(45deg); }
-        100% { transform: translateX(100%) rotate(45deg); }
-      }
-      
-      /* Particle background */
-      .particles {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        z-index: -1;
-      }
-      
-      .particle {
-        position: absolute;
-        background: rgba(0, 245, 160, 0.5);
-        border-radius: 50%;
-        animation: float-particle 15s linear infinite;
-      }
-      
-      @keyframes float-particle {
-        0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
-      }
-      
-      /* Advanced card hover effect */
-      .card-3d {
-        transform-style: preserve-3d;
-        transform: perspective(1000px);
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-      
-      .card-3d:hover {
-        transform: perspective(1000px) rotateX(5deg) translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      }
-      
-      /* Cyberpunk button */
-      .cyber-button {
-        position: relative;
-        overflow: hidden;
-        border: 2px solid #00F5A0;
-        color: #00F5A0;
-        background: transparent;
-        transition: all 0.3s ease;
-      }
-      
-      .cyber-button:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(0, 245, 160, 0.2), transparent);
-        transition: all 0.5s ease;
-      }
-      
-      .cyber-button:hover {
-        color: #0F172A;
-        background: #00F5A0;
-        box-shadow: 0 0 10px rgba(0, 245, 160, 0.5),
-                   0 0 20px rgba(0, 245, 160, 0.3);
-      }
-      
-      .cyber-button:hover:before {
-        left: 100%;
-      }
-      
-      /* Advanced dropdown */
-      .cyber-dropdown {
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-20px) rotateX(-30deg);
-        transform-origin: top center;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-      
-      .dropdown:hover .cyber-dropdown {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0) rotateX(0);
-      }
-      
-      /* Story progress bar */
-      .story-progress {
-        height: 4px;
-        background: rgba(255, 255, 255, 0.1);
-        position: relative;
-        overflow: hidden;
-      }
-      
-      .story-progress:before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 0;
-        background: linear-gradient(90deg, #00F5A0, #00D9F5);
-        animation: progressBar 5s linear forwards;
-      }
-      
-      @keyframes progressBar {
-        to { width: 100%; }
-      }
-      
-      /* Like button animation */
-      .like-btn.liked {
-        animation: heartBeat 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-      
-      @keyframes heartBeat {
-        0% { transform: scale(1); }
-        15% { transform: scale(1.3); }
-        30% { transform: scale(1); }
-        45% { transform: scale(1.2); }
-        60% { transform: scale(1); }
-        100% { transform: scale(1); }
-      }
-      
-      /* Modal entrance animation */
-      .modal-enter {
-        animation: modalFadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      }
-      
-      @keyframes modalFadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(-30px) scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-      }
-      
-      /* Ripple effect for buttons */
-      .ripple {
-        position: relative;
-        overflow: hidden;
-      }
-      
-      .ripple:after {
-        content: "";
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-        background-image: radial-gradient(circle, #00F5A0 10%, transparent 10.01%);
-        background-repeat: no-repeat;
-        background-position: 50%;
-        transform: scale(10,10);
-        opacity: 0;
-        transition: transform .5s, opacity 1s;
-      }
-      
-      .ripple:active:after {
-        transform: scale(0,0);
-        opacity: 0.3;
-        transition: 0s;
-      }
-      
-      /* Loading spinner */
-      .cyber-spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid rgba(0, 245, 160, 0.2);
-        border-top: 4px solid #00F5A0;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-      
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      /* Text gradient */
-      .text-gradient {
-        background: linear-gradient(90deg, #00F5A0, #00D9F5, #0083F5);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-      
-      /* Floating action button */
-      .cyber-fab {
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 5px 25px rgba(0, 245, 160, 0.3);
-      }
-      
-      .cyber-fab:hover {
-        transform: scale(1.1) rotate(90deg);
-        box-shadow: 0 8px 30px rgba(0, 245, 160, 0.5);
-      }
-    }
-    
-    /* Custom variables */
+    /* Enhanced CSS for dashboard */
     :root {
       --primary-color: #00F5A0;
       --secondary-color: #00D9F5;
@@ -394,13 +18,13 @@
       --darker-bg: #0B1120;
       --text-color: #E2E8F0;
       --text-muted: #94A3B8;
-      --navbar-bg: rgba(15, 23, 42, 0.9);
+      --sidebar-bg: rgba(15, 23, 42, 0.95);
       --card-bg: rgba(15, 23, 42, 0.7);
       --border-radius: 16px;
       --transition-speed: 0.4s;
       --glow: 0 0 20px rgba(0, 245, 160, 0.5);
     }
-    
+
     [data-theme="light"] {
       --primary-color: #0083F5;
       --secondary-color: #00D9F5;
@@ -409,299 +33,517 @@
       --darker-bg: #F1F5F9;
       --text-color: #0F172A;
       --text-muted: #64748B;
-      --navbar-bg: rgba(248, 250, 252, 0.9);
+      --sidebar-bg: rgba(248, 250, 252, 0.95);
       --card-bg: rgba(248, 250, 252, 0.7);
     }
-    
+
     /* Base styles */
     body {
       background-color: var(--dark-bg);
       color: var(--text-color);
       font-family: 'Poppins', sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
       overflow-x: hidden;
     }
-    
-    /* Smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    /* Particle background */
-    #particles-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-    
-    /* Navbar */
-    .navbar {
-      background: var(--navbar-bg);
+
+    /* Glassmorphism effect */
+    .glass {
+      background: rgba(15, 23, 42, 0.7);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Mobile bottom nav */
-    .mobile-nav {
-      background: var(--navbar-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Story card */
-    .story-card {
-      perspective: 1000px;
-      transform-style: preserve-3d;
-    }
-    
-    .story-card-inner {
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform-style: preserve-3d;
-    }
-    
-    .story-card:hover .story-card-inner {
-      transform: rotateY(10deg) rotateX(5deg) scale(1.05);
-    }
-    
-    /* Post card */
-    .post-card {
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      backface-visibility: hidden;
-      transform-style: preserve-3d;
-    }
-    
-    .post-card:hover {
-      transform: translateY(-10px) scale(1.01);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Input focus effect */
-    .input-focus:focus {
-      box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.3);
-      border-color: var(--primary-color);
-    }
-    
-    /* Custom file upload */
-    .file-upload-label {
-      transition: all 0.3s ease;
-    }
-    
-    .file-upload-label:hover {
-      border-color: var(--primary-color);
-      background: rgba(15, 23, 42, 0.9);
-    }
-    
-    /* Theme toggle */
-    .theme-toggle {
-      position: relative;
-      width: 50px;
-      height: 26px;
-      border-radius: 13px;
-      background: var(--darker-bg);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      cursor: pointer;
+    }
+
+    .glass-light {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    /* Neon gradient */
+    .neon-gradient {
+      background: linear-gradient(135deg, #00F5A0 0%, #00D9F5 50%, #0083F5 100%);
+    }
+
+    /* Text gradient */
+    .text-gradient {
+      background: linear-gradient(90deg, #00F5A0, #00D9F5, #0083F5);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Cyberpunk button */
+    .cyber-button {
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #00F5A0;
+      color: #00F5A0;
+      background: transparent;
       transition: all 0.3s ease;
     }
-    
-    .theme-toggle:after {
+
+    .cyber-button:hover {
+      color: #0F172A;
+      background: #00F5A0;
+      box-shadow: 0 0 10px rgba(0, 245, 160, 0.5),
+                  0 0 20px rgba(0, 245, 160, 0.3);
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      width: 280px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: var(--sidebar-bg);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+    }
+
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-nav {
+      padding: 1rem 0;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 0.875rem 1.5rem;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      margin: 0.25rem 0.75rem;
+      border-radius: var(--border-radius);
+    }
+
+    .nav-item:hover {
+      background: rgba(0, 245, 160, 0.1);
+      color: var(--primary-color);
+      transform: translateX(5px);
+    }
+
+    .nav-item.active {
+      background: rgba(0, 245, 160, 0.2);
+      color: var(--primary-color);
+      border-left: 3px solid var(--primary-color);
+    }
+
+    .nav-icon {
+      width: 24px;
+      margin-right: 12px;
+      font-size: 1.25rem;
+    }
+
+    /* Main content area */
+    .main-content {
+      margin-left: 280px;
+      transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 1rem;
+    }
+
+    /* Mobile navbar */
+    .mobile-navbar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--sidebar-bg);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 1000;
+      padding: 0.5rem;
+    }
+
+    .mobile-nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.75rem;
+      color: var(--text-color);
+      text-decoration: none;
+      border-radius: var(--border-radius);
+      transition: all 0.3s ease;
+    }
+
+    .mobile-nav-item.active {
+      color: var(--primary-color);
+      background: rgba(0, 245, 160, 0.1);
+    }
+
+    /* Responsive design */
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding-bottom: 80px; /* Space for mobile navbar */
+      }
+
+      .mobile-navbar {
+        display: flex;
+      }
+
+      .sidebar-toggle {
+        display: block !important;
+      }
+    }
+
+    /* Toggle button */
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 1001;
+      background: var(--sidebar-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius);
+      padding: 0.75rem;
+      color: var(--text-color);
+      cursor: pointer;
+    }
+
+    /* Enhanced post cards */
+    .post-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+    }
+
+    .post-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Story cards */
+    .story-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .story-card:hover {
+      transform: scale(1.05);
+    }
+
+    .story-card::after {
       content: '';
       position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 20px;
-      height: 20px;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    }
+
+    /* Loading animation */
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(0, 245, 160, 0.2);
+      border-top: 4px solid var(--primary-color);
       border-radius: 50%;
-      background: linear-gradient(135deg, #00F5A0, #00D9F5);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Custom scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+      border-radius: 3px;
+    }
+
+    /* Status indicator */
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22c55e;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      border: 2px solid var(--sidebar-bg);
+    }
+
+    /* Badge */
+    .badge {
+      background: var(--primary-color);
+      color: var(--dark-bg);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Search input */
+    .search-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       transition: all 0.3s ease;
     }
-    
-    [data-theme="light"] .theme-toggle:after {
-      transform: translateX(24px);
-      background: linear-gradient(135deg, #0083F5, #00D9F5);
-    }
-    
-    /* Hover effects */
-    .nav-link:hover {
-      color: var(--primary-color);
-      transform: translateY(-2px);
-    }
-    
-    .nav-link:hover i {
-      transform: scale(1.2);
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .navbar-logo {
-        font-size: 1.5rem;
-      }
-      
-      .post-card {
-        margin-bottom: 1.5rem;
-      }
+
+    .search-input:focus {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.1);
     }
   </style>
 </head>
-<body class="relative">
-  <!-- Particle Background -->
-  <div id="particles-container"></div>
-  
-  <!-- Navbar -->
-  <nav class="navbar fixed top-0 left-0 w-full z-50 py-4 px-6 flex justify-between items-center">
-    <div class="flex items-center space-x-4">
-      <h1 class="text-3xl font-bold text-gradient bg-gradient-to-r from-teal-400 to-teal-600 text-neon animate-wave">
-        <span class="inline-block transform rotate-3">H</span>
-        <span class="inline-block transform -rotate-3">a</span>
-        <span class="inline-block transform rotate-2">s</span>
-        <span class="inline-block transform -rotate-2">h</span>
-        <span class="inline-block transform rotate-1">b</span>
-        <span class="inline-block transform -rotate-1">o</span>
-        <span class="inline-block transform rotate-3">o</span>
-        <span class="inline-block transform -rotate-3">k</span>
-      </h1>
-    </div>
-    
-    <div class="hidden md:flex items-center space-x-8">
-      <a href="../dashboard.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
-        <i class="fas fa-home text-xl transition-transform"></i>
-        <span class="text-xs mt-1">Home</span>
-      </a>
-      <a href="./profile/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
-        <i class="fas fa-user text-xl transition-transform"></i>
-        <span class="text-xs mt-1">Profile</span>
-      </a>
-      <a href="./Messaging/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
-        <i class="fas fa-comment-dots text-xl transition-transform"></i>
-        <span class="text-xs mt-1">Messages</span>
-      </a>
-      <a href="./settings/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
-        <i class="fas fa-cog text-xl transition-transform"></i>
-        <span class="text-xs mt-1">Settings</span>
-      </a>
-      <a href="./Friends/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
-        <i class="fas fa-users text-xl transition-transform"></i>
-        <span class="text-xs mt-1">Friends</span>
-      </a>
-    </div>
-    
-    <div class="flex items-center space-x-4">
-      <div class="theme-toggle" id="theme-toggle"></div>
-      <button class="logout-btn cyber-button px-6 py-2 rounded-full font-medium transition-all duration-300 ripple">
-        <i class="fas fa-sign-out-alt mr-2"></i>
-        <span class="hidden md:inline">Logout</span>
-      </button>
-    </div>
-  </nav>
-  
-  <!-- Mobile Bottom Navigation -->
-  <div class="mobile-nav md:hidden fixed bottom-0 left-0 w-full z-40 py-3 px-6 flex justify-around items-center">
-    <a href="../dashboard.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
-      <i class="fas fa-home text-xl transition-transform"></i>
-      <span class="text-xs mt-1">Home</span>
-    </a>
-    <a href="./profile/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
-      <i class="fas fa-user text-xl transition-transform"></i>
-      <span class="text-xs mt-1">Profile</span>
-    </a>
-    <a href="./Messaging/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
-      <i class="fas fa-comment-dots text-xl transition-transform"></i>
-      <span class="text-xs mt-1">Chat</span>
-    </a>
-    <a href="./Friends/index.html" class="nav-link text-gray-300 hover:text-primary transition-all duration-300 flex flex-col items-center">
-      <i class="fas fa-users text-xl transition-transform"></i>
-      <span class="text-xs mt-1">Friends</span>
-    </a>
-  </div>
-  
-  <!-- Story Box (FAB) -->
-  <div id="story-box" class="cyber-fab fixed right-6 top-24 z-40 w-16 h-16 neon-gradient rounded-full flex items-center justify-center text-white text-2xl shadow-xl cursor-pointer animate-float">
-    <i class="fas fa-plus"></i>
-  </div>
-  
-  <!-- Story Modal for Viewing -->
-  <div id="story-view-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center hidden">
-    <div class="relative glass rounded-2xl w-full max-w-md mx-4 overflow-hidden modal-enter">
-      <span id="close-story-modal" class="absolute top-4 right-4 text-white text-3xl cursor-pointer z-50 hover:text-primary transition-colors">&times;</span>
-      
-      <div class="story-progress"></div>
-      
-      <div id="story-media" class="p-6 flex flex-col items-center justify-center min-h-[60vh]">
-        <!-- Content will be dynamically inserted here -->
+<body data-theme="dark">
+  <!-- Sidebar Toggle for Mobile -->
+  <button class="sidebar-toggle" id="sidebarToggle">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <div class="flex items-center space-x-3">
+        <div class="relative">
+          <img id="sidebar-profile-pic" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" 
+               alt="Profile" class="w-12 h-12 rounded-full object-cover border-2 border-primary">
+          <div class="status-indicator"></div>
+        </div>
+        <div>
+          <h3 id="sidebar-username" class="font-bold text-lg">Loading...</h3>
+          <p class="text-xs text-muted">@<span id="sidebar-uid">user</span></p>
+        </div>
       </div>
-      
-      <div class="story-controls p-4 flex justify-center bg-gray-900 bg-opacity-50">
-        <button id="play-pause-btn" class="control-btn text-white text-3xl mx-6 hover:text-primary transition-colors">
-          <i class="fas fa-pause"></i>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="p-4">
+      <div class="relative">
+        <input type="text" id="searchInput" placeholder="Search posts..." 
+               class="search-input w-full pl-10 pr-4 py-2 rounded-lg focus:outline-none">
+        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-muted"></i>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active">
+        <i class="nav-icon fas fa-home"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="./profile/index.html" class="nav-item">
+        <i class="nav-icon fas fa-user"></i>
+        <span>Profile</span>
+      </a>
+      <a href="./Messaging/index.html" class="nav-item">
+        <i class="nav-icon fas fa-comment-dots"></i>
+        <span>Messages</span>
+        <span class="badge ml-auto">3</span>
+      </a>
+      <a href="./Friends/index.html" class="nav-item">
+        <i class="nav-icon fas fa-users"></i>
+        <span>Friends</span>
+        <span class="badge ml-auto">12</span>
+      </a>
+      <a href="./settings/index.html" class="nav-item">
+        <i class="nav-icon fas fa-cog"></i>
+        <span>Settings</span>
+      </a>
+      <a href="./notifications/index.html" class="nav-item">
+        <i class="nav-icon fas fa-bell"></i>
+        <span>Notifications</span>
+        <span class="badge ml-auto">5</span>
+      </a>
+    </nav>
+
+    <!-- User Stats -->
+    <div class="mt-6 px-6">
+      <h4 class="text-sm font-semibold text-muted mb-3">YOUR STATS</h4>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="glass p-3 rounded-lg text-center">
+          <div class="text-2xl font-bold" id="post-count">0</div>
+          <div class="text-xs text-muted">Posts</div>
+        </div>
+        <div class="glass p-3 rounded-lg text-center">
+          <div class="text-2xl font-bold" id="story-count">0</div>
+          <div class="text-xs text-muted">Stories</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="mt-6 px-6">
+      <div class="flex items-center justify-between glass p-3 rounded-lg">
+        <span class="text-sm">Dark Mode</span>
+        <button id="themeToggle" class="relative w-12 h-6 bg-gray-700 rounded-full transition-colors">
+          <span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform"></span>
         </button>
       </div>
     </div>
-  </div>
-  
-  <!-- Story Creation Modal -->
-  <div id="story-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center hidden">
-    <div class="glass rounded-2xl w-full max-w-md mx-4 p-8 shadow-2xl modal-enter">
-      <div class="flex justify-between items-center mb-8">
-        <h3 class="text-2xl font-bold text-gradient">Create a Story</h3>
-        <span id="close-modal" class="text-gray-400 text-3xl cursor-pointer hover:text-primary transition-colors">&times;</span>
-      </div>
-      
-      <textarea id="story-text" rows="4" class="cyber-input w-full rounded-xl p-4 mb-6 focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Write your story..."></textarea>
-      
-      <label for="story-image" class="file-upload-label flex items-center justify-center w-full rounded-xl p-6 mb-8 cursor-pointer transition-all border-2 border-dashed border-gray-700 hover:border-primary">
-        <i class="fas fa-camera text-primary text-2xl mr-3"></i>
-        <span class="text-gray-300">Upload Image (Optional)</span>
-        <input type="file" id="story-image" accept="image/*" class="hidden">
-      </label>
-      
-      <button id="story-btn" class="w-full cyber-button px-6 py-4 rounded-xl font-bold transition-all duration-300 ripple">
-        <i class="fas fa-paper-plane mr-2"></i> Post Story
+
+    <!-- Logout Button -->
+    <div class="mt-auto p-6">
+      <button id="logoutBtn" class="cyber-button w-full py-3 rounded-lg font-medium">
+        <i class="fas fa-sign-out-alt mr-2"></i>
+        Logout
       </button>
     </div>
-  </div>
-  
+  </aside>
+
   <!-- Main Content -->
-  <main class="container mx-auto px-4 pt-28 pb-24 md:pb-16">
-    <!-- Stories Container -->
-    <div id="stories-container" class="flex space-x-4 mb-10 pb-6 overflow-x-auto scrollbar-hide">
-      <!-- Stories will be dynamically inserted here -->
-    </div>
-    
-    <!-- Post Form -->
-    <div class="glass rounded-2xl shadow-2xl mb-10 p-8 card-3d">
-      <h3 class="text-2xl font-bold text-gradient mb-8 text-center animate-hologram">Share With The Universe</h3>
-      
-      <div class="mb-6">
-        <textarea id="post-text" rows="4" class="cyber-input w-full rounded-xl p-5 focus:outline-none focus:ring-1 focus:ring-primary" placeholder="What's on your mind?"></textarea>
+  <main class="main-content" id="mainContent">
+    <!-- Header -->
+    <header class="mb-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-bold text-gradient">Dashboard</h1>
+          <p class="text-muted">Welcome back, <span id="welcome-user">User</span>!</p>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button id="createStoryBtn" class="neon-gradient text-white px-4 py-2 rounded-lg font-medium">
+            <i class="fas fa-plus mr-2"></i>Create Story
+          </button>
+          <div class="relative">
+            <button id="notificationsBtn" class="w-10 h-10 rounded-full glass flex items-center justify-center">
+              <i class="fas fa-bell"></i>
+            </button>
+            <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">5</span>
+          </div>
+        </div>
       </div>
-      
-      <div class="mb-8">
-        <label for="post-image" class="file-upload-label flex items-center justify-center w-full rounded-xl p-6 cursor-pointer transition-all border-2 border-dashed border-gray-700 hover:border-primary">
-          <i class="fas fa-image text-primary text-2xl mr-3"></i>
-          <span class="text-gray-300">Upload Image</span>
-          <input type="file" id="post-image" accept="image/*" class="hidden">
-        </label>
+    </header>
+
+    <!-- Stories Section -->
+    <section class="mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Recent Stories</h2>
+        <a href="#" class="text-primary text-sm">See all</a>
       </div>
-      
-      <button id="post-btn" class="w-full cyber-button px-6 py-4 rounded-xl font-bold transition-all duration-300 ripple">
-        <i class="fas fa-share-square mr-2"></i> Post
+      <div id="storiesContainer" class="flex space-x-4 overflow-x-auto pb-4 custom-scrollbar">
+        <!-- Stories will be loaded here -->
+        <div class="flex items-center justify-center min-h-[200px] w-full">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Create Post -->
+    <section class="glass rounded-2xl p-6 mb-8">
+      <div class="flex items-start space-x-4">
+        <img id="user-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" 
+             alt="User" class="w-12 h-12 rounded-full object-cover">
+        <div class="flex-1">
+          <textarea id="postContent" placeholder="What's on your mind?" 
+                    class="w-full bg-transparent border-0 focus:outline-none text-lg resize-none" rows="3"></textarea>
+          <div class="flex items-center justify-between mt-4">
+            <div class="flex space-x-4">
+              <label class="cursor-pointer hover:text-primary transition-colors">
+                <i class="fas fa-image"></i>
+                <input type="file" id="postImage" accept="image/*" class="hidden">
+              </label>
+              <button class="hover:text-primary transition-colors">
+                <i class="fas fa-video"></i>
+              </button>
+              <button class="hover:text-primary transition-colors">
+                <i class="fas fa-map-marker-alt"></i>
+              </button>
+            </div>
+            <button id="createPostBtn" class="neon-gradient text-white px-6 py-2 rounded-lg font-medium">
+              Post
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Posts Feed -->
+    <section>
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold">Your Feed</h2>
+        <div class="flex space-x-2">
+          <button id="filterLatest" class="px-4 py-2 rounded-lg glass text-sm font-medium">Latest</button>
+          <button id="filterPopular" class="px-4 py-2 rounded-lg glass text-sm font-medium">Popular</button>
+          <button id="filterFollowing" class="px-4 py-2 rounded-lg glass text-sm font-medium">Following</button>
+        </div>
+      </div>
+      <div id="postsContainer" class="space-y-6">
+        <!-- Posts will be loaded here -->
+        <div class="flex items-center justify-center min-h-[300px] w-full">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-navbar" id="mobileNavbar">
+    <a href="#" class="mobile-nav-item active">
+      <i class="fas fa-home text-lg"></i>
+      <span class="text-xs mt-1">Home</span>
+    </a>
+    <a href="./profile/index.html" class="mobile-nav-item">
+      <i class="fas fa-user text-lg"></i>
+      <span class="text-xs mt-1">Profile</span>
+    </a>
+    <a href="./Messaging/index.html" class="mobile-nav-item">
+      <i class="fas fa-comment-dots text-lg"></i>
+      <span class="text-xs mt-1">Chat</span>
+    </a>
+    <a href="./Friends/index.html" class="mobile-nav-item">
+      <i class="fas fa-users text-lg"></i>
+      <span class="text-xs mt-1">Friends</span>
+    </a>
+    <button id="mobileMenuBtn" class="mobile-nav-item">
+      <i class="fas fa-ellipsis-h text-lg"></i>
+      <span class="text-xs mt-1">More</span>
+    </button>
+  </nav>
+
+  <!-- Modals -->
+  <div id="storyModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center p-4">
+    <div class="glass rounded-2xl w-full max-w-md p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold">Create Story</h3>
+        <button id="closeStoryModal" class="text-2xl hover:text-primary">&times;</button>
+      </div>
+      <textarea id="storyText" placeholder="What's your story?" 
+                class="w-full bg-transparent border rounded-lg p-4 mb-4 resize-none" rows="4"></textarea>
+      <label class="block mb-4">
+        <div class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors">
+          <i class="fas fa-camera text-3xl mb-2 text-muted"></i>
+          <p>Add photo/video</p>
+          <input type="file" id="storyMedia" accept="image/*,video/*" class="hidden">
+        </div>
+      </label>
+      <button id="postStoryBtn" class="neon-gradient text-white w-full py-3 rounded-lg font-medium">
+        Share Story
       </button>
     </div>
-    
-    <!-- Posts Section -->
-    <div id="posts-container" class="space-y-8">
-      <!-- Posts will be dynamically inserted here -->
-    </div>
-  </main>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
@@ -711,6 +553,7 @@
       addDoc,
       getDocs,
       query,
+      where,
       orderBy,
       serverTimestamp,
       doc,
@@ -720,9 +563,9 @@
       arrayRemove,
       getDoc,
       onSnapshot,
+      getCountFromServer
     } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
     import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-    import { formatDistanceToNow } from 'https://cdn.skypack.dev/date-fns';
 
     // Firebase Configuration
     const firebaseConfig = {
@@ -741,984 +584,621 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    // Create particle background
-    function createParticles() {
-      const container = document.getElementById('particles-container');
-      const particleCount = Math.floor(window.innerWidth / 10);
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        
-        // Random size between 1px and 3px
-        const size = Math.random() * 2 + 1;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        
-        // Random position
-        particle.style.left = `${Math.random() * 100}%`;
-        
-        // Random animation duration between 10s and 20s
-        const duration = Math.random() * 10 + 10;
-        particle.style.animationDuration = `${duration}s`;
-        
-        // Random delay
-        particle.style.animationDelay = `${Math.random() * 5}s`;
-        
-        container.appendChild(particle);
-      }
-    }
-    
-    // Theme toggle functionality
-    function setupThemeToggle() {
-      const themeToggle = document.getElementById('theme-toggle');
-      const currentTheme = localStorage.getItem('theme') || 'dark';
-      
-      document.documentElement.setAttribute('data-theme', currentTheme);
-      
-      themeToggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-      });
+    // DOM Elements
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const themeToggle = document.getElementById('themeToggle');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const createPostBtn = document.getElementById('createPostBtn');
+    const postContent = document.getElementById('postContent');
+    const postImage = document.getElementById('postImage');
+    const postsContainer = document.getElementById('postsContainer');
+    const storiesContainer = document.getElementById('storiesContainer');
+    const searchInput = document.getElementById('searchInput');
+    const createStoryBtn = document.getElementById('createStoryBtn');
+    const storyModal = document.getElementById('storyModal');
+    const closeStoryModal = document.getElementById('closeStoryModal');
+    const postStoryBtn = document.getElementById('postStoryBtn');
+    const storyText = document.getElementById('storyText');
+    const storyMedia = document.getElementById('storyMedia');
+
+    let currentUser = null;
+    let userData = null;
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('hashbook-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeToggle(savedTheme);
     }
 
-    // Redirect if not authenticated
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.replace("./index.html"); // Redirect to login page
-      } else {
-        createParticles();
-        setupThemeToggle();
-        loadPosts(); // Load posts after authentication
-        loadStories(); // Load stories after authentication
+    function updateThemeToggle(theme) {
+      const toggle = themeToggle.querySelector('span');
+      toggle.style.transform = theme === 'light' ? 'translateX(24px)' : 'translateX(0)';
+      themeToggle.style.backgroundColor = theme === 'light' ? '#00D9F5' : '#374151';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('hashbook-theme', newTheme);
+      updateThemeToggle(newTheme);
+    });
+
+    // Sidebar Toggle for Mobile
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 1024 && 
+          !sidebar.contains(e.target) && 
+          !sidebarToggle.contains(e.target) &&
+          sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
       }
     });
 
-    // Logout Function
-    const logoutButtons = document.querySelectorAll(".logout-btn");
-    logoutButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        signOut(auth)
-          .then(() => {
-            window.location.replace("./index.html"); // Redirect to login page
-          })
-          .catch((error) => {
-            console.error("Error signing out:", error);
+    // Mobile Navigation
+    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        if (this.id !== 'mobileMenuBtn') {
+          e.preventDefault();
+          document.querySelectorAll('.mobile-nav-item').forEach(nav => nav.classList.remove('active'));
+          this.classList.add('active');
+          
+          if (this.querySelector('.fa-home')) {
+            // Already on dashboard
+          } else if (this.querySelector('.fa-user')) {
+            window.location.href = './profile/index.html';
+          } else if (this.querySelector('.fa-comment-dots')) {
+            window.location.href = './Messaging/index.html';
+          } else if (this.querySelector('.fa-users')) {
+            window.location.href = './Friends/index.html';
+          }
+        }
+      });
+    });
+
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      sidebar.classList.add('open');
+    });
+
+    // Logout Functionality
+    logoutBtn.addEventListener('click', () => {
+      Swal.fire({
+        title: 'Logout?',
+        text: 'Are you sure you want to logout?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#00F5A0',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, logout!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          signOut(auth).then(() => {
+            window.location.href = './index.html';
           });
+        }
       });
     });
 
-    // Fetch User Data from Firestore
-    async function getUserData(userId) {
-      try {
-        const userRef = doc(db, "users", userId);
-        const userDoc = await getDoc(userRef);
+    // Authentication State Listener
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = './index.html';
+        return;
+      }
 
+      currentUser = user;
+      await loadUserData();
+      updateUI();
+      loadPosts();
+      loadStories();
+      updateUserStats();
+    });
+
+    // Load User Data
+    async function loadUserData() {
+      try {
+        const userRef = doc(db, 'users', currentUser.uid);
+        const userDoc = await getDoc(userRef);
+        
         if (userDoc.exists()) {
-          const userData = userDoc.data();
-          console.log("Fetched user data:", userData); // Log user data
-          return userData;
+          userData = userDoc.data();
         } else {
-          console.log("User document does not exist for ID:", userId); // Log missing document
-          return null;
+          // Create user document if it doesn't exist
+          userData = {
+            displayName: currentUser.displayName || 'User',
+            email: currentUser.email,
+            photoURL: currentUser.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+            username: currentUser.email?.split('@')[0] || 'user',
+            bio: '',
+            createdAt: serverTimestamp()
+          };
+          
+          await setDoc(userRef, userData);
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
-        return null;
+        console.error('Error loading user data:', error);
       }
     }
 
-    // Resolve Display Name
-    function resolveDisplayName(user, userData) {
-      // Priority: displayName > authName (from Firebase Authentication) > username > Anonymous
-      return (
-        userData?.displayName || // From Firestore
-        user?.displayName || // From Firebase Authentication
-        userData?.username || // From Firestore (username field)
-        "Anonymous" // Default
-      );
+    // Update UI with User Data
+    function updateUI() {
+      if (!userData) return;
+
+      // Update sidebar
+      document.getElementById('sidebar-profile-pic').src = userData.photoURL;
+      document.getElementById('sidebar-username').textContent = userData.displayName;
+      document.getElementById('sidebar-uid').textContent = userData.username;
+      document.getElementById('welcome-user').textContent = userData.displayName;
+      document.getElementById('user-avatar').src = userData.photoURL;
     }
 
-    // Load Posts from Firestore (Realtime)
-    function loadPosts() {
-      const postsRef = collection(db, "posts");
-      const q = query(postsRef, orderBy("createdAt", "desc"));
+    // Update User Stats
+    async function updateUserStats() {
+      try {
+        // Count posts
+        const postsQuery = query(collection(db, 'posts'), where('userId', '==', currentUser.uid));
+        const postsSnapshot = await getCountFromServer(postsQuery);
+        document.getElementById('post-count').textContent = postsSnapshot.data().count;
 
-      // Use onSnapshot for real-time updates
-      onSnapshot(q, (querySnapshot) => {
-        const postsContainer = document.getElementById("posts-container");
-        postsContainer.innerHTML = "";
+        // Count stories
+        const storiesQuery = query(collection(db, 'stories'), where('userId', '==', currentUser.uid));
+        const storiesSnapshot = await getCountFromServer(storiesQuery);
+        document.getElementById('story-count').textContent = storiesSnapshot.data().count;
+      } catch (error) {
+        console.error('Error updating stats:', error);
+      }
+    }
 
-        if (querySnapshot.empty) {
-          postsContainer.innerHTML = `
-            <div class="glass rounded-2xl p-10 text-center card-3d">
-              <i class="fas fa-newspaper text-5xl text-primary mb-6 animate-pulse-slow"></i>
-              <h3 class="text-2xl font-bold text-gray-300 mb-4">No posts yet</h3>
-              <p class="text-gray-400">Be the first to share something amazing!</p>
+    // Create Post
+    createPostBtn.addEventListener('click', async () => {
+      const content = postContent.value.trim();
+      const imageFile = postImage.files[0];
+
+      if (!content && !imageFile) {
+        Swal.fire('Error', 'Please add some content or an image', 'error');
+        return;
+      }
+
+      try {
+        let imageUrl = null;
+        
+        if (imageFile) {
+          // Upload image to ImgBB
+          const formData = new FormData();
+          formData.append('image', imageFile);
+          
+          const response = await fetch('https://api.imgbb.com/1/upload?key=63f32114ab94d00d1a0e23d5ac0c4d45', {
+            method: 'POST',
+            body: formData
+          });
+          
+          const data = await response.json();
+          imageUrl = data.data.url;
+        }
+
+        // Create post in Firestore
+        await addDoc(collection(db, 'posts'), {
+          text: content,
+          imageUrl: imageUrl,
+          userId: currentUser.uid,
+          userDisplayName: userData.displayName,
+          userPhotoURL: userData.photoURL,
+          likes: [],
+          comments: [],
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+
+        // Clear form
+        postContent.value = '';
+        postImage.value = '';
+        
+        Swal.fire('Success', 'Post created successfully!', 'success');
+        loadPosts();
+        updateUserStats();
+      } catch (error) {
+        console.error('Error creating post:', error);
+        Swal.fire('Error', 'Failed to create post', 'error');
+      }
+    });
+
+    // Load Posts
+    async function loadPosts() {
+      try {
+        const postsQuery = query(
+          collection(db, 'posts'),
+          orderBy('createdAt', 'desc')
+        );
+
+        onSnapshot(postsQuery, (snapshot) => {
+          postsContainer.innerHTML = '';
+          
+          if (snapshot.empty) {
+            postsContainer.innerHTML = `
+              <div class="glass rounded-2xl p-8 text-center">
+                <i class="fas fa-newspaper text-4xl text-primary mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">No posts yet</h3>
+                <p class="text-muted">Be the first to share something!</p>
+              </div>
+            `;
+            return;
+          }
+
+          snapshot.forEach(async (docSnapshot) => {
+            const post = docSnapshot.data();
+            const postElement = await createPostElement(post, docSnapshot.id);
+            postsContainer.appendChild(postElement);
+          });
+        });
+      } catch (error) {
+        console.error('Error loading posts:', error);
+        postsContainer.innerHTML = `
+          <div class="glass rounded-2xl p-8 text-center text-red-400">
+            <i class="fas fa-exclamation-triangle text-4xl mb-4"></i>
+            <p>Failed to load posts</p>
+          </div>
+        `;
+      }
+    }
+
+    // Create Post Element
+    async function createPostElement(post, postId) {
+      const postElement = document.createElement('div');
+      postElement.className = 'post-card glass rounded-2xl p-6';
+      
+      const isOwnPost = post.userId === currentUser.uid;
+      const timeAgo = post.createdAt ? formatTimeAgo(post.createdAt.toDate()) : 'Recently';
+      
+      postElement.innerHTML = `
+        <div class="flex justify-between items-start mb-4">
+          <div class="flex items-center space-x-3">
+            <img src="${post.userPhotoURL}" alt="${post.userDisplayName}" 
+                 class="w-10 h-10 rounded-full object-cover border-2 border-primary">
+            <div>
+              <h4 class="font-bold">${post.userDisplayName}</h4>
+              <p class="text-xs text-muted">${timeAgo}</p>
             </div>
-          `;
-          return;
-        }
+          </div>
+          ${isOwnPost ? `
+            <div class="relative dropdown">
+              <button class="text-muted hover:text-white">
+                <i class="fas fa-ellipsis-h"></i>
+              </button>
+              <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg hidden">
+                <button class="edit-post w-full text-left px-4 py-2 hover:bg-gray-700 rounded-t-lg">
+                  <i class="fas fa-edit mr-2"></i>Edit
+                </button>
+                <button class="delete-post w-full text-left px-4 py-2 hover:bg-gray-700 rounded-b-lg text-red-400">
+                  <i class="fas fa-trash mr-2"></i>Delete
+                </button>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+        
+        <div class="mb-4">
+          ${post.text ? `<p class="mb-4">${post.text}</p>` : ''}
+          ${post.imageUrl ? `
+            <img src="${post.imageUrl}" alt="Post image" 
+                 class="w-full rounded-lg max-h-[400px] object-cover">
+          ` : ''}
+        </div>
+        
+        <div class="flex items-center justify-between border-t border-gray-700 pt-4">
+          <div class="flex space-x-6">
+            <button class="like-post flex items-center space-x-2 ${post.likes?.includes(currentUser.uid) ? 'text-red-500' : 'text-muted'}">
+              <i class="fas fa-heart"></i>
+              <span>${post.likes?.length || 0}</span>
+            </button>
+            <button class="comment-post flex items-center space-x-2 text-muted">
+              <i class="fas fa-comment"></i>
+              <span>${post.comments?.length || 0}</span>
+            </button>
+          </div>
+          <button class="share-post text-muted">
+            <i class="fas fa-share"></i>
+          </button>
+        </div>
+      `;
 
-        querySnapshot.forEach(async (doc) => {
-          const post = doc.data();
-          const userData = await getUserData(post.userId); // Fetch user data
-          const displayName = resolveDisplayName(auth.currentUser, userData); // Resolve display name
-          const photoURL = userData?.photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"; // Default profile picture
-
-          const postElement = createPostElement(post, doc.id, displayName, photoURL);
-          postsContainer.appendChild(postElement);
-        });
-      });
-    }
-
-    // Create a Post Element
-    function createPostElement(post, postId, displayName, photoURL) {
-      const postElement = document.createElement("div");
-      postElement.className = "glass rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 post-card";
-
-      // Post Header
-      const postHeader = document.createElement("div");
-      postHeader.className = "p-6 flex items-center justify-between border-b border-gray-700";
-
-      // User Info
-      const userInfo = document.createElement("div");
-      userInfo.className = "flex items-center";
-
-      // User Profile Picture
-      const userImage = document.createElement("img");
-      userImage.src = photoURL;
-      userImage.alt = "Profile Picture";
-      userImage.className = "w-12 h-12 rounded-full object-cover border-2 border-primary shadow-md";
-      userInfo.appendChild(userImage);
-
-      // User Display Name and Time
-      const userDetails = document.createElement("div");
-      userDetails.className = "ml-4";
-
-      const username = document.createElement("span");
-      username.textContent = displayName;
-      username.className = "block font-semibold text-gray-200";
-      userDetails.appendChild(username);
-
-      const timeAgo = document.createElement("span");
-      timeAgo.textContent = formatDistanceToNow(post.createdAt.toDate(), { addSuffix: true });
-      timeAgo.className = "block text-sm text-gray-400";
-      userDetails.appendChild(timeAgo);
-
-      userInfo.appendChild(userDetails);
-      postHeader.appendChild(userInfo);
-
-      // Dropdown for Edit/Delete (only for the logged-in user's posts)
-      if (post.userId === auth.currentUser.uid) {
-        const dropdown = document.createElement("div");
-        dropdown.className = "relative dropdown";
-
-        const dropdownButton = document.createElement("button");
-        dropdownButton.className = "text-gray-400 hover:text-white transition-colors dropdown-btn";
-        dropdownButton.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
-        dropdown.appendChild(dropdownButton);
-
-        const dropdownContent = document.createElement("div");
-        dropdownContent.className = "absolute right-0 mt-2 w-48 bg-gray-800 rounded-xl shadow-lg z-10 cyber-dropdown border border-gray-700";
-
-        const editButton = document.createElement("button");
-        editButton.className = "block w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-700 transition-colors rounded-t-xl";
-        editButton.innerHTML = '<i class="fas fa-edit mr-2"></i> Edit';
-        editButton.addEventListener("click", () => editPost(postId, post.text));
-        dropdownContent.appendChild(editButton);
-
-        const deleteButton = document.createElement("button");
-        deleteButton.className = "block w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-700 transition-colors rounded-b-xl";
-        deleteButton.innerHTML = '<i class="fas fa-trash mr-2"></i> Delete';
-        deleteButton.addEventListener("click", () => deletePost(postId, post.deleteUrl));
-        dropdownContent.appendChild(deleteButton);
-
-        dropdown.appendChild(dropdownContent);
-        postHeader.appendChild(dropdown);
-      }
-
-      postElement.appendChild(postHeader);
-
-      // Post Content
-      const postContent = document.createElement("div");
-      postContent.className = "p-6";
-
-      // Post Text
-      if (post.text) {
-        const postText = document.createElement("p");
-        postText.textContent = post.text;
-        postText.className = "text-gray-300 mb-6 text-lg";
-        postContent.appendChild(postText);
-      }
-
-      // Post Image
-      if (post.imageUrl) {
-        const postImageContainer = document.createElement("div");
-        postImageContainer.className = "mb-6 rounded-xl overflow-hidden";
-
-        const postImage = document.createElement("img");
-        postImage.src = post.imageUrl;
-        postImage.alt = "Post Image";
-        postImage.className = "w-full h-auto max-h-[80vh] object-cover rounded-xl";
-        postImageContainer.appendChild(postImage);
-        postContent.appendChild(postImageContainer);
-      }
-
-      postElement.appendChild(postContent);
-
-      // Post Footer (Likes and Comments)
-      const postFooter = document.createElement("div");
-      postFooter.className = "px-6 py-4 border-t border-gray-700";
-
-      // Likes Section
-      const likesSection = document.createElement("div");
-      likesSection.className = "flex items-center mb-4";
-
-      const likeButton = document.createElement("button");
-      likeButton.className = `flex items-center mr-6 like-btn ${post.likes && post.likes.includes(auth.currentUser.uid) ? 'text-red-500' : 'text-gray-400'}`;
-      likeButton.innerHTML = post.likes && post.likes.includes(auth.currentUser.uid)
-        ? '<i class="fas fa-heart mr-2 text-xl"></i>'
-        : '<i class="far fa-heart mr-2 text-xl"></i>';
-      likeButton.addEventListener("click", () => toggleLike(postId));
-      likesSection.appendChild(likeButton);
-
-      const likesCount = document.createElement("span");
-      likesCount.className = "text-sm text-gray-400";
-      likesCount.textContent = `${post.likes ? post.likes.length : 0} likes`;
-      likesSection.appendChild(likesCount);
-
-      postFooter.appendChild(likesSection);
-
-      // Comments Section
-      const commentsContainer = document.createElement("div");
-      commentsContainer.className = "comments-container bg-gray-900 bg-opacity-30 rounded-xl p-4 mt-4";
-
-      // Comments Header
-      const commentsHeader = document.createElement("div");
-      commentsHeader.className = "flex items-center justify-between mb-4";
-
-      const commentsTitle = document.createElement("h4");
-      commentsTitle.className = "text-sm font-semibold text-gray-300";
-      commentsTitle.innerHTML = '<i class="fas fa-comments mr-2"></i> Comments';
-      commentsHeader.appendChild(commentsTitle);
-
-      const commentsCount = document.createElement("span");
-      commentsCount.className = "text-xs text-gray-400";
-      commentsCount.textContent = post.comments ? `${post.comments.length} comments` : "0 comments";
-      commentsHeader.appendChild(commentsCount);
-
-      commentsContainer.appendChild(commentsHeader);
-
-      // Existing Comments
-      if (post.comments && post.comments.length > 0) {
-        const commentsList = document.createElement("div");
-        commentsList.className = "space-y-4 max-h-60 overflow-y-auto pr-2";
-
-        post.comments.forEach((comment) => {
-          const commentElement = document.createElement("div");
-          commentElement.className = "flex items-start";
-
-          const commentUserImage = document.createElement("img");
-          commentUserImage.src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-          commentUserImage.alt = "Profile Picture";
-          commentUserImage.className = "w-8 h-8 rounded-full mr-3 mt-1";
-          commentElement.appendChild(commentUserImage);
-
-          const commentContent = document.createElement("div");
-          commentContent.className = "flex-1";
-
-          const commentHeader = document.createElement("div");
-          commentHeader.className = "flex items-center";
-
-          const commentUsername = document.createElement("span");
-          commentUsername.className = "text-sm font-semibold text-gray-300 mr-3";
-          commentUsername.textContent = comment.displayName || "Anonymous";
-          commentHeader.appendChild(commentUsername);
-
-          const commentTime = document.createElement("span");
-          commentTime.className = "text-xs text-gray-500";
-          commentTime.textContent = formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true });
-          commentHeader.appendChild(commentTime);
-
-          commentContent.appendChild(commentHeader);
-
-          const commentText = document.createElement("p");
-          commentText.className = "text-sm text-gray-300 mt-2";
-          commentText.textContent = comment.text;
-          commentContent.appendChild(commentText);
-
-          commentElement.appendChild(commentContent);
-          commentsList.appendChild(commentElement);
+      // Add event listeners
+      if (isOwnPost) {
+        const dropdown = postElement.querySelector('.dropdown');
+        const dropdownMenu = postElement.querySelector('.dropdown-menu');
+        
+        dropdown.addEventListener('click', () => {
+          dropdownMenu.classList.toggle('hidden');
         });
 
-        commentsContainer.appendChild(commentsList);
-      } else {
-        const noComments = document.createElement("p");
-        noComments.className = "text-sm text-gray-500 text-center py-4";
-        noComments.textContent = "No comments yet";
-        commentsContainer.appendChild(noComments);
+        postElement.querySelector('.edit-post').addEventListener('click', () => {
+          editPost(postId, post.text);
+          dropdownMenu.classList.add('hidden');
+        });
+
+        postElement.querySelector('.delete-post').addEventListener('click', () => {
+          deletePost(postId);
+          dropdownMenu.classList.add('hidden');
+        });
       }
 
-      // Comment Input
-      const commentInputContainer = document.createElement("div");
-      commentInputContainer.className = "mt-4 flex items-center";
-
-      const commentInput = document.createElement("input");
-      commentInput.type = "text";
-      commentInput.placeholder = "Write a comment...";
-      commentInput.className = "flex-1 cyber-input text-sm rounded-l-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary";
-      commentInputContainer.appendChild(commentInput);
-
-      const commentButton = document.createElement("button");
-      commentButton.className = "bg-primary hover:bg-primary-dark text-white px-5 py-3 rounded-r-xl transition-colors";
-      commentButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
-      commentButton.addEventListener("click", () => {
-        if (commentInput.value.trim()) {
-          addComment(postId, commentInput.value);
-          commentInput.value = "";
-        }
+      postElement.querySelector('.like-post').addEventListener('click', () => {
+        toggleLike(postId, post.likes || []);
       });
-      commentInputContainer.appendChild(commentButton);
-
-      commentsContainer.appendChild(commentInputContainer);
-      postFooter.appendChild(commentsContainer);
-      postElement.appendChild(postFooter);
 
       return postElement;
     }
 
     // Toggle Like
-    async function toggleLike(postId) {
-      const userId = auth.currentUser.uid;
-      const postRef = doc(db, "posts", postId);
-      const postSnapshot = await getDoc(postRef);
-      const postData = postSnapshot.data();
-
-      let likes = postData.likes || [];
-      if (likes.includes(userId)) {
-        // User already liked, remove like
-        likes = likes.filter((id) => id !== userId);
-        await updateDoc(postRef, { likes: arrayRemove(userId) });
-      } else {
-        // User hasn't liked, add like
-        likes.push(userId);
-        await updateDoc(postRef, { likes: arrayUnion(userId) });
-      }
-
-      loadPosts(); // Reload posts to update UI
-    }
-
-    // Add Comment
-    async function addComment(postId, commentText) {
-      if (!commentText) {
-        Swal.fire("Error", "Please enter a comment.", "error");
-        return;
-      }
-
-      const user = auth.currentUser;
-      const userData = await getUserData(user.uid); // Fetch user data for the comment
-      if (!userData) {
-        Swal.fire("Error", "Failed to fetch user data.", "error");
-        return;
-      }
-
-      const postRef = doc(db, "posts", postId);
-
-      // Create the comment object
-      const comment = {
-        text: commentText,
-        userId: user.uid,
-        displayName: resolveDisplayName(user, userData), // Resolve display name
-        createdAt: new Date().toISOString(), // Use client-side timestamp
-      };
-
-      // Use arrayUnion to add the comment
-      await updateDoc(postRef, {
-        comments: arrayUnion(comment),
-      });
-
-      loadPosts(); // Reload posts to update UI
-    }
-
-    // Handle Creating a Post
-    document.getElementById("post-btn").addEventListener("click", async () => {
-      const postText = document.getElementById("post-text").value;
-      const postImage = document.getElementById("post-image").files[0];
-
-      if (!postText) {
-        Swal.fire("Error", "Please enter some text for your post.", "error");
-        return;
-      }
-
-      const user = auth.currentUser;
-      if (!user) {
-        Swal.fire("Error", "You must be logged in to create a post.", "error");
-        return;
-      }
-
-      const userData = await getUserData(user.uid);
-      if (!userData) {
-        Swal.fire("Error", "Failed to fetch user data.", "error");
-        return;
-      }
-
-      let imageUrl = null;
-      let deleteUrl = null;
-      if (postImage) {
-        // Show loading state
-        const postBtn = document.getElementById("post-btn");
-        const originalText = postBtn.innerHTML;
-        postBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading...';
-        postBtn.disabled = true;
-
-        // Upload image to ImgBB
-        const formData = new FormData();
-        formData.append("image", postImage);
-
-        try {
-          const response = await fetch("https://api.imgbb.com/1/upload?key=63f32114ab94d00d1a0e23d5ac0c4d45", {
-            method: "POST",
-            body: formData,
-          });
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
-          const data = await response.json();
-
-          // Check if the response contains the expected data
-          if (!data || !data.data || !data.data.url) {
-            throw new Error("Invalid response from ImgBB API");
-          }
-
-          imageUrl = data.data.url; // Get the uploaded image URL
-          deleteUrl = data.data.delete_url; // Get the delete URL
-        } catch (error) {
-          console.error("Error uploading image:", error);
-          Swal.fire("Error", "Failed to upload image. Please try again.", "error");
-
-          // Reset button state
-          postBtn.innerHTML = originalText;
-          postBtn.disabled = false;
-          return;
-        }
-
-        // Reset button state
-        postBtn.innerHTML = originalText;
-        postBtn.disabled = false;
-      }
-
+    async function toggleLike(postId, currentLikes) {
       try {
-        await addDoc(collection(db, "posts"), {
-          text: postText,
-          imageUrl: imageUrl, // Store the image URL in Firestore
-          deleteUrl: deleteUrl, // Store the delete URL in Firestore
-          createdAt: serverTimestamp(),
-          userId: user.uid,
-          displayName: resolveDisplayName(user, userData), // Store resolved display name
-          photoURL: userData.photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png", // Store profile picture
-          likes: [], // Initialize likes array
-          comments: [], // Initialize comments array
-        });
-
-        // Clear input and reload posts
-        document.getElementById("post-text").value = "";
-        document.getElementById("post-image").value = "";
-        loadPosts();
-      } catch (error) {
-        console.error("Error creating post:", error);
-        Swal.fire("Error", "Failed to create post. Please try again.", "error");
-      }
-    });
-
-    // Delete Post
-    async function deletePost(postId, deleteUrl) {
-      const { isConfirmed } = await Swal.fire({
-        title: "Are you sure?",
-        text: "You will not be able to recover this post!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#007D76",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-      });
-
-      if (isConfirmed) {
-        // Show loading state
-        Swal.fire({
-          title: "Deleting...",
-          html: "Please wait while we delete your post",
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-
-        // Delete the image from ImgBB (if it exists)
-        if (deleteUrl) {
-          try {
-            await fetch(deleteUrl, { method: "DELETE" });
-          } catch (error) {
-            console.error("Error deleting image from ImgBB:", error);
-          }
+        const postRef = doc(db, 'posts', postId);
+        
+        if (currentLikes.includes(currentUser.uid)) {
+          await updateDoc(postRef, {
+            likes: arrayRemove(currentUser.uid)
+          });
+        } else {
+          await updateDoc(postRef, {
+            likes: arrayUnion(currentUser.uid)
+          });
         }
-
-        // Delete the post from Firestore
-        await deleteDoc(doc(db, "posts", postId));
-        loadPosts();
-
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: "Your post has been deleted.",
-          confirmButtonColor: "#007D76",
-        });
+      } catch (error) {
+        console.error('Error toggling like:', error);
       }
     }
 
     // Edit Post
     async function editPost(postId, currentText) {
       const { value: newText } = await Swal.fire({
-        title: "Edit your post",
-        input: "textarea",
+        title: 'Edit Post',
+        input: 'textarea',
         inputValue: currentText,
-        inputAttributes: {
-          "aria-label": "Type your post here"
-        },
         showCancelButton: true,
-        confirmButtonColor: "#007D76",
-        cancelButtonColor: "#d33",
+        confirmButtonColor: '#00F5A0',
+        cancelButtonColor: '#d33',
         inputValidator: (value) => {
           if (!value) {
-            return "You need to write something!";
+            return 'Please enter some text!';
           }
         }
       });
 
-      if (newText && newText !== currentText) {
-        // Show loading state
-        Swal.fire({
-          title: "Updating...",
-          html: "Please wait while we update your post",
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-
-        await updateDoc(doc(db, "posts", postId), { text: newText });
-        loadPosts();
-
-        Swal.fire({
-          icon: "success",
-          title: "Updated!",
-          text: "Your post has been updated.",
-          confirmButtonColor: "#007D76",
-        });
+      if (newText) {
+        try {
+          const postRef = doc(db, 'posts', postId);
+          await updateDoc(postRef, {
+            text: newText,
+            updatedAt: serverTimestamp()
+          });
+          Swal.fire('Success', 'Post updated successfully!', 'success');
+        } catch (error) {
+          console.error('Error updating post:', error);
+          Swal.fire('Error', 'Failed to update post', 'error');
+        }
       }
     }
 
-    // Handle Creating a Story
-    document.getElementById("story-box").addEventListener("click", () => {
-      document.getElementById("story-modal").classList.remove("hidden");
-    });
+    // Delete Post
+    async function deletePost(postId) {
+      const result = await Swal.fire({
+        title: 'Delete Post?',
+        text: 'This action cannot be undone!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#00F5A0',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      });
 
-    // Close Story Modal
-    document.getElementById("close-modal").addEventListener("click", () => {
-      document.getElementById("story-modal").classList.add("hidden");
-    });
-
-    // Handle Posting a Story
-    document.getElementById("story-btn").addEventListener("click", async () => {
-      const storyText = document.getElementById("story-text").value;
-      const storyImage = document.getElementById("story-image").files[0];
-
-      if (!storyText) {
-        Swal.fire("Error", "Please write something for your story.", "error");
-        return;
-      }
-
-      const user = auth.currentUser;
-      if (!user) {
-        Swal.fire("Error", "You must be logged in to create a story.", "error");
-        return;
-      }
-
-      const userData = await getUserData(user.uid);
-      if (!userData) {
-        Swal.fire("Error", "Failed to fetch user data.", "error");
-        return;
-      }
-
-      let imageUrl = null;
-      let deleteUrl = null;
-      if (storyImage) {
-        // Show loading state
-        const storyBtn = document.getElementById("story-btn");
-        const originalText = storyBtn.innerHTML;
-        storyBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading...';
-        storyBtn.disabled = true;
-
-        // Upload image to ImgBB
-        const formData = new FormData();
-        formData.append("image", storyImage);
-
+      if (result.isConfirmed) {
         try {
-          const response = await fetch("https://api.imgbb.com/1/upload?key=63f32114ab94d00d1a0e23d5ac0c4d45", {
-            method: "POST",
-            body: formData,
-          });
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
-          const data = await response.json();
-
-          // Check if the response contains the expected data
-          if (!data || !data.data || !data.data.url) {
-            throw new Error("Invalid response from ImgBB API");
-          }
-
-          imageUrl = data.data.url; // Get the uploaded image URL
-          deleteUrl = data.data.delete_url; // Get the delete URL
+          await deleteDoc(doc(db, 'posts', postId));
+          Swal.fire('Deleted!', 'Your post has been deleted.', 'success');
+          updateUserStats();
         } catch (error) {
-          console.error("Error uploading image:", error);
-          Swal.fire("Error", "Failed to upload image. Please try again.", "error");
-
-          // Reset button state
-          storyBtn.innerHTML = originalText;
-          storyBtn.disabled = false;
-          return;
+          console.error('Error deleting post:', error);
+          Swal.fire('Error', 'Failed to delete post', 'error');
         }
+      }
+    }
 
-        // Reset button state
-        storyBtn.innerHTML = originalText;
-        storyBtn.disabled = false;
+    // Story Management
+    createStoryBtn.addEventListener('click', () => {
+      storyModal.classList.remove('hidden');
+    });
+
+    closeStoryModal.addEventListener('click', () => {
+      storyModal.classList.add('hidden');
+      storyText.value = '';
+      storyMedia.value = '';
+    });
+
+    postStoryBtn.addEventListener('click', async () => {
+      const text = storyText.value.trim();
+      const mediaFile = storyMedia.files[0];
+
+      if (!text && !mediaFile) {
+        Swal.fire('Error', 'Please add some content or media', 'error');
+        return;
       }
 
       try {
-        await addDoc(collection(db, "stories"), {
-          text: storyText,
-          imageUrl: imageUrl, // Store the image URL in Firestore
-          deleteUrl: deleteUrl, // Store the delete URL in Firestore
+        let mediaUrl = null;
+        
+        if (mediaFile) {
+          const formData = new FormData();
+          formData.append('image', mediaFile);
+          
+          const response = await fetch('https://api.imgbb.com/1/upload?key=63f32114ab94d00d1a0e23d5ac0c4d45', {
+            method: 'POST',
+            body: formData
+          });
+          
+          const data = await response.json();
+          mediaUrl = data.data.url;
+        }
+
+        await addDoc(collection(db, 'stories'), {
+          text: text,
+          mediaUrl: mediaUrl,
+          userId: currentUser.uid,
+          userDisplayName: userData.displayName,
+          userPhotoURL: userData.photoURL,
           createdAt: serverTimestamp(),
-          userId: user.uid,
-          displayName: resolveDisplayName(user, userData), // Store resolved display name
-          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours from now
+          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
         });
 
-        // Clear input and close modal
-        document.getElementById("story-text").value = "";
-        document.getElementById("story-image").value = "";
-        document.getElementById("story-modal").classList.add("hidden");
+        storyModal.classList.add('hidden');
+        storyText.value = '';
+        storyMedia.value = '';
+        
+        Swal.fire('Success', 'Story created successfully!', 'success');
         loadStories();
+        updateUserStats();
       } catch (error) {
-        console.error("Error creating story:", error);
-        Swal.fire("Error", "Failed to create story. Please try again.", "error");
+        console.error('Error creating story:', error);
+        Swal.fire('Error', 'Failed to create story', 'error');
       }
     });
 
-    // Load Stories from Firestore (Realtime)
-    function loadStories() {
-      const storiesRef = collection(db, "stories");
-      const q = query(storiesRef, orderBy("createdAt", "desc"));
+    // Load Stories
+    async function loadStories() {
+      try {
+        const storiesQuery = query(
+          collection(db, 'stories'),
+          orderBy('createdAt', 'desc')
+        );
 
-      // Use onSnapshot for real-time updates
-      onSnapshot(q, (querySnapshot) => {
-        const storiesContainer = document.getElementById("stories-container");
-        storiesContainer.innerHTML = ""; // Clear the container before appending new stories
+        onSnapshot(storiesQuery, (snapshot) => {
+          storiesContainer.innerHTML = '';
+          
+          if (snapshot.empty) {
+            storiesContainer.innerHTML = `
+              <div class="flex items-center justify-center w-full">
+                <p class="text-muted">No stories yet</p>
+              </div>
+            `;
+            return;
+          }
 
-        if (querySnapshot.empty) {
-          storiesContainer.innerHTML = `
-            <div class="flex items-center justify-center w-full py-6">
-              <p class="text-gray-400">No stories yet. Be the first to share!</p>
-            </div>
-          `;
-          return;
-        }
-
-        querySnapshot.forEach(async (doc) => {
-          const story = doc.data();
-          const userData = await getUserData(story.userId); // Fetch user data
-          const displayName = resolveDisplayName(auth.currentUser, userData); // Resolve display name
-          const photoURL = userData?.photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"; // Default profile picture
-
-          const storyElement = createStoryElement(story, doc.id, displayName, photoURL);
-          storiesContainer.appendChild(storyElement);
+          snapshot.forEach((docSnapshot) => {
+            const story = docSnapshot.data();
+            const storyElement = createStoryElement(story);
+            storiesContainer.appendChild(storyElement);
+          });
         });
-      });
+      } catch (error) {
+        console.error('Error loading stories:', error);
+      }
     }
 
-    // Create a Story Element
-    function createStoryElement(story, storyId, displayName, photoURL) {
-      const storyElement = document.createElement("div");
-      storyElement.className = "flex-shrink-0 w-32 h-48 rounded-2xl overflow-hidden relative cursor-pointer story-card";
+    // Create Story Element
+    function createStoryElement(story) {
+      const storyElement = document.createElement('div');
+      storyElement.className = 'story-card flex-shrink-0 w-32 h-48';
+      
+      const isOwnStory = story.userId === currentUser.uid;
+      
+      storyElement.innerHTML = `
+        <div class="relative w-full h-full rounded-2xl overflow-hidden">
+          ${story.mediaUrl ? `
+            <img src="${story.mediaUrl}" alt="Story" class="w-full h-full object-cover">
+          ` : `
+            <div class="w-full h-full flex items-center justify-center p-4 bg-gradient-to-br from-primary to-secondary">
+              <p class="text-white text-center text-sm">${story.text.substring(0, 50)}${story.text.length > 50 ? '...' : ''}</p>
+            </div>
+          `}
+          <div class="absolute bottom-0 left-0 right-0 p-3">
+            <div class="flex items-center">
+              <img src="${story.userPhotoURL}" alt="${story.userDisplayName}" 
+                   class="w-8 h-8 rounded-full border-2 border-white">
+              <span class="ml-2 text-white text-xs font-bold truncate">${story.userDisplayName}</span>
+            </div>
+          </div>
+          ${isOwnStory ? `
+            <button class="delete-story absolute top-2 right-2 w-6 h-6 bg-black bg-opacity-50 rounded-full text-white text-xs">
+              <i class="fas fa-times"></i>
+            </button>
+          ` : ''}
+        </div>
+      `;
 
-      const storyInner = document.createElement("div");
-      storyInner.className = "w-full h-full story-card-inner";
-
-      // Story background (gradient overlay)
-      const storyBg = document.createElement("div");
-      storyBg.className = "absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70";
-      storyInner.appendChild(storyBg);
-
-      // Story content
-      if (story.imageUrl) {
-        const storyImage = document.createElement("img");
-        storyImage.src = story.imageUrl;
-        storyImage.alt = "Story Image";
-        storyImage.className = "w-full h-full object-cover";
-        storyInner.appendChild(storyImage);
-      } else {
-        const storyText = document.createElement("div");
-        storyText.className = "w-full h-full flex items-center justify-center p-4 bg-gray-800 text-white text-lg";
-        storyText.textContent = story.text;
-        storyInner.appendChild(storyText);
-      }
-
-      // User info at bottom
-      const userInfo = document.createElement("div");
-      userInfo.className = "absolute bottom-3 left-3 right-3 flex items-center";
-
-      const userImage = document.createElement("img");
-      userImage.src = photoURL;
-      userImage.alt = "Profile Picture";
-      userImage.className = "w-10 h-10 rounded-full border-2 border-primary object-cover";
-      userInfo.appendChild(userImage);
-
-      const username = document.createElement("span");
-      username.className = "ml-3 text-white text-sm font-semibold truncate";
-      username.textContent = displayName;
-      userInfo.appendChild(username);
-
-      storyInner.appendChild(userInfo);
-      storyElement.appendChild(storyInner);
-
-      // Dropdown for Delete (only for the logged-in user's stories)
-      if (story.userId === auth.currentUser.uid) {
-        const dropdown = document.createElement("div");
-        dropdown.className = "absolute top-3 right-3 dropdown";
-
-        const dropdownButton = document.createElement("button");
-        dropdownButton.className = "w-8 h-8 rounded-full bg-gray-900 bg-opacity-50 text-white flex items-center justify-center hover:bg-opacity-70 transition-colors";
-        dropdownButton.innerHTML = '<i class="fas fa-ellipsis-h text-sm"></i>';
-        dropdown.appendChild(dropdownButton);
-
-        const dropdownContent = document.createElement("div");
-        dropdownContent.className = "absolute right-0 mt-2 w-36 bg-gray-800 rounded-xl shadow-lg z-10 cyber-dropdown border border-gray-700";
-
-        const deleteButton = document.createElement("button");
-        deleteButton.className = "block w-full text-left px-4 py-3 text-xs text-gray-300 hover:bg-gray-700 transition-colors rounded-xl";
-        deleteButton.innerHTML = '<i class="fas fa-trash mr-2"></i> Delete';
-        deleteButton.addEventListener("click", (e) => {
+      if (isOwnStory) {
+        storyElement.querySelector('.delete-story').addEventListener('click', (e) => {
           e.stopPropagation();
-          deleteStory(storyId, story.deleteUrl);
+          // Add delete story functionality here
         });
-        dropdownContent.appendChild(deleteButton);
-
-        dropdown.appendChild(dropdownContent);
-        storyElement.appendChild(dropdown);
       }
 
-      // Add click event listener to open the story
-      storyElement.addEventListener("click", () => {
-        openStory(story);
+      storyElement.addEventListener('click', () => {
+        viewStory(story);
       });
 
       return storyElement;
     }
 
-    // Delete Story
-    async function deleteStory(storyId, deleteUrl) {
-      const { isConfirmed } = await Swal.fire({
-        title: "Are you sure?",
-        text: "You will not be able to recover this story!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#007D76",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-      });
-
-      if (isConfirmed) {
-        // Show loading state
-        Swal.fire({
-          title: "Deleting...",
-          html: "Please wait while we delete your story",
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-
-        // Delete the image from ImgBB (if it exists)
-        if (deleteUrl) {
-          try {
-            await fetch(deleteUrl, { method: "DELETE" });
-          } catch (error) {
-            console.error("Error deleting image from ImgBB:", error);
-          }
-        }
-
-        // Delete the story from Firestore
-        await deleteDoc(doc(db, "stories", storyId));
-        loadStories();
-
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: "Your story has been deleted.",
-          confirmButtonColor: "#007D76",
-        });
-      }
-    }
-
-    // Automatically Delete Expired Stories
-    async function deleteExpiredStories() {
-      const storiesRef = collection(db, "stories");
-      const q = query(storiesRef, orderBy("expiresAt", "asc"));
-
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(async (doc) => {
-        const story = doc.data();
-        if (new Date(story.expiresAt.toDate()) < new Date()) {
-          // Delete the story if it has expired
-          await deleteDoc(doc.ref);
-        }
+    // View Story
+    function viewStory(story) {
+      Swal.fire({
+        html: `
+          <div class="text-center">
+            ${story.mediaUrl ? `<img src="${story.mediaUrl}" class="w-full max-h-[400px] object-cover rounded-lg mb-4">` : ''}
+            <p class="text-lg mb-4">${story.text}</p>
+            <div class="flex items-center justify-center">
+              <img src="${story.userPhotoURL}" class="w-10 h-10 rounded-full mr-3">
+              <div>
+                <p class="font-bold">${story.userDisplayName}</p>
+                <p class="text-sm text-muted">${formatTimeAgo(story.createdAt.toDate())}</p>
+              </div>
+            </div>
+          </div>
+        `,
+        showCloseButton: true,
+        showConfirmButton: false,
+        width: '90%',
+        maxWidth: '500px',
+        background: 'rgba(15, 23, 42, 0.95)',
+        color: 'white',
+        backdrop: 'rgba(0,0,0,0.9)'
       });
     }
 
-    // Story Viewing Logic
-    let storyTimer;
-    let isPaused = false;
+    // Search Functionality
+    let searchTimeout;
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchPosts(e.target.value);
+      }, 500);
+    });
 
-    // Open Story for Viewing
-    function openStory(story) {
-      const storyMedia = document.getElementById("story-media");
-      const storyViewModal = document.getElementById("story-view-modal");
-      const playPauseBtn = document.getElementById("play-pause-btn");
-
-      // Clear previous content
-      storyMedia.innerHTML = "";
-
-      // Add story content
-      if (story.imageUrl) {
-        const imgContainer = document.createElement("div");
-        imgContainer.className = "w-full h-full flex items-center justify-center";
-
-        const img = document.createElement("img");
-        img.src = story.imageUrl;
-        img.alt = "Story Image";
-        img.className = "max-w-full max-h-[70vh] object-contain rounded-lg";
-        imgContainer.appendChild(img);
-        storyMedia.appendChild(imgContainer);
-      } else {
-        const textContainer = document.createElement("div");
-        textContainer.className = "w-full h-full flex items-center justify-center p-8";
-
-        const text = document.createElement("p");
-        text.textContent = story.text;
-        text.className = "text-3xl text-center text-white";
-        textContainer.appendChild(text);
-        storyMedia.appendChild(textContainer);
-      }
-
-      // Reset progress bar
-      const progressBar = document.querySelector(".story-progress");
-      progressBar.innerHTML = '';
-      const progressBarInner = document.createElement("div");
-      progressBarInner.className = "absolute inset-0 bg-gradient-to-r from-primary to-secondary";
-      progressBarInner.style.width = "0%";
-      progressBar.appendChild(progressBarInner);
-
-      // Show the modal
-      storyViewModal.classList.remove("hidden");
-
-      // Set the timer based on story type
-      const duration = story.imageUrl ? 5000 : 7000; // 5 seconds for image, 7 seconds for text
-      startStoryTimer(duration, progressBarInner);
-
-      // Animate progress bar
-      progressBarInner.style.transition = `width ${duration/1000}s linear`;
-      setTimeout(() => {
-        progressBarInner.style.width = "100%";
-      }, 10);
-
-      // Play/Pause Button
-      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      playPauseBtn.onclick = () => {
-        if (isPaused) {
-          resumeStoryTimer(duration, progressBarInner);
-          playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        } else {
-          pauseStoryTimer(progressBarInner);
-          playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-        }
-      };
-
-      // Close Modal on Click Outside
-      storyViewModal.addEventListener("click", (e) => {
-        if (e.target === storyViewModal) {
-          closeStoryModal();
-        }
-      });
+    async function searchPosts(query) {
+      // Implement search functionality
+      console.log('Searching for:', query);
     }
 
-    // Close Story Modal
-    function closeStoryModal() {
-      const storyViewModal = document.getElementById("story-view-modal");
-      storyViewModal.classList.add("hidden");
-      clearTimeout(storyTimer); // Clear the timer
-      isPaused = false; // Reset pause state
+    // Helper Functions
+    function formatTimeAgo(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      
+      if (seconds < 60) return 'Just now';
+      if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+      if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+      if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+      
+      return date.toLocaleDateString();
     }
 
-    // Start Story Timer
-    function startStoryTimer(duration, progressBar) {
-      storyTimer = setTimeout(() => {
-        closeStoryModal();
-      }, duration);
-    }
-
-    // Pause Story Timer
-    function pauseStoryTimer(progressBar) {
-      clearTimeout(storyTimer);
-      isPaused = true;
-      progressBar.style.transition = 'none';
-      const computedStyle = getComputedStyle(progressBar);
-      const width = parseFloat(computedStyle.getPropertyValue('width'));
-      const parentWidth = parseFloat(computedStyle.getPropertyValue('width'));
-      const percentage = (width / parentWidth) * 100;
-      progressBar.style.width = `${percentage}%`;
-    }
-
-    // Resume Story Timer
-    function resumeStoryTimer(duration, progressBar) {
-      const computedStyle = getComputedStyle(progressBar);
-      const width = parseFloat(computedStyle.getPropertyValue('width'));
-      const parentWidth = parseFloat(computedStyle.getPropertyValue('width'));
-      const percentage = (width / parentWidth);
-      const remainingTime = duration * (1 - percentage);
-            
-      progressBar.style.transition = `width ${remainingTime/1000}s linear`;
-      progressBar.style.width = "100%";
-            
-      startStoryTimer(remainingTime);
-      isPaused = false;
-    }
-
-    // Close story modal button
-    document.getElementById("close-story-modal").addEventListener("click", closeStoryModal);
-
-    // Check for expired stories every minute
-    setInterval(deleteExpiredStories, 60 * 1000);
+    // Initialize
+    initTheme();
   </script>
 </body>
 </html>
